@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, 
     Text, 
-    View, 
+    View,
+    TextInput, 
     Image, 
     ImageBackground, 
     TouchableOpacity } from 'react-native';
@@ -21,7 +22,16 @@ export default function Logup({navigation}) {
           style={ styles.degradeUp }
         />
 
-        
+        <View style={styles.containerLogup}>
+          <Text style={styles.tittle}>Registrate</Text>
+          <Text style={styles.subTittle}>Ingresa tus datos para crear una cuenta</Text>
+          <TextInput style={styles.input} placeholder='Nombre completo' />
+          <TextInput style={styles.input} placeholder='Correo' />
+          <TextInput style={styles.input} placeholder='Contraseña' />
+          <TouchableOpacity style={styles.buttonLogup}>
+            <Text style={styles.textButtonLogup}>ACEPTAR</Text>
+          </TouchableOpacity>
+        </View>
 
         
 
@@ -68,17 +78,57 @@ const styles = StyleSheet.create({
     zIndex: 2,
     bottom: 0,
   },
+  containerLogup: {
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    paddingTop: 50,
+    paddingBottom: 50,
+    backgroundColor: 'white',
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 3,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    zIndex: 4,
+  },
+  tittle: {
+    fontSize: 44,
+    fontFamily: 'sans-serif-medium',
+    fontWeight: 'bold',
+    color: '#444444',
+  },
+  subTittle: {
+    fontFamily: 'sans-serif-medium',
+    color: '#696969',
+    marginBottom: 30,
+  },
+  input: {
+    width: '80%',
+    padding: 6,
+    margin: 10,
+    fontSize: 17,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    backgroundColor: '#F9F9F9',
+    paddingStart: 14,
+  },  
   buttonLogup: {
     alignItems: "center",
     padding: 10,
-    width: '100%',
+    width: '80%',
     borderColor: '#E42256',
     borderWidth: 5,
     borderRadius: 30,
-    marginTop: 20,
+    marginTop: 50,
   },
   textButtonLogup: {
     color: '#E42256',
-    fontSize: 24,
+    fontSize: 22,
+    fontWeight: 'bold',
   },
 });

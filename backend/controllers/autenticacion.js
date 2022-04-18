@@ -59,10 +59,10 @@ exports.login = async (req, res) => {
 	if (!user) return res.status(400).json({ error: 'Email no encontrado' });
 
 	console.log(user[0]);
-
+	console.log(req.body);
 	const validPassword = await bcrypt.compare(
 		req.body.password,
-		user[0].password
+		user[0].contrasenia
 	);
 	if (!validPassword)
 		return res.status(400).json({ error: 'contraseña no válida' });
@@ -70,7 +70,7 @@ exports.login = async (req, res) => {
 	// creamos el token
 	const token = jwt.sign(
 		{
-			name: user.name,
+			name: user.nombre,
 		},
 		process.env.TOKEN_SECRET
 	);

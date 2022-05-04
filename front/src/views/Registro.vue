@@ -2,24 +2,31 @@
     <div class="marco_principal">
         <div class="marco_secundario">
             <v-card style='margin:auto;width: 92%;border-radius:1.5rem'>
+                <v-btn class="btnBack" to='/' >
+                    <v-icon class='icon' style="color:rgb(228, 34, 86); font-size: 40px;">
+                        mdi-arrow-left-circle
+                    </v-icon>
+    		    </v-btn>
+
                 <div class="text-center" style="position:relative;top:1rem;left:3.3rem;width: 80%;">
                     <img class='mt-5' src="@/assets/text_logo.png" alt="" style="width:100%;height: 100%;">
                 </div>
                 <form class='mt-5' style="padding:1.8rem;margin-top:1rem !important">
                     <section class='mt-5'>
-                        <v-text-field label="Nombre" v-model="usuario.nombre" outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" label="Nombre" v-model="usuario.nombre" outlined filled></v-text-field>
                     </section>
                     <section class='mt-3'>
-                        <v-text-field label="Correo Electronico" v-model="usuario.email"  outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" label="Correo Electronico" v-model="usuario.email"  outlined filled></v-text-field>
                     </section>
                     <section class='mt-3'>
-                        <v-text-field label="Contraseña"  v-model="usuario.password"  outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" label="Contraseña"  v-model="usuario.password"  outlined filled></v-text-field>
                     </section>
                     <section class="text-center mb-5">
                         <v-checkbox label="Aceptas Terminos y Condiciones?" v-model="terminos" required></v-checkbox>
+                        <p class="errorMsg">{{msgError}}</p>
                         <v-btn class="btn_registro mt-5" rounded x-large @click="registro()"
                             style='font-size:1.2rem'>
-                            Registrarse
+                            Registrar
                         </v-btn>
                     </section>
                 </form>
@@ -27,7 +34,6 @@
             </v-card>
 
         </div>
-         <mover />
     </div>
 </template>
 <script>
@@ -44,29 +50,47 @@ export default {
     data() {
         return {
             usuario:{
-                nombre:null,
-                email:null,
-                password:null,
+                nombre: '',
+                email: '',
+                password: '',
                 telefono:12342134,
                 link:"1234123",
             },
-            terminos:false
+            terminos: false,
+            msgError: ''
         }
     },
     methods: {
         async registro(){
-            if (!this.terminos)return
-            const res = await fetch('http://localhost:3500/api/user/register', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json',},
-            body: JSON.stringify(this.usuario)
-            })
-            const {data, error} = await res.json()
-            if(error) {
-                console.log(error);
-                return 
+            if (this.usuario.email === "" || this.usuario.password === "" || this.usuario.nombre === "") {
+                this.msgError = 'El campo es requerido';
+                setInterval(()=>{
+                    this.msgError = '';
+                },4000);
             }
-            this.$router.push({ name: "inicio"})
+            else if (!this.terminos) {
+                this.msgError = 'Debe aceptar los terminos';
+                setInterval(()=>{
+                    this.msgError = '';
+                },4000);
+            }
+            else {
+                const res = await fetch('http://localhost:3500/api/user/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',},
+                body: JSON.stringify(this.usuario)
+                })
+                const {data, error} = await res.json()
+                if(error) {
+                    this.msgError = error;
+                    setInterval(()=>{
+                        this.msgError = '';
+                    },4000);
+                    return
+                }
+                this.$router.push({ name: "inicio"})
+            }
+            
         }
     },
 }
@@ -86,7 +110,6 @@ export default {
         padding: 0;
         margin: 0;
         position: relative;
-        #border: 5px solid red;
         background-image: url('@/assets/Inicio.png') !important;
         background-position: center;
         background-size: cover;
@@ -97,16 +120,37 @@ export default {
     .marco_secundario {
         position: relative;
         top: 11%;
-        #background-color: rgb(250, 250, 250);
+    }
 
+    .btnBack {
+        position: relative !important;
+        margin: 1em 0em 0em 1em;
+        background: transparent !important;
+        box-shadow: none !important;
+        min-width: auto !important;
+        padding: 0em !important;
+        border-radius: 50px !important;
+    }
+
+    .inputStyle {
+        font-size: 1.3rem;
+        background-color: transparent !important;
+    }
+
+    .errorMsg {
+        text-align: center;
+        color: red;
+        font-size: 1.2em;
+        margin: 0px;
     }
 
     .btn_registro {
-        border: 2px solid rgb(228, 34, 86) !important;
+        border: 3px solid rgb(228, 34, 86) !important;
+        color:rgb(228, 34, 86);
         width: 80% !important;
         background-color: white !important;
         font-size: 2rem;
+        font-weight: 900;
         position:relative;
-        #left:1.5rem;
     }
 </style>

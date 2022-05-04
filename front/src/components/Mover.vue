@@ -33,12 +33,9 @@
 		padding: 0.5rem;
 		position: relative;
 		top: 5.3rem;
-		#border: 5px solid black;
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
-		#font-size: 3rem !important;
-		#margin: auto;
 	}
 	.icon{
 		outline: none !important;

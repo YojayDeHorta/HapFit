@@ -8,7 +8,7 @@
           <v-btn class="btn_inicio" to="/inicio" rounded   x-large style='padding:1.8rem !important;font-size:1.5rem' elevation='2'>
               Iniciar Sesión
           </v-btn>
-          <v-btn class="btn_registro" to="/registro" rounded   x-large style='padding:1.8rem !important;font-size:1.5rem' elevation='2'>
+          <v-btn class="btn_registro" to="/registro" rounded   x-large style='padding:1.8rem !important;font-size:1.5rem; color: rgb(228, 34, 86);' elevation='2'>
            Registrarse
           </v-btn>
         </div>

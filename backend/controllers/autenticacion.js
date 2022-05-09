@@ -39,7 +39,10 @@ exports.register = async (req, res) => {
 		const savedUser = await query(
 			`INSERT INTO Usuario (nombre,correo,telefono,linkPerfil,contrasenia) VALUES ('${req.body.nombre}','${req.body.email}','${req.body.telefono}','${req.body.link}', '${passwordEncrypt}');`
 		);
-
+		console.log(savedUser.insertId);
+		const savedCliente = await query(
+			`INSERT INTO Cliente (Usuario_idUsuario) VALUES (${savedUser.insertId});`
+		);
 		res.json({ error: null, data: 'ok!' });
 	} catch (error) {
 		res.status(400).json({ error });
@@ -66,17 +69,31 @@ exports.login = async (req, res) => {
 	);
 	if (!validPassword)
 		return res.status(400).json({ error: 'contraseña no válida' });
-
-	// creamos el token
-	const token = jwt.sign(
-		{
-			name: user.nombre,
-		},
-		process.env.TOKEN_SECRET
+	
+	//miramos los roles
+	
+	//si es cliente
+	const cliente = await query(
+		`SELECT * FROM cliente WHERE cliente.Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`
 	);
-
+	let token=null
+	let rol=null
+	console.log(cliente);
+	if (cliente[0]) {
+		rol="cliente"
+		token = jwt.sign({correo: user[0].correo,rol:rol},process.env.TOKEN_SECRET);
+	}else{
+		const entrenador = await query(
+			`SELECT * FROM entrenador WHERE entrenador.Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`
+		);
+		if(!entrenador[0]) return res.status(400).json({ error: 'usuario no encontrado' });
+		rol="entrenador"
+		token = jwt.sign({correo: user[0].correo,rol:rol},process.env.TOKEN_SECRET);
+	}
+	// creamos el token
 	res.header('auth-token', token).json({
 		error: null,
 		data: { token },
+		rol:rol
 	});
 };

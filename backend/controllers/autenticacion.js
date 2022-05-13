@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
 	if (error) return res.status(400).json({ error: error.details[0].message });
 
 	const isEmailExist = await query(
-		`SELECT * FROM Usuario WHERE Usuario.correo LIKE '%${req.body.email}%';`
+		`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`
 	);
 	console.log(isEmailExist);
 	if (isEmailExist.length)
@@ -37,14 +37,15 @@ exports.register = async (req, res) => {
 	const passwordEncrypt = await bcrypt.hash(req.body.password, salt);
 	try {
 		const savedUser = await query(
-			`INSERT INTO Usuario (nombre,correo,telefono,linkPerfil,contrasenia) VALUES ('${req.body.nombre}','${req.body.email}','${req.body.telefono}','${req.body.link}', '${passwordEncrypt}');`
+			`INSERT INTO usuario (nombre,correo,telefono,linkPerfil,contrasenia) VALUES ('${req.body.nombre}','${req.body.email}','${req.body.telefono}','${req.body.link}', '${passwordEncrypt}');`
 		);
 		console.log(savedUser.insertId);
 		const savedCliente = await query(
-			`INSERT INTO Cliente (Usuario_idUsuario) VALUES (${savedUser.insertId});`
+			`INSERT INTO cliente (Usuario_idUsuario) VALUES (${savedUser.insertId});`
 		);
 		res.json({ error: null, data: 'ok!' });
 	} catch (error) {
+		console.log(error);
 		res.status(400).json({ error });
 	} finally {
 		// connection.end();

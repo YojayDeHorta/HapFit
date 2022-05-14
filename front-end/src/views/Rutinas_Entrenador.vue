@@ -1,5 +1,5 @@
 <template>
-    <v-container class='container' style='padding: 0;'>
+    <v-container class='container' style='padding: 0;background: linear-gradient(180deg, #E42256 0%, rgba(228, 34, 86, 0) 100%) !important;'>
         <div style='padding: 0;'>
             <v-app-bar class='app' elevation='0'>
                 <v-app-bar-nav-icon>
@@ -56,47 +56,6 @@
                 </v-card>
             </div>
         </div>
-        <div class="text-center" style='position: absolute;bottom: 0;right: 0;'>
-            <v-dialog v-model="dialog" width="500">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn class='btn_modal' dark v-bind="attrs" v-on="on" fab x-large>
-                        <v-icon>
-                            mdi-plus
-                        </v-icon>
-                    </v-btn>
-                </template>
-                <v-card>
-                    <v-card-title class="text-h5 grey lighten-2">
-                        Nuevo Plan
-                    </v-card-title>
-                    <v-card-text>
-                        <v-container>
-                            <form action="">
-                                <section class='d-flex' style='border: 5px solid red !important;align-items: center;'>
-                                    <v-text-field v-model="first" label="First Name" filled></v-text-field>
-                                    <v-btn fab x-small>
-                                        <v-icon>
-                                        mdi-plus
-                                        </v-icon>
-                                    </v-btn>
-                                </section>
-                            </form>
-                        </v-container>
-                        <v-btn class='btn_registro' block rounded x-large>
-                            Guardar
-                        </v-btn>
-                        <br>
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="primary" text @click="dialog = false">
-                            Close
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-        </div>
     </v-container>
 </template>
 <style scoped>
@@ -113,11 +72,12 @@
 
 .container_Rutinas {
     position: relative;
-    top: -1.2rem;
+    #top: -1.2rem;
     #border: 5px solid red !important;
     height: 800px;
     overflow: auto;
     margin: 0 !important;
+    
 }
 
 h1 {

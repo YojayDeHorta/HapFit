@@ -13,11 +13,10 @@
           </v-btn>
         </div>
     </div>
-    <section>
+      <section>
       <v-btn to='/perfil'>User</v-btn> &nbsp; &nbsp;  
     <v-btn to='/perfil_entrenador'>Entrenador</v-btn>
     </section>
-    
   </div>
 </template>
 

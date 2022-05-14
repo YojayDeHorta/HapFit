@@ -4,7 +4,7 @@
             <v-toolbar class='tolbar_tabs' height='17'>
                 <template v-slot:extension style='background-color:white !important;'>
                     <v-tabs class='tab_icon' v-model="tabs" style='#border:4px solid red !important;'>
-                        <v-tab v-for="n in icon" :key="n" style='#border:5px solid red !important;margin-right:1rem;position:relative;left:0.7rem'>
+                        <v-tab v-for="n in icon"  style='#border:5px solid red !important;margin-right:1rem;position:relative;left:0.7rem'>
                             <v-icon style='font-size:4rem;'>
                                 Item {{ n.name }}
                             </v-icon>

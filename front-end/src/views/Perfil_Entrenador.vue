@@ -28,7 +28,7 @@
                                 <v-toolbar color="white" elevation='5' height='45'>
                                     <template>
                                         <v-tabs v-model="tabs_perfil" centered>
-                                            <v-tab v-for="n in  pestaña_usuario">
+                                            <v-tab v-for="n in  pestaña_usuario" style='display:flex;justify-content:space-evenly;width: 50%;' elevation='2'>
                                                 {{ n.name }}
                                             </v-tab>
                                         </v-tabs>
@@ -39,13 +39,36 @@
                                         <post_disponible />
                                     </v-tab-item>
                                     <v-tab-item style='' elevation='1'>
-                                        <entrenadores />
+                                        <clientes/>
                                     </v-tab-item>
                                     <v-tab-item class='content_tabs_rutinas'>
-                                        <!--
-                                        <rutinas />
-                                    -->
-                                        <modal_add_rutinas class='add_rutinas'/>
+                                        <main class='rutinas mt-5'>
+                                            <v-card class='rutinas_entrenador'>
+                                                <p>
+                                                    <v-icon class='icon'>
+                                                        mdi-weight-lifter
+                                                    </v-icon>
+                                                    <strong>Full Body Easy</strong>
+                                                </p>
+                                            </v-card>
+                                            <v-card class='rutinas_entrenador'>
+                                                <p>
+                                                    <v-icon class='icon'>
+                                                        mdi-weight-lifter
+                                                    </v-icon>
+                                                    <strong>Pecho - Espalda</strong>
+                                                </p>
+                                            </v-card>
+                                            <v-card class='rutinas_entrenador' to='/Rutinas_Entrenador'>
+                                                <p>
+                                                    <v-icon class='icon'>
+                                                        mdi-weight-lifter
+                                                    </v-icon>
+                                                    <strong>Tren Inferior</strong>
+                                                </p>
+                                            </v-card>
+                                        </main>
+                                        <modal_add_rutinas class='add_rutinas' />
                                     </v-tab-item>
                                 </v-tabs-items>
                             </v-card>
@@ -95,25 +118,46 @@
     flex-direction: column-reverse;
 }
 
-.add_rutinas{
-    /*border: 4px solid purple !important;
-    position: absolute;
-    bottom: 0;
-    right: 0 !important;*/
-}
-
-.content_tabs_rutinas{
+.content_tabs_rutinas {
     position: relative;
-    border: 5px solid purple;
+    #border: 5px solid purple;
     overflow: auto;
     height: 620px;
 }
 
+.rutinas_entrenador {
+    width: 95%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgb(255, 250, 237);
+}
+
+.rutinas_entrenador p {
+    #border: 5px solid red !important;
+    width: 90%;
+    font-size: 1.3rem;
+    margin: auto;
+
+}
+
+
+.rutinas_entrenador strong {
+    margin-left: 0.5rem;
+}
+
+.rutinas_entrenador .icon {
+    font-size: 2rem;
+}
 </style>
 <script>
 import navegacion_entrenador from '../components/Navegation_Entrenador.vue'
 import user_entrenador from '../components/Perfil_User_Entrenador.vue'
- import modal_add_rutinas from '../components/Add_Rutina.vue'
+import modal_add_rutinas from '../components/Add_Rutina.vue'
+import clientes from '../components/Entrenador_Cliente.vue'
 
 export default {
     data() {
@@ -131,7 +175,9 @@ export default {
     },
     components: {
         navegacion_entrenador,
-        user_entrenador, modal_add_rutinas
+        user_entrenador,
+        modal_add_rutinas,
+        clientes
     }
 }
 </script>

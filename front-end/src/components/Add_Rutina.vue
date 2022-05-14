@@ -3,8 +3,8 @@
         <v-row justify="center">
             <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn class='btn_add' v-bind="attrs" v-on="on" fab dark>
-                        <v-icon>
+                    <v-btn class='btn_add' v-bind="attrs" v-on="on" fab>
+                        <v-icon style='color:white !important'>
                             mdi-plus
                         </v-icon>
                     </v-btn>
@@ -20,8 +20,8 @@
                             <v-list-item-content>
                                 <main class='add_input' style='width: 100%; #border:5px solid red !important'>
                                     <input type="text" style='background-color: rgb(255, 255, 255);width: 80%;'>
-                                    <v-btn fab x-small>
-                                        <v-icon>
+                                    <v-btn fab x-small light>
+                                        <v-icon style='color:#E42256 !important'>
                                             mdi-plus
                                         </v-icon>
                                     </v-btn>
@@ -30,21 +30,22 @@
                                 <main>
                                     <v-card class='tarjeta' id='card_ejercisio_1'>
                                         <section style="padding:0;heigh:25px !important">
-                                            <v-select :items="items" placeholder="Standard" style='width:70%;height:55px !important' outlined></v-select>
+                                            <v-select :items="items" placeholder="Dominadas" style='width:70%;height:55px !important' outlined></v-select>
                                             <p style='padding-left:1.7rem'>
                                                 Sets
                                             </p>
                                         </section>
                                         <section style='width:70%;margin:0 !important'>
                                             <label>
-                                                <input type="radio" name="title" value="mr" checked="checked">
+                                                <input type="radio" name="title" checked="checked" >
                                                 Repeticiones
                                             </label>
                                             <label>
-                                                <input type="radio" name="title" value="mr">
+                                                <input type="radio" name="title">
                                                 Tiempo
                                             </label>
                                         </section>
+                                    
                                         <section style='#border:4px solid red !important;padding:0 !important'>
                                             <v-text-field placeholder="Repeticiones" outlined style='#border:5px solid black !important;height:55px !important'></v-text-field>
                                             <p style='padding-left:1.7rem'>
@@ -52,9 +53,43 @@
                                             </p>
                                         </section>
                                         <br>
-                                        <section style='#border:4px solid red !important;padding:0 !important;display:flex;justify-content:space-between'>
-                                            <v-text-field placeholder="Descanso" outlined style='#border:5px solid black !important;height:55px !important;width:40% !important'></v-text-field>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <v-select :items="items" placeholder="Standard" style='width:70%;height:55px !important' outlined></v-select>
+                                        <section style='padding:0 !important;height:55px !important'>
+                                            <v-text-field placeholder="Descanso" outlined class='text_field' style='width:40% !important'></v-text-field>
+                                            <v-spacer></v-spacer>
+                                            <v-select :items="repeticion_m" placeholder="Segundos" outlined class='text_field' style='width:30% !important'></v-select>
+                                        </section>
+                                        <br>
+                                        <section style='width:100%;padding:0 !important'>
+                                            <v-textarea name="input-7-4" placeholder="" height='80px' outlined></v-textarea>
+                                        </section>
+                                    </v-card>
+                                    <v-card class='tarjeta' id='card_ejercisio_2'>
+                                        <section style="padding:0;heigh:25px !important">
+                                            <v-select :items="items" placeholder="Jalones de Pecho" style='width:70%;height:55px !important' outlined></v-select>
+                                            <p style='padding-left:1.7rem'>
+                                                Sets
+                                            </p>
+                                        </section>
+                                        <section style='width:70%;margin:0 !important'>
+                                            <label>
+                                                <input type="radio" name="title" value="repeticiones">
+                                                Repeticiones
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="title" value="tiempo" checked="checked" >
+                                                Tiempo
+                                            </label>
+                                        </section>
+                                        <section style='#border:4px solid red !important;padding:0 !important'>
+                                            <v-text-field placeholder="Tiempo" outlined style='height:55px !important;width:40%'></v-text-field>
+                                              <v-spacer></v-spacer>
+                                            <v-select :items="tiempo_m" placeholder="Segundos" style='width:40%;height:55px !important' outlined></v-select>
+                                        </section>
+                                        <br>
+                                        <section style='#border:4px solid red !important;padding:0 !important;'>
+                                            <v-text-field placeholder="Descanso" outlined style='height:55px !important;width:40%'></v-text-field>
+                                             <v-spacer></v-spacer>
+                                            <v-select :items="tiempo_m" placeholder="Segundos" style='width:40%;height:55px !important' outlined></v-select>
                                         </section>
                                         <br><br>
                                         <section style='width:100%;padding:0 !important'>
@@ -62,70 +97,6 @@
                                         </section>
                                     </v-card>
                                 </main>
-                                <!--
-                                <main style='border:5px solid black !important;background-color: #FFFFFF;;'>
-                                    <section style='padding: 1rem;border: 5px solid purple;'>
-                                        <v-container fluid>
-
-
-
-
-
-                                            <!--
-                                            <v-row>
-                                                <v-col cols="8">
-                                                    <v-select class='select_vue' :items="items" filled placeholder="Dominadas" solo></v-select>
-                                                </v-col>
-                                                <v-col cols="4" style='display: flex;align-items: center;'>
-                                                    <label for="">Sec</label>
-                                                </v-col>
-                                            </v-row>
-                                            <v-row>
-                                                <v-col cols='6'>
-                                                    <label>
-                                                        <input type="radio" name="title" value="mr">
-                                                        Repeticiones
-                                                    </label>
-                                                </v-col>
-                                                <v-col cols='6'>
-                                                    <label>
-                                                        <input type="radio" name="title" value="mr">
-                                                        Tiempo
-                                                    </label>
-                                                </v-col>
-                                            </v-row>
-                                            <br>
-                                            <v-row class='mt-5' style='border:4px solid red'>
-                                                <v-col cols='8'>
-                                                    <v-text-field placeholder="Descanso" solo style='height: 35px !important;'></v-text-field>
-                                                </v-col>
-                                                <v-col cols='4'>
-                                                    <label>Reps</label>
-                                                </v-col>
-                                            </v-row>
-                                            <br>
-                                            <v-row class=
-
-                                                <v-col>
-                                                    <v-textarea height='60' filled>
-                                                    </v-textarea>
-                                                </v-col>
-                                            </v-row>
-                                               
-                                        </v-container>
-                                        <input type="text">
-                                    </section>
-                                    <section>
-                                        1
-                                    </section>
-                                    <section>
-                                        2
-                                    </section>
-                                    <section>
-                                        3
-                                    </section>
-                                </main>
-                            -->
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -135,7 +106,14 @@
     </v-container>
 </template>
 <style scoped>
+
+.text_field{
+    height: 65px !important;
+}
+
+
 .btn_add {
+    margin-bottom: 0.5rem !important;
     background-color: rgb(228, 52, 99) !important;
     position: absolute !important;
     bottom: 0 !important;
@@ -169,7 +147,8 @@
 
 .tarjeta {
     #border: 5px solid red !important;
-    padding: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .tarjeta section {
@@ -197,6 +176,9 @@ export default {
             sound: true,
             widgets: false,
             items: ['Ejercisio_1', 'Ejercisio_2', 'Ejercisio_3', 'Ejercisio_4', 'Ejercisio_5', 'Ejercisio_6'],
+            tiempo_m: ['Minutos', 'Segundos'],
+            descanso_m: ['Minutos', 'Segundos'],
+            repeticion_m: ['Minutos', 'Segundos'],
         }
 
     },

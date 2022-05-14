@@ -7,13 +7,13 @@
                 </div>
                 <form class='mt-5' style="padding:1.8rem;margin-top:1rem !important">
                     <section class='mt-5'>
-                        <v-text-field class="inputStyle" label="Nombre" v-model="usuario.nombre" outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" placeholder="Nombre" v-model="usuario.nombre" outlined filled></v-text-field>
                     </section>
                     <section class='mt-3'>
-                        <v-text-field class="inputStyle" label="Correo Electronico" v-model="usuario.email"  outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" placeholder="Correo Electronico" v-model="usuario.email"  outlined filled></v-text-field>
                     </section>
                     <section class='mt-3'>
-                        <v-text-field class="inputStyle" label="Contraseña"  v-model="usuario.password"  outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" placeholder="Contraseña"  v-model="usuario.password"  outlined filled></v-text-field>
                     </section>
                     <section class="text-center mb-5">
                         <v-checkbox label="Aceptas Terminos y Condiciones?" v-model="terminos" required></v-checkbox>

@@ -99,7 +99,7 @@
     </div>
 </template>
 <script>
-import perfil from '../components/Perfil_Post'
+import perfil from '../components/Perfil'
 import post_disponible from '../components/Post_Creado'
 import entrenadores from '../components/Entrenadores_Disponibles'
 import rutinas from '../components/Rutinas'

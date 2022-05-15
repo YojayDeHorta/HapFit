@@ -10,7 +10,7 @@
                         <v-text-field class="inputStyle" placeholder="Correo Electronico" v-model="usuario.email" outlined filled></v-text-field>
                     </section>
                     <section class='mt-3'>
-                        <v-text-field class="inputStyle" placeholder="Contraseña" v-model="usuario.password" outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" type="password" placeholder="Contraseña" v-model="usuario.password" outlined filled></v-text-field>
                     </section>
                     <section>
                         <p class="errorMsg">{{msgError}}</p>
@@ -81,10 +81,8 @@ export default {
                 localStorage.setItem('rol',user.rol)
                 localStorage.setItem('nombre',user.nombre)
                 localStorage.setItem('linkPerfil',user.linkPerfil)
-                if (user.rol=="cliente") {
+                if (user.rol=="cliente"||user.rol=="entrenador") {
                     this.$router.push({ name: "perfil"})
-                }else if(user.rol=="entrenador"){
-                    this.$router.push({ name: "perfil_entrenador"})
                 }
                 
 

@@ -65,6 +65,7 @@
                     </v-list-item-group>
                 </v-list>
             </v-navigation-drawer>
+            <!-- este es el pedazo de las publicaciones en la pagina de inicio -->
             <v-card-text style='height:100vh;overflow: auto;padding: 4rem 1rem 5em 1rem;'>
                 <main class='mb-5 mt-5' v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" >
                     <section class='title_post'>
@@ -90,7 +91,6 @@
                     </section>
                 </main>
             </v-card-text>
-            <Post_Creado/>
         </v-card>
     </v-container>
 </template>

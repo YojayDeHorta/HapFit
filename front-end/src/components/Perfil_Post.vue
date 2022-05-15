@@ -2,7 +2,7 @@
     <v-container style='margin:0 !important;padding:0 !important'>
         <div class='marco_secundario' style='margin:0 !important'>
             <img :src="usuario.linkPerfil" alt="">
-            <h3>{{usuario.nombre}}</h3>
+            <h3>{{usuario.nombre}}&nbsp;&nbsp;<v-icon v-if="usuario.rol=='entrenador'" dark> mdi-license</v-icon></h3>
         </div>
     </v-container>
 </template>
@@ -12,13 +12,15 @@ export default {
         return {
             usuario:{
                 nombre:'',
-                linkPerfil:''
+                linkPerfil:'',
+                rol:''
             },
         }
     },
     created() {
         this.usuario.nombre=localStorage.getItem('nombre')
         this.usuario.linkPerfil=localStorage.getItem('linkPerfil')
+        this.usuario.rol=localStorage.getItem('rol')
     },
 }
 </script>

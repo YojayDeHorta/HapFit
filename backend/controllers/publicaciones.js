@@ -7,7 +7,7 @@ const schemaPublicacion = Joi.object({
     idRutina: Joi.allow(null).default(null)
 })
 const schemaComentario = Joi.object({
-    descripcion: Joi.string().min(3).max(255).required(),
+    descripcion: Joi.string().min(1).max(255).required(),
     idPublicacion:Joi.number().required()
 })
 exports.getPublicacion= async (req,res)=>{

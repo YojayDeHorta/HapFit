@@ -37,6 +37,7 @@
                                             <v-tabs v-model="tabs_perfil" centered>
                                                 <v-tab v-for="n in  pestaña_usuario" :key="n.id">
                                                     {{ n.name }}
+                                                    
                                                 </v-tab>
                                             </v-tabs>
                                         </template>
@@ -45,12 +46,45 @@
                                         <v-tab-item elevation='0' style='padding:1rem !important'>
                                             <post_disponible />
                                         </v-tab-item>
-                                        <v-tab-item style='' elevation='1'>
+                                        <v-tab-item style='' elevation='1' v-if="usuario.rol=='cliente'">
                                             <entrenadores />
                                         </v-tab-item>
-                                        <v-tab-item style=''>
+                                        
+                                        <v-tab-item style='' elevation='1' v-else><!-- si es entrenador -->
+                                            <clientes />
+                                        </v-tab-item>
+                                        <v-tab-item style='' v-if="usuario.rol=='cliente'">
                                             <rutinas />
                                         </v-tab-item>
+                                        <v-tab-item style='' v-else><!-- si es entrenador -->
+                                            <main class='rutinas mt-5'>
+                                                <v-card class='rutinas_entrenador'>
+                                                    <p>
+                                                        <v-icon class='icon'>
+                                                            mdi-weight-lifter
+                                                        </v-icon>
+                                                        <strong>Full Body Easy</strong>
+                                                    </p>
+                                                </v-card>
+                                                <v-card class='rutinas_entrenador'>
+                                                    <p>
+                                                        <v-icon class='icon'>
+                                                            mdi-weight-lifter
+                                                        </v-icon>
+                                                        <strong>Pecho - Espalda</strong>
+                                                    </p>
+                                                </v-card>
+                                                <v-card class='rutinas_entrenador' to='/Rutinas_Entrenador'>
+                                                    <p>
+                                                        <v-icon class='icon'>
+                                                            mdi-weight-lifter
+                                                        </v-icon>
+                                                        <strong>Tren Inferior</strong>
+                                                    </p>
+                                                </v-card>
+                                            </main>
+                                        </v-tab-item>
+
                                     </v-tabs-items>
                                 </v-card>
                             </v-col>
@@ -72,6 +106,7 @@ import rutinas from '../components/Rutinas'
 import busqueda from '../components/Busqueda_Entrenador'
 import navegacion_usuario from '../components/Navegation_Usuario.vue'
 import navbar from '../components/Navbar.vue'
+import clientes from '../components/Entrenador_Cliente.vue'
 
 
 export default {
@@ -81,7 +116,8 @@ export default {
         entrenadores,
         rutinas,
         busqueda,navegacion_usuario,
-        navbar
+        navbar,
+        clientes
     },
     data() {
         return {
@@ -115,7 +151,9 @@ export default {
         this.usuario.nombre=localStorage.getItem('nombre')
         this.usuario.linkPerfil=localStorage.getItem('linkPerfil')
         this.usuario.rol=localStorage.getItem('rol')
-
+        if (this.usuario.rol=="entrenador") {
+            this.pestaña_usuario=[ { name: 'Post' }, { name: '       Clientes' }, { name: "Rutinas" }]
+        }
     },
     methods: {
         async getUser(){

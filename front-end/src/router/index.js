@@ -21,25 +21,9 @@ const routes = [{
         component: () => import( /* webpackChunkName: "about" */ '../views/Registro.vue')
     },
     {
-        path: '/entrenedaores',
-        name: 'entrenedores',
-        component: () => import( /* webpackChunkName: "about" */ '../views/Entrenedores.vue')
-    },
-    {
-        path: '/post',
-        name: 'post',
-        component: () => import( /* webpackChunkName: "about" */ '../views/Post.vue')
-    },
-    {
         path: '/perfil',
         name: 'perfil',
         component: () => import( /* webpackChunkName: "about" */ '../views/Perfil_Usuario.vue'),
-        meta: {requireAuth: true}
-    },
-    {
-        path: '/perfil_entrenador',
-        name: 'perfil_entrenador',
-        component: () => import( /* webpackChunkName: "about" */ '../views/Perfil_Entrenador.vue'),
         meta: {requireAuth: true}
     },
     {

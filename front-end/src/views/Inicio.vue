@@ -68,7 +68,7 @@ export default {
                     },
                 body: JSON.stringify(this.usuario)
                 })
-                const {data, error,rol} = await res.json()
+                const {data, error,user} = await res.json()
                 if(error) {
                     this.msgError = error;
                     setInterval(()=>{
@@ -77,10 +77,13 @@ export default {
                     return 
                 }
                 localStorage.setItem('token',data.token)
-                this.$store.commit('setToken', data.token)
-                if (rol=="cliente") {
+                localStorage.setItem('idUsuario',user.id)
+                localStorage.setItem('rol',user.rol)
+                localStorage.setItem('nombre',user.nombre)
+                localStorage.setItem('linkPerfil',user.linkPerfil)
+                if (user.rol=="cliente") {
                     this.$router.push({ name: "perfil"})
-                }else if(rol=="entrenador"){
+                }else if(user.rol=="entrenador"){
                     this.$router.push({ name: "perfil_entrenador"})
                 }
                 

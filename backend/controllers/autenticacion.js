@@ -58,8 +58,6 @@ exports.login = async (req, res) => {
 	);
 	if (!user[0]) return res.status(400).json({ error: 'Email no encontrado' });
 
-	console.log(user[0]);
-	console.log(req.body);
 	const validPassword = await bcrypt.compare(
 		req.body.password,
 		user[0].contrasenia
@@ -75,22 +73,26 @@ exports.login = async (req, res) => {
 	);
 	let token=null
 	let rol=null
-	console.log(cliente);
 	if (cliente[0]) {
 		rol="cliente"
-		token = jwt.sign({correo: user[0].correo,rol:rol},process.env.TOKEN_SECRET);
+		token = jwt.sign({id: user[0].idUsuario,rol:rol},process.env.TOKEN_SECRET);
 	}else{
 		const entrenador = await query(
 			`SELECT * FROM entrenador WHERE entrenador.Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`
 		);
 		if(!entrenador[0]) return res.status(400).json({ error: 'usuario no encontrado' });
 		rol="entrenador"
-		token = jwt.sign({correo: user[0].correo,rol:rol},process.env.TOKEN_SECRET);
+		token = jwt.sign({id: user[0].idUsuario,rol:rol},process.env.TOKEN_SECRET);
 	}
 	// creamos el token
 	res.header('auth-token', token).json({
 		error: null,
 		data: { token },
-		rol:rol
+		user:{
+			id: user[0].idUsuario,
+			rol:rol,
+			nombre:user[0].nombre,
+			linkPerfil:user[0].linkPerfil,
+		}
 	});
 };

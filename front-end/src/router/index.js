@@ -50,7 +50,7 @@ const routes = [{
     {
         path: '/navegacion_entrenador',
         name: 'navegacion_entrenador',
-        component: () => import( /* webpackChunkName: "about" */ '../components/Navegation_Entrenador.vue')
+        component: () => import( /* webpackChunkName: "about" */ '../components/Navbar.vue')
     },
         {
         path: '/rutinas_entrenador',

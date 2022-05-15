@@ -9,10 +9,10 @@
                 <v-list nav dense>
                     <v-list-item-group v-model="group">
                         <v-list-item>
-                            <v-list-item-title> <img src="@/assets/entrenador_baki.jpg" alt="" style='width: 150px;height: 150px;border-radius: 50%;object-fit: cover;'></v-list-item-title>
+                            <v-list-item-title> <img :src="usuario.linkPerfil" alt="" style='width: 150px;height: 150px;border-radius: 50%;object-fit: cover;'></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title class='text' style='text-align: center;font-size:1.1rem'>Entrenador Generico</v-list-item-title>
+                            <v-list-item-title class='text' style='text-align: center;font-size:1.1rem'>{{usuario.nombre}}</v-list-item-title>
                         </v-list-item>
                         <hr><br>
                         <v-list-item class='item_sub_text'>
@@ -33,7 +33,15 @@
                                 <strong>Opciones</strong>
                             </v-list-item-title>
                         </v-list-item>
-                        <v-list-item class='item_sub_text' to='/planes_entrenador'>
+                        <v-list-item v-if="usuario.rol=='cliente'">
+                            <v-list-item-title>
+                                <v-icon>
+                                    mdi-license
+                                </v-icon>&nbsp;
+                                <strong>Ser Entrenador</strong>
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-list-item class='item_sub_text' v-if="usuario.rol=='entrenador'">
                             <v-list-item-title class='text sub_txt'>
                                 <v-icon>
                                     mdi-bookmark-box-multiple
@@ -41,8 +49,9 @@
                                 <strong>Planes</strong>
                             </v-list-item-title>
                         </v-list-item><br>
-                        <v-container class='salir_item mt-5' fluid>
-                            <v-list-item class='item_sub_text'>
+                        
+                        <v-container class='salir_item mt-5'  @click="cerrarSesion()" fluid>
+                            <v-list-item class='item_sub_text' >
                                 <v-list-item-title class='text' style='font-size: 1.4rem;'>
                                     <v-btn to='/' style='background-color: transparent;'>
                                         <v-icon>
@@ -57,29 +66,115 @@
                 </v-list>
             </v-navigation-drawer>
             <v-card-text style='height:100vh;overflow: auto;padding: 4rem 1rem 5em 1rem;'>
-                <main class='mb-5 mt-5' v-for='i in 5' :key='i'>
+                <main class='mb-5 mt-5' v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" >
                     <section class='title_post'>
-                        <img class='img_post' src="@/assets/asuka.jpg" alt="" style=''>
+                        <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>
                         <p style='padding-left: 1rem;'>
-                            Nombre Generico <br>
+                            {{publicacion.nombre}}  <br>
                             <small>2 m</small>
                         </p>
                     </section>
-                    <section class='text-center mt-5'>
-                        <img src="https://www.cambiatufisico.com/wp-content/uploads/pesas-para-mujeres-696x464.jpg" alt="" style='width:100% !important;'>
+                    <section class='text-left mt-5'>
+                        <p>{{publicacion.descripcion}} </p>
                     </section>
+                    <!-- <section class='text-center mt-5'>
+                        <img src="https://www.cambiatufisico.com/wp-content/uploads/pesas-para-mujeres-696x464.jpg" alt="" style='width:100% !important;'>
+                    </section> -->
                     <section class='icon_post mt-2'>
-                        <v-checkbox style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'">
+                        {{publicacion.likes}} 
+                        <v-checkbox  @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'">
                         </v-checkbox>
                         <p>
-                            <modal_comments>5</modal_comments>
+                            <modal_comments :idPublicacion="publicacion.idPublicacion"></modal_comments>
                         </p>
                     </section>
                 </main>
             </v-card-text>
+            <Post_Creado/>
         </v-card>
     </v-container>
 </template>
+<script>
+import modal_comments from './Modal_comments.vue'
+import Post_Creado from './Post_Creado.vue'
+
+export default {
+    data() {
+        return {
+            drawer: false,
+            group: null,
+            post:[],
+            usuario:{
+                    nombre:'',
+                    linkPerfil:'',
+                    rol:''
+            },
+        }
+    },
+
+    watch: {
+        group() {
+            this.drawer = false
+        },
+    },
+    created() {
+        this.usuario.nombre=localStorage.getItem('nombre')
+        this.usuario.linkPerfil=localStorage.getItem('linkPerfil')
+        this.usuario.rol=localStorage.getItem('rol')
+        this.getPost()
+    },
+    components: {
+        modal_comments,
+        Post_Creado
+    },
+    methods: {
+        async getPost(){
+
+            const res = await fetch('http://localhost:3500/api/post/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':localStorage.getItem('token')
+                }
+            })
+            const {data, error} = await res.json()
+            if(error) {
+                console.log(error);
+                return 
+            }
+            this.post=data
+            console.log(data);    
+
+            
+        },
+        async cambiarCorazon(idPublicacion,index){
+            this.post[index].liked=!this.post[index].liked 
+            const res = await fetch('http://localhost:3500/api/post/setlikes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':localStorage.getItem('token')
+                },
+            body: JSON.stringify({idPublicacion})
+            })
+            const {data, error} = await res.json()
+            if(error) {
+                console.log(error);
+                return 
+            }         
+            
+            this.getPost()
+            
+        },
+        cerrarSesion(){
+
+            localStorage.clear()
+            // this.$router.push({ name: "inicio"})
+            console.log("llego aca");
+        }
+    },
+}
+</script>
 <style scoped>
 .text {
     font-weight: bold !important;
@@ -161,23 +256,3 @@ main section {
     justify-content: space-around;
 }
 </style>
-<script>
-import modal_comments from '../components/Modal_comments.vue'
-
-
-export default {
-    data: () => ({
-        drawer: false,
-        group: null,
-    }),
-
-    watch: {
-        group() {
-            this.drawer = false
-        },
-    },
-    components: {
-        modal_comments
-    }
-}
-</script>

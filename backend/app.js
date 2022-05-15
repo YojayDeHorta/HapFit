@@ -20,6 +20,7 @@ require('dotenv').config()
 
 // import routes
 const authRoutes = require('./routes/route');
+const authPost = require('./routes/post');
 
 /* Conexión a Base de datos
 const uri = process.env.DB_URL;
@@ -31,6 +32,7 @@ mongoose.connect(uri,
 
 // route middlewares
 app.use('/api/user', authRoutes);
+app.use('/api/post', authPost);
 
 
 //modo history de vue

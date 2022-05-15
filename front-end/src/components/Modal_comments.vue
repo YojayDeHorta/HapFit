@@ -4,7 +4,7 @@
             <v-dialog v-model="dialog" width="600px">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn style='background-color:transparent;color:black' dark v-bind="attrs" v-on="on" elevation='0'>
-                        5&nbsp;
+                        {{comentarios.length}}&nbsp;
                         <v-icon>mdi-comment-multiple-outline</v-icon>
                     </v-btn>
                 </template>
@@ -13,22 +13,23 @@
                         <span style='margin: auto;' class="text-h5 mt-5">Comentarios</span>
                     </v-card-title>
                     <v-card-text scrollable>
-                        <main v-for='i in 5' :key="i" class='mb-5' elevation='2'>
+                        <main v-for='comentario in comentarios' :key="comentario.idComentario" class='mb-5' elevation='2'>
                             <section class='title_post'>
-                                <img class='img_post' src="@/assets/asuka.jpg" alt="" style=''>
+                                <img class='img_post' :src="comentario.linkPerfil" alt="" style=''>
                                 <p style='padding-left: 1rem;'>
-                                    Nombre Generico <br>
-                                    <small>2 m</small>
+                                    {{comentario.nombre}}<br>
+                                    <v-btn v-if="idUsuario==comentario.Usuario_idUsuario" @click="deleteComentario(comentario.idComentario)">X</v-btn>
                                 </p>
                             </section>
                             <section class='icon_post mt-2'>
                                 <p class='text-justify'>
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, doloribus, aspernatur? Consectetur temporibus tempore, optio natus accusamus asperiores consequuntur, possimus ab sint nesciunt quidem officiis, doloremque perferendis delectus tenetur modi.
+                                    {{comentario.descripcion}}
                                 </p>
                             </section>
                         </main>
                         <hr> <br>
-                        <v-text-field label="comentarios" filled rounded dense append-icon="mdi-send"></v-text-field>
+                        <v-text-field label="ingresa aca tu comentario" v-model="textoComentario" filled rounded dense ></v-text-field>
+                        <v-btn @click="setComentarios()"><v-icon>mdi-send</v-icon></v-btn>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -46,6 +47,69 @@ export default {
     data() {
         return {
             dialog: false,
+            idUsuario:null,
+            comentarios:[],
+            textoComentario:'',
+        }
+    },
+    props:{
+        idPublicacion:null
+    },
+    created() {
+        this.getComentarios()
+        this.idUsuario=localStorage.getItem('idUsuario')
+    },
+    methods: {
+       async getComentarios(){
+            const res = await fetch('http://localhost:3500/api/post/comentarios/'+this.idPublicacion, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':localStorage.getItem('token')
+                }
+            })
+            const {data, error} = await res.json()
+            if(error) {
+                console.log(error);
+                return 
+            }         
+            this.comentarios=data
+            
+        },
+        async setComentarios(){
+            const res = await fetch('http://localhost:3500/api/post/comentarios/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':localStorage.getItem('token')
+                },
+            body: JSON.stringify({idPublicacion:this.idPublicacion,descripcion:this.textoComentario})
+            })
+            const {data, error} = await res.json()
+            if(error) {
+                console.log(error);
+                return 
+            }         
+            this.textoComentario=''
+            this.getComentarios()
+            
+        },
+        async deleteComentario(idComentario){
+            const res = await fetch('http://localhost:3500/api/post/comentarios/', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':localStorage.getItem('token')
+                },
+            body: JSON.stringify({idComentario})
+            })
+            const {data, error} = await res.json()
+            if(error) {
+                console.log(error);
+                return 
+            }
+            this.getComentarios()
+
         }
     },
 }

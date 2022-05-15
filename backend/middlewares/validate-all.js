@@ -11,10 +11,16 @@ const verifyToken = async(req, res, next) => {
     try {
         const verified = jwt.verify(token, process.env.TOKEN_SECRET)
         req.usuario = verified
-        const entrenador = await query(`SELECT * FROM entrenador WHERE entrenador.Usuario_idUsuario LIKE '%${verified.id}%';`);
-        if(!entrenador[0]||verified.rol!="entrenador")return res.status(400).json({ error: 'Error con el token' });
-            
-        next()
+        const cliente = await query(`SELECT * FROM cliente WHERE cliente.Usuario_idUsuario LIKE '%${verified.id}%';`);
+        if(cliente[0]&&verified.rol=="cliente"){
+            next()
+        }else{
+            const entrenador = await query(`SELECT * FROM entrenador WHERE entrenador.Usuario_idUsuario LIKE '%${verified.id}%';`);
+            if (!entrenador[0]||verified.rol!="entrenador") return res.status(400).json({ error: 'Error con el token' });
+            next()
+        }
+                     
+         // continuamos
     } catch (error) {
         res.status(400).json({error: 'token no es válido'})
     }

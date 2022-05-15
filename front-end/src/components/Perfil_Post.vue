@@ -1,11 +1,27 @@
 <template>
     <v-container style='margin:0 !important;padding:0 !important'>
         <div class='marco_secundario' style='margin:0 !important'>
-            <img src="@/assets/asuka.jpg" alt="">
-            <h3>Nombre Generico</h3>
+            <img :src="usuario.linkPerfil" alt="">
+            <h3>{{usuario.nombre}}</h3>
         </div>
     </v-container>
 </template>
+<script>
+export default {
+    data() {
+        return {
+            usuario:{
+                nombre:'',
+                linkPerfil:''
+            },
+        }
+    },
+    created() {
+        this.usuario.nombre=localStorage.getItem('nombre')
+        this.usuario.linkPerfil=localStorage.getItem('linkPerfil')
+    },
+}
+</script>
 <style scoped>
 .marco_secundario {
     padding: 0.2rem !important;
@@ -38,5 +54,3 @@ h6 {
     border: 5px solid purple !important;
 }
 </style>
-<script>
-</script>

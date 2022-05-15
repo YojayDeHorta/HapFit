@@ -15,7 +15,7 @@
             <v-tabs-items v-model="tabs" style='height: 100vh'>
                 <v-tab-item>
                     <v-card flat>
-                        <navegacion_entrenador />
+                        <Navbar />
                     </v-card>
                 </v-tab-item>
                 <v-tab-item>
@@ -36,7 +36,7 @@
                                 </v-toolbar>
                                 <v-tabs-items class='' v-model="tabs_perfil">
                                     <v-tab-item elevation='0' style='padding:1rem !important'>
-                                        <post_disponible />
+                                        <post_disponible /> 
                                     </v-tab-item>
                                     <v-tab-item style='' elevation='1'>
                                         <clientes/>
@@ -94,6 +94,37 @@
         </v-card>
     </v-container>
 </template>
+<script>
+import Navbar from '../components/Navbar.vue'
+import user_entrenador from '../components/Perfil_User_Entrenador.vue'
+import modal_add_rutinas from '../components/Add_Rutina.vue'
+import clientes from '../components/Entrenador_Cliente.vue'
+import post_disponible from '../components/Post_Creado'
+
+export default {
+    data() {
+        return {
+            icon: [
+                { name: 'mdi-home' }, { name: 'mdi-account-circle' }, { name: "mdi-magnify" }
+            ],
+            pestaña_usuario: [
+                { name: 'Post' }, { name: 'Clientes' }, { name: "Rutinas" }
+            ],
+            tabs: null,
+            tabs_perfil: null,
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        }
+        
+    },
+    components: {
+        Navbar,
+        user_entrenador,
+        modal_add_rutinas,
+        clientes,
+        post_disponible
+    }
+}
+</script>
 <style scoped>
 .Contenedor_Principal {
     #border: 5px solid red;
@@ -153,34 +184,7 @@
     font-size: 2rem;
 }
 </style>
-<script>
-import navegacion_entrenador from '../components/Navegation_Entrenador.vue'
-import user_entrenador from '../components/Perfil_User_Entrenador.vue'
-import modal_add_rutinas from '../components/Add_Rutina.vue'
-import clientes from '../components/Entrenador_Cliente.vue'
 
-export default {
-    data() {
-        return {
-            icon: [
-                { name: 'mdi-home' }, { name: 'mdi-account-circle' }, { name: "mdi-magnify" }
-            ],
-            pestaña_usuario: [
-                { name: 'Post' }, { name: 'Clientes' }, { name: "Rutinas" }
-            ],
-            tabs: null,
-            tabs_perfil: null,
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        }
-    },
-    components: {
-        navegacion_entrenador,
-        user_entrenador,
-        modal_add_rutinas,
-        clientes
-    }
-}
-</script>
 <!--
 <template>
     <div class='div_contenedor'>

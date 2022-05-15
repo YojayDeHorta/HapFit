@@ -1,23 +1,30 @@
 <template>
     <v-container class='container_post mb-5' style=''>
         <v-card class='card_post mb-5' style='#border:5px solid black !important;#padding-bottom:56rem !important' elevation='0'>
-            <main v-for='i in 5' :key="i"  class='mb-5' elevation='2'>
+            <main v-for='(publicacion,index) in post' :key="publicacion.idPublicacion"  class='mb-5' elevation='2'>
                 <section class='title_post'>
-                    <img class='img_post' src="@/assets/asuka.jpg" alt="" style=''>
+                    <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>
                     <p style='padding-left: 1rem;'>
-                        Nombre Generico <br>
-                        <small>2 m</small>
+                        {{publicacion.nombre}} 
+                        <!-- <br><small>2 m</small> -->
                     </p>
                 </section>
-                <section class='text-center mt-5'>
-                    <img src="https://www.cambiatufisico.com/wp-content/uploads/pesas-para-mujeres-696x464.jpg" alt="" style='width: 95% !important;'>
+                <section class='text-left mt-5'>
+                    <p>{{publicacion.descripcion}} </p>
                 </section>
+                <!-- <section class='text-center mt-5'>
+                    <img src="https://www.cambiatufisico.com/wp-content/uploads/pesas-para-mujeres-696x464.jpg" alt="" style='width: 95% !important;'>
+                </section> -->
                 <section class='icon_post mt-2'>
                     <p>
-                        <v-icon style='color:red !important'>mdi-cards-heart-outline</v-icon> 
+                        {{publicacion.likes}} 
+                        <v-checkbox  @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'">
+                        </v-checkbox>
+
                     </p>
                     <p>
-                           <modal_comments>5</modal_comments>
+                        
+                        <modal_comments :idPublicacion="publicacion.idPublicacion">5</modal_comments>
                    
                     </p>
                 </section>
@@ -26,12 +33,69 @@
         </v-card>
     </v-container>
 </template>
+<script>
+import modal_comments from '../components/Modal_comments'
+export default{
+    components:{
+        modal_comments
+    },
+    data() {
+        return {
+            post:[]
+        }
+    },
+    created() {
+        this.getPost()
+    },
+    methods: {
+        async getPost(){
+
+            const res = await fetch('http://localhost:3500/api/post/user', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':localStorage.getItem('token')
+                }
+            })
+            const {data, error} = await res.json()
+            if(error) {
+                console.log(error);
+                return 
+            }
+            this.post=data
+                
+
+            
+        },
+        async cambiarCorazon(idPublicacion,index){
+            this.post[index].liked=!this.post[index].liked 
+
+            const res = await fetch('http://localhost:3500/api/post/setlikes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':localStorage.getItem('token')
+                },
+            body: JSON.stringify({idPublicacion})
+            })
+            const {data, error} = await res.json()
+            if(error) {
+                console.log(error);
+                return 
+            }         
+            
+            this.getPost()
+            
+        }
+    },
+}
+</script>
 <style scoped>
 
 .container_post{
     margin: 0 !important;
     padding: 0 !important;
-    #border: 5px solid red !important;
+    /* #border: 5px solid red !important; */
     height: 100vh;
     margin-bottom: 1rem !important;
     background-color: white !important;
@@ -46,7 +110,7 @@
 
 main {
     padding: 1rem;
-    #border: 5px solid red !important;
+    /* #border: 5px solid red !important; */
      background-color: rgb(243, 243, 243);
     margin-bottom: 1rem;
 }
@@ -54,18 +118,18 @@ main {
 
 
 main section {
-    #border: 5px solid black !important;
+    /* #border: 5px solid black !important; */
 }
 
 .title_post {
     display: flex;
-    #border: 5px solid purple !important;
+    /* #border: 5px solid purple !important; */
 }
 
 .title_post img {
     width: 45px;
     height: 45px;
-    #border: 5px solid purple;
+    /* #border: 5px solid purple; */
     border-radius: 50%;
     object-fit: cover !important;
     border: 2px solid white;
@@ -77,11 +141,3 @@ main section {
     justify-content: space-around;
 }
 </style>
-<script>
-import modal_comments from '../components/Modal_comments'
-export default{
-    components:{
-        modal_comments
-    }
-}
-</script>

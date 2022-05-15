@@ -3,7 +3,6 @@ const connection = require('../database/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const util = require('util');
-const { log } = require('console');
 const query = util.promisify(connection.query).bind(connection);
 
 const schemaRegister = Joi.object({
@@ -24,11 +23,8 @@ exports.register = async (req, res) => {
 	const { error } = schemaRegister.validate(req.body);
 	if (error) return res.status(400).json({ error: error.details[0].message });
 
-	const isEmailExist = await query(
-		`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`
-	);
-	console.log(isEmailExist);
-	if (isEmailExist.length)
+	const isEmailExist = await query(`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`);
+	if (isEmailExist[0])
 		//Si el email existe
 		return res.status(400).json({ error: 'Email ya registrado' });
 
@@ -60,7 +56,7 @@ exports.login = async (req, res) => {
 	const user = await query(
 		`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`
 	);
-	if (!user) return res.status(400).json({ error: 'Email no encontrado' });
+	if (!user[0]) return res.status(400).json({ error: 'Email no encontrado' });
 
 	console.log(user[0]);
 	console.log(req.body);

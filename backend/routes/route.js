@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const authController = require('../controllers/autenticacion');
-const validateToken = require('../controllers/validate-token');
+const validarCliente = require('../middlewares/validate-cliente');
+const validarEntrenador = require('../middlewares/validate-entrenador');
 
-router.get('/admin', validateToken, (req, res) => {
+router.get('/admin', validarEntrenador, (req, res) => {
 	console.log('hola');
 	res.json({
 		error: null,

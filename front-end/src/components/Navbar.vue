@@ -9,7 +9,7 @@
                 <v-list nav dense>
                     <v-list-item-group v-model="group">
                         <v-list-item>
-                            <v-list-item-title> <img :src="usuario.linkPerfil" alt="" style='width: 150px;height: 150px;border-radius: 50%;object-fit: cover;'></v-list-item-title>
+                            <v-list-item-title plain> <img :src="usuario.linkPerfil" alt="" style='width: 150px;height: 150px;border-radius: 50%;object-fit: cover;'></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
                             <v-list-item-title class='text' style='text-align: center;font-size:1.1rem'>{{usuario.nombre}}</v-list-item-title>
@@ -17,7 +17,7 @@
                         <hr><br>
                         <v-list-item class='item_sub_text'>
                             <v-list-item-title class='text sub_txt'>
-                                <v-btn to='/rutinas_entrenador'>
+                                <v-btn to='/rutinas_entrenador' plain>
                                     <v-icon>
                                         mdi-weight-lifter
                                     </v-icon>&nbsp;
@@ -34,7 +34,7 @@
                             </v-list-item-title>
                         </v-list-item>
                         <v-list-item v-if="usuario.rol=='cliente'">
-                            <v-list-item-title>
+                            <v-list-item-title plain>
                                 <v-icon>
                                     mdi-license
                                 </v-icon>&nbsp;
@@ -53,8 +53,8 @@
                         <v-container class='salir_item mt-5'  @click="cerrarSesion()" fluid>
                             <v-list-item class='item_sub_text' >
                                 <v-list-item-title class='text' style='font-size: 1.4rem;'>
-                                    <v-btn to='/' style='background-color: transparent;'>
-                                        <v-icon>
+                                    <v-btn to='/' style='background-color: transparent;' plain>
+                                        <v-icon plain>
                                             mdi-arrow-left-thick
                                         </v-icon>&nbsp;
                                         <strong>Salir</strong>

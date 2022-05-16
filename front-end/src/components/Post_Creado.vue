@@ -1,31 +1,26 @@
 <template>
     <v-container class='container_post mb-5' style=''>
         <v-card class='card_post mb-5' style='#border:5px solid black !important;#padding-bottom:56rem !important' elevation='0'>
-            <main v-for='(publicacion,index) in post' :key="publicacion.idPublicacion"  class='mb-5' elevation='2'>
+            <main v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" class='mb-5' elevation='2'>
                 <section class='title_post'>
                     <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>
                     <p style='padding-left: 1rem;'>
-                        {{publicacion.nombre}} 
+                        {{publicacion.nombre}}
                         <!-- <br><small>2 m</small> -->
                     </p>
                 </section>
                 <section class='text-left mt-5'>
                     <p>{{publicacion.descripcion}} </p>
                 </section>
-                <!-- <section class='text-center mt-5'>
-                    <img src="https://www.cambiatufisico.com/wp-content/uploads/pesas-para-mujeres-696x464.jpg" alt="" style='width: 95% !important;'>
-                </section> -->
                 <section class='icon_post mt-2'>
-                    <p>
-                        {{publicacion.likes}} 
-                        <v-checkbox  @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'">
+                    <p style='display: flex;'>
+                        <small> {{publicacion.likes}} </small>
+                        &nbsp;
+                        <v-checkbox @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'" color="red" value="red">
                         </v-checkbox>
-
                     </p>
                     <p>
-                        
-                        <modal_comments :idPublicacion="publicacion.idPublicacion">5</modal_comments>
-                   
+                        <modal_comments :idPublicacion="publicacion.idPublicacion"></modal_comments>
                     </p>
                 </section>
             </main>
@@ -35,64 +30,63 @@
 </template>
 <script>
 import modal_comments from '../components/Modal_comments'
-export default{
-    components:{
+export default {
+    components: {
         modal_comments
     },
     data() {
         return {
-            post:[]
+            post: []
         }
     },
     created() {
         this.getPost()
     },
     methods: {
-        async getPost(){
+        async getPost() {
 
             const res = await fetch('http://localhost:3500/api/post/user', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token':localStorage.getItem('token')
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
                 }
             })
-            const {data, error} = await res.json()
-            if(error) {
+            const { data, error } = await res.json()
+            if (error) {
                 console.log(error);
-                return 
+                return
             }
-            this.post=data
-                
+            this.post = data
 
-            
+
+
         },
-        async cambiarCorazon(idPublicacion,index){
-            this.post[index].liked=!this.post[index].liked 
+        async cambiarCorazon(idPublicacion, index) {
+            this.post[index].liked = !this.post[index].liked
 
             const res = await fetch('http://localhost:3500/api/post/setlikes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token':localStorage.getItem('token')
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
                 },
-            body: JSON.stringify({idPublicacion})
+                body: JSON.stringify({ idPublicacion })
             })
-            const {data, error} = await res.json()
-            if(error) {
+            const { data, error } = await res.json()
+            if (error) {
                 console.log(error);
-                return 
-            }         
-            
+                return
+            }
+
             this.getPost()
-            
+
         }
     },
 }
 </script>
 <style scoped>
-
-.container_post{
+.container_post {
     margin: 0 !important;
     padding: 0 !important;
     /* #border: 5px solid red !important; */
@@ -102,16 +96,16 @@ export default{
 
 }
 
-.card_post{
+.card_post {
     margin-bottom: 0.5rem;
-       height: 605px !important;
-           overflow: auto;
+    height: 605px !important;
+    overflow: auto;
 }
 
 main {
     padding: 1rem;
     /* #border: 5px solid red !important; */
-     background-color: rgb(243, 243, 243);
+    background-color: rgb(243, 243, 243);
     margin-bottom: 1rem;
 }
 
@@ -139,5 +133,6 @@ main section {
 .icon_post {
     display: flex;
     justify-content: space-around;
+    #border: 5px solid black !important;
 }
 </style>

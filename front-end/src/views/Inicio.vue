@@ -27,7 +27,7 @@
 
         </div>
 
-         <mover style='position:relative;top:9.5rem' />
+         <mover />
     </div>
 </template>
 <script>

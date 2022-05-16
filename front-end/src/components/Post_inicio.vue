@@ -3,21 +3,20 @@
         <main class='mb-5 mt-5' v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" >
             <section class='title_post'>
                 <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>
-                <p style='padding-left: 1rem;'>
+                <p style='padding-left: 1rem;text-transform: capitalize;'>
                     {{publicacion.nombre}}  <br>
                     <small>2 m</small>
                 </p>
             </section>
             <section class='text-left mt-5'>
-                <p>{{publicacion.descripcion}} </p>
+                <p style='text-transform: capitalize;'>{{publicacion.descripcion}} </p>
             </section>
-            <!-- <section class='text-center mt-5'>
-                <img src="https://www.cambiatufisico.com/wp-content/uploads/pesas-para-mujeres-696x464.jpg" alt="" style='width:100% !important;'>
-            </section> -->
             <section class='icon_post mt-2'>
-                {{publicacion.likes}} 
-                <v-checkbox  @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'">
-                </v-checkbox>
+                <p style='display:flex'>
+                     {{publicacion.likes}} &nbsp;
+                <v-checkbox  color="red" value="red"  @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'"></v-checkbox>
+                </p>
+               
                 <p>
                     <modal_comments :idPublicacion="publicacion.idPublicacion"></modal_comments>
                 </p>

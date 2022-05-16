@@ -1,44 +1,26 @@
 <template>
     <v-container>
     	<v-card class='tarjeta'>
-    		<section>
-    			<!--
-    			<v-icon class='icon'>
-    				mdi-arrow-left-circle
-    			</v-icon>
-    		-->
-    		</section>
-    	
-    			<v-btn to='/' >
+    			<v-btn to='/' plain>
     				<v-icon class='icon'>
     						mdi-home-circle
     				</v-icon>
-    			
-    			</v-btn>
-    	
-    		
-    		<section>
-    			<!--
-    				<v-icon class='icon'>
-    				mdi-arrow-right-circle
-    			</v-icon>
-    		-->
-    		</section>
-    	
+    			</v-btn>    	
     	</v-card>
     </v-container>
 </template>
 <style scoped>
 	.tarjeta{
-		padding: 0.5rem;
-		position: relative;
-		top: 5.3rem;
-		#border: 5px solid black;
+		position: absolute;
+		bottom: 0;
+		left:24%;
 		display: flex;
-		justify-content: space-between;
-		width: 100%;
-		#font-size: 3rem !important;
-		#margin: auto;
+		justify-content: center;
+		padding: 0.5rem;
+		#border: 5px solid black;
+		width: 50%;
+		margin-top: 1.5rem;
+		margin-bottom:0.5rem ;
 	}
 	.icon{
 		outline: none !important;

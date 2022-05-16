@@ -3,8 +3,8 @@
         <v-card class='tarjeta_tabs'>
             <v-toolbar class='tolbar_tabs' height='17'>
                 <template v-slot:extension style='background-color:white !important;'>
-                    <v-tabs class='tab_icon' v-model="tabs" style='#border:4px solid red !important;'>
-                        <v-tab v-for="n in icon" :key="n.id" style='#border:5px solid red !important;margin-right:1rem;position:relative;left:0.7rem'>
+                    <v-tabs class='tab_icon' v-model="tabs" elevation="3">
+                        <v-tab class='tabs' v-for="n in icon" :key="n.id" style='display: flex;justify-content: space-around;'>
                             <v-icon style='font-size:4rem;'>
                                 Item {{ n.name }}
                             </v-icon>
@@ -20,9 +20,7 @@
                     <!--
                             1
                     -->
-                    <navbar/>
-
-            
+                    <navbar />
                 </v-tab-item>
                 <v-tab-item>
                     <v-container>
@@ -35,9 +33,8 @@
                                     <v-toolbar color="white" elevation='5' height='45'>
                                         <template>
                                             <v-tabs v-model="tabs_perfil" centered>
-                                                <v-tab v-for="n in  pestaña_usuario" :key="n.id">
+                                                <v-tab v-for="n in  pestaña_usuario" :key="n.id" style='display: flex;justify-content: space-around;width: 100%;'>
                                                     {{ n.name }}
-                                                    
                                                 </v-tab>
                                             </v-tabs>
                                         </template>
@@ -49,20 +46,21 @@
                                         <v-tab-item style='' elevation='1' v-if="usuario.rol=='cliente'">
                                             <entrenadores />
                                         </v-tab-item>
-                                        
-                                        <v-tab-item style='' elevation='1' v-else><!-- si es entrenador -->
+                                        <v-tab-item style='' elevation='1' v-else>
+                                            <!-- si es entrenador -->
                                             <clientes />
                                         </v-tab-item>
                                         <v-tab-item style='' v-if="usuario.rol=='cliente'">
                                             <rutinas />
                                         </v-tab-item>
-                                        <v-tab-item style='' v-else><!-- si es entrenador -->
+                                        <v-tab-item style='' v-else>
+                                            <!-- si es entrenador -->
                                             <main class='rutinas mt-5'>
                                                 <v-card class='rutinas_entrenador'>
                                                     <p>
                                                         <v-icon class='icon'>
                                                             mdi-weight-lifter
-                                                        </v-icon>
+                                                        </v-icon>&nbsp;
                                                         <strong>Full Body Easy</strong>
                                                     </p>
                                                 </v-card>
@@ -70,7 +68,7 @@
                                                     <p>
                                                         <v-icon class='icon'>
                                                             mdi-weight-lifter
-                                                        </v-icon>
+                                                        </v-icon>&nbsp;
                                                         <strong>Pecho - Espalda</strong>
                                                     </p>
                                                 </v-card>
@@ -78,13 +76,12 @@
                                                     <p>
                                                         <v-icon class='icon'>
                                                             mdi-weight-lifter
-                                                        </v-icon>
+                                                        </v-icon>&nbsp;
                                                         <strong>Tren Inferior</strong>
                                                     </p>
                                                 </v-card>
                                             </main>
                                         </v-tab-item>
-
                                     </v-tabs-items>
                                 </v-card>
                             </v-col>
@@ -115,27 +112,28 @@ export default {
         post_disponible,
         entrenadores,
         rutinas,
-        busqueda,navegacion_usuario,
+        busqueda,
+        navegacion_usuario,
         navbar,
         clientes
     },
     data() {
         return {
-            usuario:{
-                nombre:'',
-                linkPerfil:'',
-                rol:''
+            usuario: {
+                nombre: '',
+                linkPerfil: '',
+                rol: ''
             },
-            publicaciones:[],
+            publicaciones: [],
             drawer: false,
             group: null,
             tabs: null,
             tabs_perfil: null,
             icon: [
-                { id:1,name: 'mdi-home' }, { id:2,name: 'mdi-account-circle' }, { id:3,name: "mdi-magnify" }
+                { id: 1, name: 'mdi-home' }, { id: 2, name: 'mdi-account-circle' }, { id: 3, name: "mdi-magnify" }
             ],
             pestaña_usuario: [
-                { id:1,name: 'Post' }, { id:2,name: 'Entrenadores' }, { id:3,name: "Rutinas" }
+                { id: 1, name: 'Post' }, { id: 2, name: 'Entrenadores' }, { id: 3, name: "Rutinas" }
             ],
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
         }
@@ -148,29 +146,29 @@ export default {
         },
     },
     created() {
-        this.usuario.nombre=localStorage.getItem('nombre')
-        this.usuario.linkPerfil=localStorage.getItem('linkPerfil')
-        this.usuario.rol=localStorage.getItem('rol')
-        if (this.usuario.rol=="entrenador") {
-            this.pestaña_usuario=[ { name: 'Post' }, { name: '       Clientes' }, { name: "Rutinas" }]
+        this.usuario.nombre = localStorage.getItem('nombre')
+        this.usuario.linkPerfil = localStorage.getItem('linkPerfil')
+        this.usuario.rol = localStorage.getItem('rol')
+        if (this.usuario.rol == "entrenador") {
+            this.pestaña_usuario = [{ name: 'Post' }, { name: '       Clientes' }, { name: "Rutinas" }]
         }
     },
     methods: {
-        async getUser(){
+        async getUser() {
 
             const res = await fetch('http://localhost:3500/api/user/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token':localStorage.getItem('token')
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
                 }
             })
-            const {data, error} = await res.json()
-            if(error) {
+            const { data, error } = await res.json()
+            if (error) {
                 console.log(error);
-                return 
+                return
             }
-            
+
 
         }
     },
@@ -203,8 +201,9 @@ export default {
 
 .tab_icon {
     /* #border: 5px solid red !important; */
-    display: flex;
-    justify-content: space-around !important;
+    #display: flex;
+    #justify-content: space-around !important;
+    width: 100% !important;
 }
 
 .tabs_container {
@@ -216,8 +215,39 @@ export default {
 img {
     width: 100px;
     height: 100px;
-     border: 1px solid white !important; 
+    border: 1px solid white !important;
     border-radius: 50%;
     object-fit: cover !important;
+}
+
+.tabs {
+    width: 180% !important;
+}
+
+
+.rutinas {
+    #border: 4px solid purple;
+    height: 598px;
+    overflow: auto;
+
+}
+
+
+.rutinas_entrenador {
+    text-align: start;
+    #border: 5px solid black !important;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    width: 95%;
+    margin: auto;
+    margin-top: 1rem;
+}
+
+.rutinas_entrenador .icon {
+    font-size: 3.5rem;
+}
+
+.rutinas_entrenador strong {
+    font-size: 1.2rem;
 }
 </style>

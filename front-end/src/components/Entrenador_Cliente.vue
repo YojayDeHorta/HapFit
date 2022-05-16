@@ -2,13 +2,13 @@
     <v-container class='container' fluid>
         <h1>
             :,( <br>
-            NO tienes clientes
+            No tienes clientes
         </h1>
     </v-container>
 </template>
 <style scoped>
 .container{
-	border: 5px solid purple !important;
+	#border: 5px solid purple !important;
 	height: 75vh;
 	overflow: auto;
 	display: flex;
@@ -18,7 +18,7 @@
 h1{
 	text-align: center;
 	text-transform: capitalize;
-	border: 5px solid red !important;
+	#border: 5px solid red !important;
 	margin: auto !important;
 }
 </style>

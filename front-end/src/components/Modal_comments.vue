@@ -16,9 +16,9 @@
                         <main v-for='comentario in comentarios' :key="comentario.idComentario" class='mb-5' elevation='2'>
                             <section class='title_post'>
                                 <img class='img_post' :src="comentario.linkPerfil" alt="" style=''>
-                                <p style='padding-left: 1rem;'>
-                                    {{comentario.nombre}}<br>
-                                    <v-btn v-if="idUsuario==comentario.Usuario_idUsuario" @click="deleteComentario(comentario.idComentario)">X</v-btn>
+                                <p style='padding-left: 1rem;display:flex;justify-content: space-between;width:100%'>
+                                    <small>{{comentario.nombre}}</small>
+                                    <v-btn class='btn_close' v-if="idUsuario==comentario.Usuario_idUsuario" @click="deleteComentario(comentario.idComentario)" plain ><v-icon>mdi-close-circle</v-icon></v-btn>
                                 </p>
                             </section>
                             <section class='icon_post mt-2'>
@@ -28,15 +28,13 @@
                             </section>
                         </main>
                         <hr> <br>
-                        <v-text-field label="ingresa aca tu comentario" v-model="textoComentario" filled rounded dense ></v-text-field>
-                        <v-btn @click="setComentarios()"><v-icon>mdi-send</v-icon></v-btn>
+                        <section style='display:flex;justify-content:space-around'>
+                            <v-text-field placeholder="Ingresa Tu Comentario" v-model="textoComentario" class='comments' filled rounded dense></v-text-field>
+                            <v-btn @click="setComentarios()" plain>
+                                <v-icon>mdi-send</v-icon>
+                            </v-btn>
+                        </section>
                     </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn class='mt-2' color="green darken-1" text @click="dialog = false">
-                            close
-                        </v-btn>
-                    </v-card-actions>
                 </v-card>
             </v-dialog>
         </v-row>
@@ -47,66 +45,66 @@ export default {
     data() {
         return {
             dialog: false,
-            idUsuario:null,
-            comentarios:[],
-            textoComentario:'',
+            idUsuario: null,
+            comentarios: [],
+            textoComentario: '',
         }
     },
-    props:{
-        idPublicacion:null
+    props: {
+        idPublicacion: null
     },
     created() {
         this.getComentarios()
-        this.idUsuario=localStorage.getItem('idUsuario')
+        this.idUsuario = localStorage.getItem('idUsuario')
     },
     methods: {
-       async getComentarios(){
-            const res = await fetch('http://localhost:3500/api/post/comentarios/'+this.idPublicacion, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token':localStorage.getItem('token')
+        async getComentarios() {
+            const res = await fetch('http://localhost:3500/api/post/comentarios/' + this.idPublicacion, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
                 }
             })
-            const {data, error} = await res.json()
-            if(error) {
+            const { data, error } = await res.json()
+            if (error) {
                 console.log(error);
-                return 
-            }         
-            this.comentarios=data
-            
+                return
+            }
+            this.comentarios = data
+
         },
-        async setComentarios(){
+        async setComentarios() {
             const res = await fetch('http://localhost:3500/api/post/comentarios/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token':localStorage.getItem('token')
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
                 },
-            body: JSON.stringify({idPublicacion:this.idPublicacion,descripcion:this.textoComentario})
+                body: JSON.stringify({ idPublicacion: this.idPublicacion, descripcion: this.textoComentario })
             })
-            const {data, error} = await res.json()
-            if(error) {
+            const { data, error } = await res.json()
+            if (error) {
                 console.log(error);
-                return 
-            }         
-            this.textoComentario=''
+                return
+            }
+            this.textoComentario = ''
             this.getComentarios()
-            
+
         },
-        async deleteComentario(idComentario){
+        async deleteComentario(idComentario) {
             const res = await fetch('http://localhost:3500/api/post/comentarios/', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token':localStorage.getItem('token')
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
                 },
-            body: JSON.stringify({idComentario})
+                body: JSON.stringify({ idComentario })
             })
-            const {data, error} = await res.json()
-            if(error) {
+            const { data, error } = await res.json()
+            if (error) {
                 console.log(error);
-                return 
+                return
             }
             this.getComentarios()
 
@@ -147,4 +145,12 @@ main section {
     display: flex;
     justify-content: space-around;
 }
+
+.btn_close{
+    position:relative;
+    left:10%;
+    margin:0 !important;
+    #padding:0 !important;
+}
+
 </style>

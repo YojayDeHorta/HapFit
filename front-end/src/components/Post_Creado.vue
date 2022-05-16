@@ -16,7 +16,7 @@
                     <p style='display: flex;'>
                         <small> {{publicacion.likes}} </small>
                         &nbsp;
-                        <v-checkbox @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'" color="red" value="red">
+                        <v-checkbox @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'" >
                         </v-checkbox>
                     </p>
                     <p>

@@ -14,7 +14,7 @@
             <section class='icon_post mt-2'>
                 <p style='display:flex'>
                      {{publicacion.likes}} &nbsp;
-                <v-checkbox  color="red" value="red"  @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'"></v-checkbox>
+                <v-checkbox    @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'"></v-checkbox>
                 </p>
                
                 <p>

@@ -41,6 +41,7 @@
                                     </v-toolbar>
                                     <v-tabs-items class='' v-model="tabs_perfil">
                                         <v-tab-item elevation='0' style='padding:1rem !important'>
+                                            
                                             <post_disponible />
                                         </v-tab-item>
                                         <v-tab-item style='' elevation='1' v-if="usuario.rol=='cliente'">
@@ -170,7 +171,8 @@ export default {
             }
 
 
-        }
+        },
+
     },
 
 }

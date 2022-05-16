@@ -21,7 +21,7 @@ const schemaLogin = Joi.object({
 exports.register = async (req, res) => {
 	// validate user
 	const { error } = schemaRegister.validate(req.body);
-	if (error) return res.status(400).json({ error: error.details[0].message });
+	if (error) return res.status(400).json({ error: 'porfavor revisa tus datos' });
 
 	const isEmailExist = await query(`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`);
 	if (isEmailExist[0])
@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
 	// validaciones
 	const { error } = schemaLogin.validate(req.body);
-	if (error) return res.status(400).json({ error: error.details[0].message });
+	if (error) return res.status(400).json({ error: 'porfavor revisa tus datos' });
 
 	const user = await query(
 		`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`

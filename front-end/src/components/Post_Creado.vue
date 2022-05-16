@@ -1,7 +1,15 @@
 <template>
     <v-container class='container_post mb-5' style=''>
-        <v-card class='card_post mb-5' style='#border:5px solid black !important;#padding-bottom:56rem !important' elevation='0'>
-            <main v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" class='mb-5' elevation='2'>
+        <v-card class="mb-5 ">
+            <v-card-text class="d-flex justify-end">
+                <v-textarea solo flat height="70px" v-model="descripcion"  label="escribe aca tu post..." :no-resize="true">
+                    
+                </v-textarea>
+                <v-btn icon class="mt-15" @click="publicarPost()"><v-icon>mdi-send</v-icon></v-btn>
+            </v-card-text>
+        </v-card>
+        <v-card  v-for='(publicacion,index) in post' :key="publicacion.idPublicacion"  class='card_post mb-5'  elevation='3'>
+            <main   elevation='4'>
                 <section class='title_post'>
                     <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>
                     <p style='padding-left: 1rem;'>
@@ -12,14 +20,14 @@
                 <section class='text-left mt-5'>
                     <p>{{publicacion.descripcion}} </p>
                 </section>
-                <section class='icon_post mt-2'>
-                    <p style='display: flex;'>
+                <section class='icon_post mt-5'>
+                    <p style='display: flex;' class="mt-2">
                         <small> {{publicacion.likes}} </small>
                         &nbsp;
                         <v-checkbox @click="cambiarCorazon(publicacion.idPublicacion,index)" v-model="publicacion.liked" style='margin: 0;padding: 0;' :on-icon="'mdi-heart'" :off-icon="'mdi-heart'" >
                         </v-checkbox>
                     </p>
-                    <p>
+                    <p >
                         <modal_comments :idPublicacion="publicacion.idPublicacion"></modal_comments>
                     </p>
                 </section>
@@ -36,7 +44,8 @@ export default {
     },
     data() {
         return {
-            post: []
+            post: [],
+            descripcion:'',
         }
     },
     created() {
@@ -61,6 +70,23 @@ export default {
 
 
 
+        },
+        async publicarPost(){
+            const res = await fetch('http://localhost:3500/api/post/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify({ descripcion: this.descripcion })
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.descripcion = ''
+            this.getPost()
         },
         async cambiarCorazon(idPublicacion, index) {
             this.post[index].liked = !this.post[index].liked
@@ -90,23 +116,25 @@ export default {
     margin: 0 !important;
     padding: 0 !important;
     /* #border: 5px solid red !important; */
-    height: 100vh;
+     height: 100vh;
     margin-bottom: 1rem !important;
-    background-color: white !important;
+    background-color: white !important; 
 
 }
 
 .card_post {
     margin-bottom: 0.5rem;
-    height: 605px !important;
+    /* height: 605px !important; */
     overflow: auto;
 }
 
 main {
-    padding: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
     /* #border: 5px solid red !important; */
     background-color: rgb(243, 243, 243);
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
 }
 
 

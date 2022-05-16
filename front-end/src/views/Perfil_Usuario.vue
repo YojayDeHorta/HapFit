@@ -157,7 +157,7 @@ export default {
     methods: {
         async getUser() {
 
-            const res = await fetch('http://localhost:3500/api/user/', {
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

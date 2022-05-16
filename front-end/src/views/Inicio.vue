@@ -60,7 +60,7 @@ export default {
                 },4000);
             } 
             else {
-                const res = await fetch('http://localhost:3500/api/user/login', {
+                const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

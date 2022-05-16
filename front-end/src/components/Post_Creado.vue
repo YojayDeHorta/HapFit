@@ -32,7 +32,6 @@
                     </p>
                 </section>
             </main>
-            <br>
         </v-card>
     </v-container>
 </template>
@@ -54,7 +53,7 @@ export default {
     methods: {
         async getPost() {
 
-            const res = await fetch('http://localhost:3500/api/post/user', {
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/user', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +71,7 @@ export default {
 
         },
         async publicarPost(){
-            const res = await fetch('http://localhost:3500/api/post/', {
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,7 +90,7 @@ export default {
         async cambiarCorazon(idPublicacion, index) {
             this.post[index].liked = !this.post[index].liked
 
-            const res = await fetch('http://localhost:3500/api/post/setlikes', {
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/setlikes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

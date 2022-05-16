@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         async getComentarios() {
-            const res = await fetch('http://localhost:3500/api/post/comentarios/' + this.idPublicacion, {
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/comentarios/' + this.idPublicacion, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default {
 
         },
         async setComentarios() {
-            const res = await fetch('http://localhost:3500/api/post/comentarios/', {
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/comentarios/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default {
 
         },
         async deleteComentario(idComentario) {
-            const res = await fetch('http://localhost:3500/api/post/comentarios/', {
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/comentarios/', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

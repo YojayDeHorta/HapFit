@@ -115,7 +115,7 @@
                 },4000);
             }
             else {
-                const res = await fetch('http://localhost:3500/api/user/register', {
+                const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify(this.usuario)

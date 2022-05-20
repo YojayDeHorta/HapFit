@@ -10,13 +10,13 @@ exports.updateLinkPerfil = async (req, res) => {
 		const file = req.file;
 		const result = await cloudinary.v2.uploader.upload(req.file.path);
 		const user = await query(
-			`SELECT * FROM usuario WHERE usuario.idUsuario LIKE '%${req.body.userId}%';`
+			`SELECT * FROM usuario WHERE usuario.idUsuario LIKE '%${req.usuario.id}%';`
 		);
 		if (!user[0])
 			return res.status(400).json({ error: 'porfavor revisa tus datos' });
 
 		await query(
-			`UPDATE usuario SET linkPerfil='${result.secure_url}' WHERE usuario.idUsuario LIKE '%${req.body.userId}%';`
+			`UPDATE usuario SET linkPerfil='${result.secure_url}' WHERE usuario.idUsuario LIKE '%${req.usuario.id}%';`
 		);
 		res.json({ error: null, data: 'Imagen subida' });
 	} catch (error) {

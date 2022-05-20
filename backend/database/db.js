@@ -15,7 +15,7 @@ conexion.connect((error) => {
 	console.log('¡Conectado a la base de datos MySQL!');
 });
 setInterval(function () {
-    conexion.query('SELECT 1');
+	conexion.query('SELECT 1');
 }, 5000);
 
 module.exports = conexion;

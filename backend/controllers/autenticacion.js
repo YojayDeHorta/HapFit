@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const util = require('util');
 const query = util.promisify(connection.query).bind(connection);
+const cloudinary = require('../config/cloudinary.config.js');
 
 const schemaRegister = Joi.object({
 	nombre: Joi.string().min(3).max(255).required(),
@@ -21,9 +22,12 @@ const schemaLogin = Joi.object({
 exports.register = async (req, res) => {
 	// validate user
 	const { error } = schemaRegister.validate(req.body);
-	if (error) return res.status(400).json({ error: 'porfavor revisa tus datos' });
+	if (error)
+		return res.status(400).json({ error: 'porfavor revisa tus datos' });
 
-	const isEmailExist = await query(`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`);
+	const isEmailExist = await query(
+		`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`
+	);
 	if (isEmailExist[0])
 		//Si el email existe
 		return res.status(400).json({ error: 'Email ya registrado' });
@@ -51,7 +55,8 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
 	// validaciones
 	const { error } = schemaLogin.validate(req.body);
-	if (error) return res.status(400).json({ error: 'porfavor revisa tus datos' });
+	if (error)
+		return res.status(400).json({ error: 'porfavor revisa tus datos' });
 
 	const user = await query(
 		`SELECT * FROM usuario WHERE usuario.correo LIKE '%${req.body.email}%';`
@@ -64,35 +69,42 @@ exports.login = async (req, res) => {
 	);
 	if (!validPassword)
 		return res.status(400).json({ error: 'contraseña no válida' });
-	
+
 	//miramos los roles
-	
+
 	//si es cliente
 	const cliente = await query(
 		`SELECT * FROM cliente WHERE cliente.Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`
 	);
-	let token=null
-	let rol=null
+	let token = null;
+	let rol = null;
 	if (cliente[0]) {
-		rol="cliente"
-		token = jwt.sign({id: user[0].idUsuario,rol:rol},process.env.TOKEN_SECRET);
-	}else{
+		rol = 'cliente';
+		token = jwt.sign(
+			{ id: user[0].idUsuario, rol: rol },
+			process.env.TOKEN_SECRET
+		);
+	} else {
 		const entrenador = await query(
 			`SELECT * FROM entrenador WHERE entrenador.Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`
 		);
-		if(!entrenador[0]) return res.status(400).json({ error: 'usuario no encontrado' });
-		rol="entrenador"
-		token = jwt.sign({id: user[0].idUsuario,rol:rol},process.env.TOKEN_SECRET);
+		if (!entrenador[0])
+			return res.status(400).json({ error: 'usuario no encontrado' });
+		rol = 'entrenador';
+		token = jwt.sign(
+			{ id: user[0].idUsuario, rol: rol },
+			process.env.TOKEN_SECRET
+		);
 	}
 	// creamos el token
 	res.header('auth-token', token).json({
 		error: null,
 		data: { token },
-		user:{
+		user: {
 			id: user[0].idUsuario,
-			rol:rol,
-			nombre:user[0].nombre,
-			linkPerfil:user[0].linkPerfil,
-		}
+			rol: rol,
+			nombre: user[0].nombre,
+			linkPerfil: user[0].linkPerfil,
+		},
 	});
 };

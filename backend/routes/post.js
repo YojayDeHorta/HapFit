@@ -6,6 +6,7 @@ const validarTodo = require('../middlewares/validate-all');
 
 router.post('/', validarTodo, publicaciones.addPublicacion);
 router.get('/', validarTodo, publicaciones.getPublicacion);
+router.delete('/', validarTodo, publicaciones.deletePublicacion);
 
 router.get('/user', validarTodo, publicaciones.getPublicacionByUser);
 //likes

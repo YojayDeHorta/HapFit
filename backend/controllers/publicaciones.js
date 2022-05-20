@@ -72,7 +72,6 @@ exports.getPublicacionByUser = async (req, res) => {
 		const usuario = await query(
 			`SELECT * FROM usuario WHERE usuario.idUsuario LIKE '%${req.usuario.id}%';`
 		);
-		console.log(usuario);
 		for (let i = 0; i < data.length; i++) {
 			const likes = await query(
 				`SELECT COUNT(*) FROM reaccion WHERE publicacion_idPublicacion = ${data[i].idPublicacion}`
@@ -97,6 +96,9 @@ exports.getPublicacionByUser = async (req, res) => {
 };
 exports.deletePublicacion = async (req, res) => {
 	try {
+		await query(
+			`DELETE FROM publicacion WHERE publicacion.idPublicacion = ${req.body.idPublicacion} AND publicacion.Usuario_idUsuario = ${req.usuario.id};`
+		);
 		res.json({ error: null, data: 'ok' });
 	} catch (error) {
 		console.log(error);

@@ -16,6 +16,7 @@
                         {{publicacion.nombre}}
                         <!-- <br><small>2 m</small> -->
                     </p>
+                    <v-btn class='btn_close' @click="borrarPost(publicacion.idPublicacion)" plain ><v-icon>mdi-close-circle</v-icon></v-btn>
                 </section>
                 <section class='text-left mt-5'>
                     <p>{{publicacion.descripcion}} </p>
@@ -85,6 +86,22 @@ export default {
                 return
             }
             this.descripcion = ''
+            this.getPost()
+        },
+        async borrarPost(id){
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify({ idPublicacion: id })
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
             this.getPost()
         },
         async cambiarCorazon(idPublicacion, index) {

@@ -4,27 +4,31 @@
             <v-col cols='12'>
                 <h3 class='mt-5 mb-5'>Contratados</h3>
                 <main style='#border:5px solid black;width:100% !important;'>
-                    <v-card class='Tarjeta' style='padding:1rem' fluid>
-                        <p> <img class='mt-2' src="@/assets/entrenadores.jpg" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
+                    
+                    <v-card v-if="!contratados" class='Tarjeta' style='padding:1rem' fluid>
                         <p style="#border:5px solid red !important;">
-                            Camilo Sinfuentes<br>
-                            <small>Entrenador</small>
+                            No tienes entrenadores<br>
+                        </p>
+                    </v-card>
+                    <v-card v-else class='Tarjeta' style='padding:1rem' fluid>
+                         <p> <img class='mt-2' src="@/assets/entrenadores.jpg" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
+                        <p style="#border:5px solid red !important;">
+                            camilo<br>
+                             <small>Entrenador</small> 
                         </p>
                         <p>
-                            <v-icon class='check_icon' style='color:green !important;font-size:2rem !important'>
-                                mdi-license
-                            </v-icon>
+                             <v-icon class='check_icon' style='color:green !important;font-size:2rem !important'>mdi-license</v-icon> 
                         </p>
                     </v-card>
                 </main>
             </v-col>
             <v-col cols='12'>
                 <h3 class='mt-5 mb-5'>Te pueden interesar</h3>
-                <main v-for='i in 5' :key="i"   style='#border:5px solid black;width:100% !important;'>
+                <main v-for='entrenador in entrenadores' :key="entrenador.idUsuario"   style='#border:5px solid black;width:100% !important;'>
                     <v-card class='Tarjeta' fluid>
-                        <p> <img class='mt-2' src="@/assets/entrenadores.jpg" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
+                        <p> <img class='mt-2' :src="entrenador.linkPerfil" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
                         <p class='ml-2' style="#border:5px solid red !important;">
-                            Camilo Sinfuentes <br>
+                            {{entrenador.nombre}} <br>
                             <small>Entrenador</small>
                         </p>
                     </v-card>
@@ -33,6 +37,41 @@
         </v-row>
     </v-container>
 </template>
+<script>
+export default {
+    data() {
+        return {
+            entrenadores:[],
+            contratados:null,
+            filtro:'',
+            soloEntrenadores:false
+        }
+    },
+    created() {
+        this.getEntrenadores()
+    },
+    methods: {
+         async getEntrenadores(nombre) {
+
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/trainers', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.entrenadores = data
+
+
+        },
+    },
+}
+</script>
 <style scoped>
 .container_post {
     margin: 0 !important;
@@ -103,5 +142,4 @@ main {
     justify-content: space-around;
 }
 </style>
-<script>
-</script>
+

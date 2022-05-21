@@ -18,8 +18,9 @@ exports.updateLinkPerfil = async (req, res) => {
 		await query(
 			`UPDATE usuario SET linkPerfil='${result.secure_url}' WHERE usuario.idUsuario LIKE '%${req.usuario.id}%';`
 		);
-		res.json({ error: null, data: 'Imagen subida' });
+		res.json({ error: null, data: result.secure_url });
 	} catch (error) {
+		console.log(error);
 		res.json({
 			error: 'La imagen no se pudo subir',
 		});

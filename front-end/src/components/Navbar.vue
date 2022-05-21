@@ -122,26 +122,29 @@ export default {
             // this.$router.push({ name: "inicio"})
             console.log("llego aca");
         },
-        cargarArchivo(event) {
+        async cargarArchivo(event) {
             let file = event.target.files[0];
             const filesTypes = ['image/jpg','image/jpeg','image/png','image/gif'];
             if (filesTypes.includes(file.type)) {
                 const formData = new FormData();
-                formData.append("image", file);
-
+                formData.append("img", file);
+                console.log("llego aca1");
                 const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/img/updateLinkPerfil', {
                 method: 'POST',
-                headers: {
-                    'auth-token':localStorage.getItem('token')
-                    },
+                headers: {'auth-token':localStorage.getItem('token')},
                 body: formData
                 })
                 const {data, error} = await res.json()
+                console.log("llego aca");
                 if(error) {
                     console.log(error);
                     return 
                 } 
+                localStorage.setItem("linkPerfil",data)
+               
+
             }
+             window.location.reload()
         }
     },
 }

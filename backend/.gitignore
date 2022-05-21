@@ -1,3 +1,4 @@
 node_modules
 .env
 .envold
+.env cloud

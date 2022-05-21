@@ -2,6 +2,7 @@
     <div class="marco_principal">
         <div class="marco_secundario">
             <v-card style='margin:auto;width: 92%;border-radius:1.5rem'>
+                <mover />
                 <div class="text-center" style="position:relative;top:1rem;left:3.3rem;width: 80%;">
                     <img class='mt-5' src="@/assets/text_logo.png" alt="" style="width:100%;height: 100%;">
                 </div>
@@ -28,7 +29,7 @@
             </v-card>
 
         </div>
-         <mover />
+         
     </div>
 </template>
 <style scoped>
@@ -60,8 +61,14 @@
 
     }
 
+    .inputStyle {
+        font-size: 1.3em !important;
+    }
+
     .btn_registro {
         border: 2px solid rgb(228, 34, 86) !important;
+        color: #E42256 !important;
+        font-weight: bold !important;
         width: 80% !important;
         background-color: white !important;
         font-size: 2rem;

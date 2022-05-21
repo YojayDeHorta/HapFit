@@ -71,6 +71,8 @@
 
 .btn_registro{
   border:2px solid rgb(228, 34, 86) !important;
+  color: #E42256 !important;
+  font-weight: bold !important;
   width: 80% !important;
   background-color:white;
   padding: 1rem;

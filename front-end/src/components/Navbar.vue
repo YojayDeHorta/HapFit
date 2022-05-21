@@ -9,10 +9,23 @@
                 <v-list nav dense>
                     <v-list-item-group v-model="group">
                         <v-list-item>
-                            <v-list-item-title plain> <img :src="usuario.linkPerfil" alt="" style='width: 150px;height: 150px;border-radius: 50%;object-fit: cover;'></v-list-item-title>
+                            <v-list-item-title plain> 
+                                <img :src="usuario.linkPerfil" alt="" style='width: 150px;height: 150px;border-radius: 50%;object-fit: cover;border: 3px solid white;'>
+                                
+                                <v-icon style="position: absolute;bottom: 10px;left: 20px;color: white;font-size: 2.4em;background-color: #484848;padding: 6px;border-radius: 50%;">
+                                    mdi-pencil
+                                </v-icon>
+                            </v-list-item-title>
+                            
+                            <label style="position: absolute;width: 100%;height: 100%;">
+                                <input type="file" style="visibility: hidden;"/>
+                            </label>
+                                
+                            
+                            
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title class='text' style='text-align: center;font-size:1.1rem'>{{usuario.nombre}}</v-list-item-title>
+                            <v-list-item-title class='text' style='text-align: center;font-size:1.1rem; font-weight: bold !important; font-size: 1.4em; padding: 5px !important;'>{{usuario.nombre}}</v-list-item-title>
                         </v-list-item>
                         <hr><br>
                         <v-list-item class='item_sub_text'>

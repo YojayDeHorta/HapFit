@@ -1,27 +1,18 @@
 <template>
-    <v-container>
-    	<v-card class='tarjeta'>
-    			<v-btn to='/' plain>
-    				<v-icon class='icon'>
-    						mdi-home-circle
-    				</v-icon>
-    			</v-btn>    	
-    	</v-card>
-    </v-container>
+	<v-btn class="boton" to='/' plain>
+		<v-icon class='icon'>
+				mdi-arrow-left-circle
+		</v-icon>
+	</v-btn>    	
 </template>
+
 <style scoped>
-	.tarjeta{
-		position: absolute;
-		bottom: 0;
-		left:24%;
-		display: flex;
-		justify-content: center;
-		padding: 0.5rem;
-		#border: 5px solid black;
-		width: 50%;
-		margin-top: 1.5rem;
-		margin-bottom:0.5rem ;
+	.boton {
+		box-shadow: none !important;
+		margin-top: 1em;
+		color: #E42256;
 	}
+
 	.icon{
 		outline: none !important;
 		border: none !important;
@@ -30,5 +21,6 @@
 		font-size: 3rem !important;
 	}
 </style>
+
 <script>
 </script>

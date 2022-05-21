@@ -18,7 +18,7 @@
                             </v-list-item-title>
                             
                             <label style="position: absolute;width: 100%;height: 100%;">
-                                <input type="file" style="visibility: hidden;"/>
+                                <input type="file" @change="cargarArchivo" style="visibility: hidden;"/>
                             </label>
                                 
                             
@@ -117,11 +117,31 @@ export default {
         Post_inicio
     },
     methods: {
-        cerrarSesion(){
-
+        cerrarSesion() {
             localStorage.clear()
             // this.$router.push({ name: "inicio"})
             console.log("llego aca");
+        },
+        cargarArchivo(event) {
+            let file = event.target.files[0];
+            const filesTypes = ['image/jpg','image/jpeg','image/png','image/gif'];
+            if (filesTypes.includes(file.type)) {
+                const formData = new FormData();
+                formData.append("image", file);
+
+                const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/img/updateLinkPerfil', {
+                method: 'POST',
+                headers: {
+                    'auth-token':localStorage.getItem('token')
+                    },
+                body: formData
+                })
+                const {data, error} = await res.json()
+                if(error) {
+                    console.log(error);
+                    return 
+                } 
+            }
         }
     },
 }

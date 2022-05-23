@@ -8,5 +8,10 @@ router.post(
 	[multer.single('img'), validarTodo],
 	imgController.updateLinkPerfil
 );
-
+router.post(
+	'/updateLinkEjercicio/:id',
+	[multer.single('img'), validarTodo],
+	imgController.updateLinkExercise
+);
+router.post('/add', [multer.single('img'), validarTodo], imgController.add);
 module.exports = router;

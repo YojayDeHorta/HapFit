@@ -10,7 +10,7 @@ const schemaRegister = Joi.object({
 	nombre: Joi.string().min(3).max(255).required(),
 	email: Joi.string().min(3).max(255).required().email(),
 	telefono: Joi.number().required(),
-	link: Joi.string().min(6).max(1024).required(),
+	link: Joi.string().min(6).max(1024),
 	password: Joi.string().min(6).max(1024).required(),
 });
 
@@ -21,6 +21,8 @@ const schemaLogin = Joi.object({
 
 exports.register = async (req, res) => {
 	// validate user
+	const perfil =
+		'https://res.cloudinary.com/doinyijpk/image/upload/v1653176134/erapajpoewdfqo0wtarc.jpg';
 	const { error } = schemaRegister.validate(req.body);
 	if (error)
 		return res.status(400).json({ error: 'porfavor revisa tus datos' });
@@ -37,7 +39,7 @@ exports.register = async (req, res) => {
 	const passwordEncrypt = await bcrypt.hash(req.body.password, salt);
 	try {
 		const savedUser = await query(
-			`INSERT INTO usuario (nombre,correo,telefono,linkPerfil,contrasenia) VALUES ('${req.body.nombre}','${req.body.email}','${req.body.telefono}','${req.body.link}', '${passwordEncrypt}');`
+			`INSERT INTO usuario (nombre,correo,telefono,linkPerfil,contrasenia) VALUES ('${req.body.nombre}','${req.body.email}','${req.body.telefono}','${perfil}', '${passwordEncrypt}');`
 		);
 		console.log(savedUser.insertId);
 		const savedCliente = await query(

@@ -20,6 +20,8 @@ require('dotenv').config();
 const authRoutes = require('./routes/route');
 const authPost = require('./routes/post');
 const authImg = require('./routes/img');
+const muscle = require('./routes/musculo');
+const authExercise = require('./routes/ejercicio');
 
 /* Conexión a Base de datos
 const uri = process.env.DB_URL;
@@ -33,6 +35,8 @@ mongoose.connect(uri,
 app.use('/api/user', authRoutes);
 app.use('/api/post', authPost);
 app.use('/api/img', authImg);
+app.use('/api/muscle', muscle);
+app.use('/api/exercise', authExercise);
 
 //modo history de vue
 const history = require('connect-history-api-fallback');

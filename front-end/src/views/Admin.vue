@@ -1,17 +1,20 @@
 <template>
-  <v-container  class='container' style='padding: 0;background: linear-gradient(180deg, #E42256 0%, rgba(228, 34, 86, 0) 100%) !important;'>
-    <v-card class="mx-auto  mt-5" v-for="solicitud in solicitudes"  :key="solicitud.idSolicitud" max-width="344"        >
+  <v-container  class='container pt-4' style='padding: 0;background: linear-gradient(180deg, #E42256 0%, rgba(228, 34, 86, 0) 50%); height: 100vh; !important;'>
+    <v-card class="mx-auto py-2 my-2" v-for="solicitud in solicitudes"  :key="solicitud.idSolicitud" max-width="344"        >
       <v-list-item three-line>
         <v-list-item-content>
-          <div class="text-overline mb-4">{{solicitud.nombre}} quiere ser entrenador</div>
-          <v-list-item-subtitle>Titulo: <a :href="solicitud.linkTitulos">{{solicitud.linkTitulos}}</a></v-list-item-subtitle>
-          <v-list-item-subtitle>Descripcion: {{solicitud.descripcion}}</v-list-item-subtitle>
+          <div class="text-overline" style="width: 100%;"><strong style="font-size: 1.3em;"> {{solicitud.nombre}}</strong> <br>quiere ser entrenador</div>
         </v-list-item-content>
 
-        <v-list-item-avatar tile size="80"><v-img :src="solicitud.linkPerfil"></v-img></v-list-item-avatar>
+        <v-list-item-avatar tile size="60"><v-img style="border-radius: 50%;" :src="solicitud.linkPerfil"></v-img></v-list-item-avatar>
       </v-list-item>
 
-      <v-card-actions>
+      <v-list-item-content class="px-4">
+        <v-list-item-subtitle>Titulo: <a :href="solicitud.linkTitulos">{{solicitud.linkTitulos}}</a></v-list-item-subtitle>
+        <v-list-item-subtitle class="mt-2">Descripcion: {{solicitud.descripcion}}</v-list-item-subtitle>
+      </v-list-item-content>
+
+      <v-card-actions style="display: flex; justify-content: center;">
         <v-btn outlined rounded text color="green" @click="aceptarSolicitud(solicitud.idSolicitud,solicitud.Cliente_idCliente,solicitud.linkTitulos)"> Aceptar </v-btn>
         <v-btn outlined rounded text color="red"  @click="borrarSolicitud(solicitud.idSolicitud,solicitud.Cliente_idCliente)"> Rechazar </v-btn>
       </v-card-actions>
@@ -85,3 +88,7 @@ export default {
   components: {},
 };
 </script>
+
+<style>
+  
+</style>

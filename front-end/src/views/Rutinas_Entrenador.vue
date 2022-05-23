@@ -3,7 +3,7 @@
         <div style='padding: 0;'>
             <v-app-bar class='app' elevation='0'>
                 <v-app-bar-nav-icon>
-                    <v-btn class='btn_flecha' to='/perfil_entrenador' elevation='0' dark>
+                    <v-btn class='btn_flecha' to='/perfil' elevation='0' dark>
                         <v-icon>
                             mdi-arrow-left-thick
                         </v-icon>

@@ -14,7 +14,7 @@
                         <v-text-field class="inputStyle" placeholder="Correo Electronico" v-model="usuario.email"  outlined filled></v-text-field>
                     </section>
                     <section class='mt-3'>
-                        <v-text-field class="inputStyle" placeholder="Contraseña"  v-model="usuario.password"  outlined filled></v-text-field>
+                        <v-text-field class="inputStyle" placeholder="Contraseña" type="password"  v-model="usuario.password"  outlined filled></v-text-field>
                     </section>
                     <section class="text-center mb-5">
                         <v-checkbox label="Aceptas Terminos y Condiciones?" v-model="terminos" required></v-checkbox>

@@ -41,8 +41,13 @@ const routes = [{
         name: 'rutinas_entrenador',
         component: () => import( /* webpackChunkName: "about" */ '../views/Rutinas_Entrenador.vue')
     },
-
-]
+    {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Admin.vue')
+    },
+    
+]   
 
 const router = new VueRouter({
     mode: 'history',

@@ -73,30 +73,38 @@ exports.login = async (req, res) => {
 		return res.status(400).json({ error: 'contraseña no válida' });
 
 	//miramos los roles
+	let token = null;
+	let rol = null;
+	//si es admin
 
+	const admin = await query(`SELECT * FROM administrador WHERE Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`);
+	if (admin[0]) {
+		rol='administrador'
+		token = jwt.sign({ id: user[0].idUsuario, rol: 'administrador' },process.env.TOKEN_SECRET);
+	}
+	
 	//si es cliente
 	const cliente = await query(
 		`SELECT * FROM cliente WHERE cliente.Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`
 	);
-	let token = null;
-	let rol = null;
 	if (cliente[0]) {
 		rol = 'cliente';
-		token = jwt.sign(
-			{ id: user[0].idUsuario, rol: rol },
-			process.env.TOKEN_SECRET
-		);
+		token = jwt.sign({ id: user[0].idUsuario, rol: rol },process.env.TOKEN_SECRET);
 	} else {
 		const entrenador = await query(
 			`SELECT * FROM entrenador WHERE entrenador.Usuario_idUsuario LIKE '%${user[0].idUsuario}%';`
 		);
-		if (!entrenador[0])
+		if (entrenador[0]){
+			rol = 'entrenador';
+			token = jwt.sign(
+				{ id: user[0].idUsuario, rol: rol },
+				process.env.TOKEN_SECRET
+			);
+		}else if(!entrenador[0]&&!admin[0]){
 			return res.status(400).json({ error: 'usuario no encontrado' });
-		rol = 'entrenador';
-		token = jwt.sign(
-			{ id: user[0].idUsuario, rol: rol },
-			process.env.TOKEN_SECRET
-		);
+		}
+			
+		
 	}
 	// creamos el token
 	res.header('auth-token', token).json({

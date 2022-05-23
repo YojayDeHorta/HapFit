@@ -85,7 +85,9 @@ export default {
                 if (user.rol=="cliente"||user.rol=="entrenador") {
                     this.$router.push({ name: "perfil"})
                 }
-                
+                if (user.rol=="administrador") {
+                    this.$router.push({ name: "Admin"})
+                }
 
             }
         },

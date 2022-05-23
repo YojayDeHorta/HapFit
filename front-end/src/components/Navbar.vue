@@ -46,8 +46,8 @@
                                 <strong>Opciones</strong>
                             </v-list-item-title>
                         </v-list-item>
-                        <v-list-item v-if="usuario.rol=='cliente'">
-                            <v-list-item-title plain>
+                        <v-list-item v-if="usuario.rol=='cliente'" @click="dialog_solicitud=true">
+                            <v-list-item-title plain >
                                 <v-icon>
                                     mdi-license
                                 </v-icon>&nbsp;
@@ -81,6 +81,30 @@
             <!-- este es el pedazo de las publicaciones en la pagina de inicio -->
            <Post_inicio/>
         </v-card>
+        
+        <!-- modal de entrenador -->
+    <v-dialog v-model="dialog_solicitud" width="500">
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2"> Solicitud para ser entrenador</v-card-title>
+
+        
+        <v-list-item three-line>
+        <v-list-item-content>
+            <!-- <h3 class="ml-1"><strong >usuario: {{usuario.nombre}}</strong></h3> -->
+            
+            <v-text-field solo v-model="solicitud.linkTitulos" label="link de sus certificados"></v-text-field>
+            <v-textarea solo height="70px" v-model="solicitud.descripcion"  label="descripcion" :no-resize="true"></v-textarea>
+        </v-list-item-content>
+        </v-list-item>      
+        
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn  color="primary"  text @click="enviarSolicitud();" > Enviar Solicitud </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-container>
 </template>
 <script>
@@ -98,6 +122,11 @@ export default {
                     linkPerfil:'',
                     rol:''
             },
+            solicitud:{
+                linkTitulos:'',
+                descripcion:''
+            },
+            dialog_solicitud:false
         }
     },
 
@@ -145,6 +174,22 @@ export default {
 
             }
              window.location.reload()
+        },
+        async enviarSolicitud(){
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/solicitud/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify({ descripcion: this.solicitud.descripcion,linkTitulos: this.solicitud.linkTitulos })
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.dialog_solicitud = false
         }
     },
 }

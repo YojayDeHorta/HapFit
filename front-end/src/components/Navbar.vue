@@ -190,6 +190,8 @@ export default {
                 return
             }
             this.dialog_solicitud = false
+            this.$root.vtoast.show({message: 'solicitud enviada'})
+
         }
     },
 }

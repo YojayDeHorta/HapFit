@@ -9,7 +9,7 @@ exports.getSolicitudes = async (req, res) => {
         let solicitudes=[]
         solicitudes = await query(`SELECT * FROM solicitud;`);
         for (let i = 0; i < solicitudes.length; i++) {
-            let solicitudCliente = await query(`SELECT * FROM cliente  WHERE idCliente = ${solicitudes[0].Cliente_idCliente};`);
+            let solicitudCliente = await query(`SELECT * FROM cliente  WHERE idCliente = ${solicitudes[i].Cliente_idCliente};`);
             let Usuario = await query(`SELECT * FROM usuario  WHERE idUsuario = ${solicitudCliente[0].Usuario_idUsuario};`);
             solicitudes[i].nombre=Usuario[0].nombre
             solicitudes[i].linkPerfil=Usuario[0].linkPerfil

@@ -66,6 +66,7 @@ export default {
                 console.log(error);
                 return
             }
+            this.$root.vtoast.show({message: 'aceptado con exito!'})
             this.getSolicitudes()
     },
     async borrarSolicitud(idSolicitud,idCliente){
@@ -82,6 +83,7 @@ export default {
                 console.log(error);
                 return
             }
+            this.$root.vtoast.show({message: 'borrado con exito!'})
             this.getSolicitudes()
     },
   },

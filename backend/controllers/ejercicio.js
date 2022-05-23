@@ -11,7 +11,8 @@ const schemaExercise = Joi.object({
 	link: Joi.string().min(6).max(1024),
 	tiempo: Joi.number().default(0).required(),
 	repeticiones: Joi.number().default(0).required(),
-	publico: Joi.boolean().required(),
+	publico: Joi.number().required(),
+	idMusculo: Joi.allow(null).default(null).required(),
 });
 
 exports.add = async (req, res) => {
@@ -22,8 +23,11 @@ exports.add = async (req, res) => {
 		if (typeof req.body.link !== null) linkGif = req.body.link;
 		if (error)
 			return res.status(400).json({ error: 'error al crear el ejercicio' });
-		const data = await query(
+		const ejercicio = await query(
 			`INSERT INTO ejercicio (descripcion,Usuario_idUsuario,linkEjercicio,tiempo,repeticiones,publico) VALUES ('${req.body.descripcion}','${req.usuario.id}','${linkGif}','${req.body.tiempo}','${req.body.repeticiones}','${req.body.publico}');`
+		);
+		const relacion = await query(
+			`INSERT INTO ejercicio_has_musculo (Ejercicio_idEjercicio,Musculo_idMusculo) VALUES ('${ejercicio.insertId}','${req.body.idMusculo}');`
 		);
 
 		res.json({ error: null, data: 'ok' });

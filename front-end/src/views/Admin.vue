@@ -12,6 +12,8 @@
       <v-list-item-content class="px-4">
         <v-list-item-subtitle>Titulo: <a :href="solicitud.linkTitulos">{{solicitud.linkTitulos}}</a></v-list-item-subtitle>
         <v-list-item-subtitle class="mt-2">Descripcion: {{solicitud.descripcion}}</v-list-item-subtitle>
+        <v-list-item-subtitle class="mt-2">meses de exp: {{solicitud.mesesExp}}</v-list-item-subtitle>
+        <v-list-item-subtitle class="mt-2">lugar de exp: {{solicitud.lugarExp}}</v-list-item-subtitle>
       </v-list-item-content>
 
       <v-card-actions style="display: flex; justify-content: center;">

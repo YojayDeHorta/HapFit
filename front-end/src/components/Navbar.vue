@@ -91,9 +91,10 @@
         <v-list-item three-line>
         <v-list-item-content>
             <!-- <h3 class="ml-1"><strong >usuario: {{usuario.nombre}}</strong></h3> -->
-            
-            <v-text-field solo v-model="solicitud.linkTitulos" label="link de sus certificados"></v-text-field>
-            <v-textarea solo height="70px" v-model="solicitud.descripcion"  label="descripcion" :no-resize="true"></v-textarea>
+            <v-text-field v-model="solicitud.lugarExp" label="lugar de estudio o trabajo"></v-text-field>
+            <v-text-field v-model="solicitud.mesesExp" type="number" label="meses de experiencia o estudio"></v-text-field>
+            <v-file-input truncate-length="50" v-model="solicitud.linkTitulos" label="seleccione su certificado"></v-file-input>
+            <v-textarea solo height="70px" v-model="solicitud.descripcion"  label="porque quieres ser entrenador?" :no-resize="true"></v-textarea>
         </v-list-item-content>
         </v-list-item>      
         
@@ -123,7 +124,9 @@ export default {
                     rol:''
             },
             solicitud:{
-                linkTitulos:'',
+                linkTitulos:null,
+                lugarExp:null,
+                mesesExp:null,
                 descripcion:''
             },
             dialog_solicitud:false
@@ -157,7 +160,6 @@ export default {
             if (filesTypes.includes(file.type)) {
                 const formData = new FormData();
                 formData.append("img", file);
-                console.log("llego aca1");
                 const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/img/updateLinkPerfil', {
                 method: 'POST',
                 headers: {'auth-token':localStorage.getItem('token')},
@@ -176,22 +178,36 @@ export default {
              window.location.reload()
         },
         async enviarSolicitud(){
-            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/solicitud/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': localStorage.getItem('token')
-                },
-                body: JSON.stringify({ descripcion: this.solicitud.descripcion,linkTitulos: this.solicitud.linkTitulos })
-            })
-            const { data, error } = await res.json()
-            if (error) {
-                console.log(error);
-                return
+            console.log(this.solicitud.linkTitulos);
+            const filesTypes = ['image/jpg','image/jpeg','image/png','application/pdf'];
+            if (filesTypes.includes(this.solicitud.linkTitulos.type)) {
+                const formData = new FormData();
+                formData.append("archivo", this.solicitud.linkTitulos);
+                formData.append("lugarExp", this.solicitud.lugarExp);
+                formData.append("mesesExp", this.solicitud.mesesExp);
+                formData.append("descripcion", this.solicitud.descripcion);
+                const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/solicitud/', {
+                    method: 'POST',
+                    headers: {
+                        'auth-token': localStorage.getItem('token')
+                    },
+                    body: formData
+                })
+                const { data, error } = await res.json()
+                this.dialog_solicitud = false
+                if (error) {
+                    console.log(error);
+                    return
+                }
+                if(error=="solicitud en proceso"){
+                    this.$root.vtoast.show({message: 'solicitud en proceso'})
+                    return
+                }
+                this.dialog_solicitud = false
+                this.$root.vtoast.show({message: 'solicitud enviada'})
+            }else{
+                this.$root.vtoast.show({message: 'formato no soportado'})
             }
-            this.dialog_solicitud = false
-            this.$root.vtoast.show({message: 'solicitud enviada'})
-
         }
     },
 }

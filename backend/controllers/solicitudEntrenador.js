@@ -2,6 +2,8 @@ const connection = require('../database/db');
 const Joi = require('joi');
 const util = require('util');
 const query = util.promisify(connection.query).bind(connection);
+const cloudinary = require('../config/cloudinary.config.js');
+var fs = require('fs');
 
 
 exports.getSolicitudes = async (req, res) => {
@@ -24,6 +26,12 @@ exports.getSolicitudes = async (req, res) => {
 
 exports.setSolicitud= async (req, res) => {
 	try {
+        let result={}
+        result.secure_url=null
+        if (req.file.path) {
+                result = await cloudinary.v2.uploader.upload(req.file.path);
+                fs.unlinkSync(req.file.path);
+        }
         
         let solicitudCliente = await query(`SELECT * FROM cliente  WHERE Usuario_idUsuario = ${req.usuario.id};`);
         if (!solicitudCliente[0]) return res.status(400).json({ error: 'cliente no encontrado' });
@@ -31,7 +39,9 @@ exports.setSolicitud= async (req, res) => {
         let solicitud = await query(`SELECT * FROM solicitud  WHERE Cliente_idCliente = ${solicitudCliente[0].idCliente};`);
         if (solicitud[0])return res.status(400).json({ error: 'solicitud en proceso' });
         
-        const savedSolicitud = await query(`INSERT INTO solicitud (estadoSolicitud,linkTitulos,descripcion,Cliente_idCliente) VALUES ('solicitud en proceso','${req.body.linkTitulos}','${req.body.descripcion}',${solicitudCliente[0].idCliente});`
+        const savedSolicitud = await query(
+        `INSERT INTO solicitud (estadoSolicitud,linkTitulos,lugarExp,mesesExp,descripcion,Cliente_idCliente) VALUES ('solicitud en proceso'
+        ,'${result.secure_url}','${req.body.lugarExp}','${req.body.mesesExp}','${req.body.descripcion}',${solicitudCliente[0].idCliente});`
 		);
         res.json({ error: null, data: 'solicitud enviada correctamente' })
 

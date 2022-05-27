@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 
-
 //capturar el body
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -24,7 +23,7 @@ const authPost = require('./routes/post');
 const authImg = require('./routes/img');
 const muscle = require('./routes/musculo');
 const authExercise = require('./routes/ejercicio');
-
+const authRoutine = require('./routes/rutina');
 
 // route middlewares
 app.use('/api/user', authRoutes);
@@ -33,6 +32,7 @@ app.use('/api/post', authPost);
 app.use('/api/img', authImg);
 app.use('/api/muscle', muscle);
 app.use('/api/exercise', authExercise);
+app.use('/api/routine', authRoutine);
 
 //modo history de vue
 const history = require('connect-history-api-fallback');

@@ -4,7 +4,6 @@
             <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                        Open Dialog
                     </v-btn>
                 </template>
                 <v-card>
@@ -31,8 +30,8 @@
                         <v-card>
                             <v-toolbar elevation='1'>
                                 <template>
-                                    <v-tabs v-model="tabs" centered>
-                                        <v-tab v-for="n in title_tabs" :key="n">
+                                    <v-tabs v-model="tabs">
+                                        <v-tab v-for="n in title_tabs" :key="n" style='width:100% !important'>
                                             {{ n.name }}
                                         </v-tab>
                                     </v-tabs>
@@ -40,34 +39,41 @@
                             </v-toolbar>
                             <v-tabs-items v-model="tabs">
                                 <v-tab-item>
-                                    <main class='tabs_post'>
+                                    <br>
+                                    <main class='tabs_post' style='background-color:rgb(229, 229, 229,0.9);box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;'>
                                         <section style='display:flex'>
                                             <img src="@/assets/asuka.jpg" alt="" style='#border:5px solid red;border-radius:50%;width:80px;border:1px solid grey'>
                                             <small style='margin-left:1rem'> Entrenador Generico <br> 2 m</small>
                                         </section>
-                                        <section>
-                                            Lorem ipsum dolor, sit amet consectetur adipisicing, elit
+                                        <section class='mt-5'>
+                                            <p>
+                                                Lorem ipsum dolor, sit amet consectetur adipisicing, elit
+                                            </p>
                                         </section>
-                                        <section>
-                                            <br>
-                                                <main style='border:1px solid black !important;display:flex;width:90%;margin:auto'>
-                                                    <v-icon>
-                                                        mdi-weight-lifter
-                                                    </v-icon>
-                                                    <p>
-                                                        FULL BODY EASY
-                                                    </p>
-                                                </main>
-                                        </section>
-                                        <section>
-                                            <main>
-                                                <p>
-                                                    
-                                                </p>
-                                                <p>
-                                                    
-                                                </p>
+                                        <br>
+                                        <section style='border:1px solid black;padding: 0.5rem;'>
+                                            <main style='#border:1px solid black !important;display:flex;text-align: center;margin:auto'>
+                                                <v-icon style='font-size:3rem'>
+                                                    mdi-weight-lifter
+                                                </v-icon>
+                                                &nbsp;&nbsp;
+                                                <h3 class='mt-2'>
+                                                    FULL BODY EASY
+                                                </h3>
                                             </main>
+                                        </section>
+                                        <br><br>
+                                        <section class='d-flex' style='justify-content: space-between;width: 80%;margin: auto;'>
+                                            <p>
+                                                <v-icon>
+                                                    mdi-heart
+                                                </v-icon>
+                                            </p>
+                                            <p>
+                                                <v-icon>
+                                                    mdi-comment-multiple-outline
+                                                </v-icon>
+                                            </p>
                                         </section>
                                     </main>
                                 </v-tab-item>
@@ -135,12 +141,13 @@
 .toolbar_perfil {
     height: 100px !important;
 }
-.tabs_post{
+
+.tabs_post {
     padding: 1rem;
     #border: 5px solid red;
 }
 
-.tabs_post section{
+.tabs_post section {
     #border: 5px solid red;
 }
 </style>

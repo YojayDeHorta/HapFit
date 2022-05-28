@@ -12,16 +12,27 @@
         <v-card v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" class='card_post mb-5' elevation='3'>
             <main elevation='4'>
                 <section class='title_post'>
-                    <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>
+                    <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>&nbsp;&nbsp;
                     <section style='#border:5px solid red;width:100%;display:flex;justify-content:space-between'>
-                        <p style='padding-left: 1rem;'>
+                        <p style='margin-right: 2rem'>
                             {{publicacion.nombre}}
-                            <!-- <br><small>2 m</small> -->
                         </p>
+                           <modal_perfil />
+                        
+                        <!--
+                        <modal_perfil>
+                            <small style='color:white !important'>
+                                 sdfsfdsadf
+                            </small>
+                           
+                            <p style='padding-left: 1rem;color:white'>
+                                
+                            </p>
+                        </modal_perfil>
+                    -->
                         <v-btn class='btn_close' @click="borrarPost(publicacion.idPublicacion)" plain>
                             <v-icon>mdi-close-circle</v-icon>
                         </v-btn>
-                           <modal_perfil/>
                     </section>
                 </section>
                 <section class='text-left mt-5'>
@@ -113,7 +124,7 @@ export default {
                 console.log(error);
                 return
             }
-            this.$root.vtoast.show({message: 'borrado exitosamente!'})
+            this.$root.vtoast.show({ message: 'borrado exitosamente!' })
             this.getPost()
             // console.log('a');
         },

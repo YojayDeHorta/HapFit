@@ -63,7 +63,7 @@ exports.addPublicacion = async (req, res) => {
 		return res.status(400).json({ error: 'Error interno del servidor' });
 	}
 };
-exports.getPublicacionByUser = async (req, res) => {
+exports.getPublicacionBySesion = async (req, res) => {
 	try {
 		const data = await query(
 			`SELECT * FROM publicacion WHERE publicacion.Usuario_idUsuario LIKE '%${req.usuario.id}%';`
@@ -78,6 +78,37 @@ exports.getPublicacionByUser = async (req, res) => {
 			);
 			const liked = await query(
 				`SELECT * FROM reaccion WHERE usuario_idUsuario = ${req.usuario.id} AND publicacion_idPublicacion = ${data[i].idPublicacion}`
+			);
+			data[i].liked = false;
+			if (liked[0]) data[i].liked = true;
+
+			if (usuario[0]) {
+				data[i].nombre = usuario[0].nombre;
+				data[i].linkPerfil = usuario[0].linkPerfil;
+				data[i].likes = likes[0]['COUNT(*)'];
+			}
+		}
+		res.json({ error: null, data: data });
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ error: 'Error interno del servidor' });
+	}
+};
+exports.getPublicacionByUser = async (req, res) => {
+	try {
+		const data = await query(
+			`SELECT * FROM publicacion WHERE publicacion.Usuario_idUsuario LIKE '%${req.body.idUsuario}%';`
+		);
+
+		const usuario = await query(
+			`SELECT * FROM usuario WHERE usuario.idUsuario LIKE '%${req.body.idUsuario}%';`
+		);
+		for (let i = 0; i < data.length; i++) {
+			const likes = await query(
+				`SELECT COUNT(*) FROM reaccion WHERE publicacion_idPublicacion = ${data[i].idPublicacion}`
+			);
+			const liked = await query(
+				`SELECT * FROM reaccion WHERE usuario_idUsuario = ${req.body.idUsuario} AND publicacion_idPublicacion = ${data[i].idPublicacion}`
 			);
 			data[i].liked = false;
 			if (liked[0]) data[i].liked = true;

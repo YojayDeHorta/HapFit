@@ -1,26 +1,16 @@
 <template>
   <v-container  class='container pt-4' style='padding: 0;background: linear-gradient(180deg, #E42256 0%, rgba(228, 34, 86, 0) 50%); height: 100vh; !important;'>
-    <v-card class="mx-auto py-2 my-2" v-for="solicitud in solicitudes"  :key="solicitud.idSolicitud" max-width="344"        >
-      <v-list-item three-line>
-        <v-list-item-content>
-          <div class="text-overline" style="width: 100%;"><strong style="font-size: 1.3em;"> {{solicitud.nombre}}</strong> <br>quiere ser entrenador</div>
-        </v-list-item-content>
-
-        <v-list-item-avatar tile size="60"><v-img style="border-radius: 50%;" :src="solicitud.linkPerfil"></v-img></v-list-item-avatar>
-      </v-list-item>
-
-      <v-list-item-content class="px-4">
-        <v-list-item-subtitle>Titulo: <a :href="solicitud.linkTitulos">{{solicitud.linkTitulos}}</a></v-list-item-subtitle>
-        <v-list-item-subtitle class="mt-2">Descripcion: {{solicitud.descripcion}}</v-list-item-subtitle>
-        <v-list-item-subtitle class="mt-2">meses de exp: {{solicitud.mesesExp}}</v-list-item-subtitle>
-        <v-list-item-subtitle class="mt-2">lugar de exp: {{solicitud.lugarExp}}</v-list-item-subtitle>
-      </v-list-item-content>
-
-      <v-card-actions style="display: flex; justify-content: center;">
-        <v-btn outlined rounded text color="green" @click="aceptarSolicitud(solicitud.idSolicitud,solicitud.Cliente_idCliente,solicitud.linkTitulos)"> Aceptar </v-btn>
-        <v-btn outlined rounded text color="red"  @click="borrarSolicitud(solicitud.idSolicitud,solicitud.Cliente_idCliente)"> Rechazar </v-btn>
-      </v-card-actions>
-    </v-card>
+    <h1>Solicitudes</h1>
+    <v-data-table :headers="columnas"  :items="solicitudes"  >
+      <template v-slot:[`item.linkTitulos`]="{ item }">
+          <a v-if="item.linkTitulos" :href="item.linkTitulos">ver titulo</a>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+          <!-- <v-icon small class="mr-2" @click="prepararEdicion(item)"> mdi-pencil </v-icon> -->
+          <v-icon small color="green" class="mr-2" @click="aceptarSolicitud(item.idSolicitud,item.Cliente_idCliente,item.linkTitulos)"> mdi-check </v-icon>
+          <v-icon small color="red"  @click="borrarSolicitud(item.idSolicitud,item.Cliente_idCliente)"> mdi-delete </v-icon>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 <script>
@@ -28,7 +18,16 @@ export default {
   data() {
     return {
       dialog: false,
-      solicitudes:[]
+      solicitudes:[],
+      columnas:[
+          {text:'ID del cliente' ,value:'Cliente_idCliente', class:'black white--text'},
+          {text:'Nombre' ,value:'nombre', class:'black white--text'},
+          {text:'linkTitulos' ,value:'linkTitulos', class:'black white--text'},
+          {text:'descripcion' ,value:'descripcion', class:'black white--text'},
+          {text:'meses de experiencia' ,value:'mesesExp', class:'black white--text'},
+          {text:'lugar de experiencia' ,value:'lugarExp', class:'black white--text'},
+          {text: 'ACCIONES', value: 'actions', class:'black white--text', sortable: false },
+      ],
     };
   },
   created() {

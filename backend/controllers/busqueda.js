@@ -1,8 +1,6 @@
 const connection = require('../database/db');
-const Joi = require('joi');
 const util = require('util');
 const query = util.promisify(connection.query).bind(connection);
-const dotenv = require('dotenv').config();
 
 
 exports.getEntrenadoresAndClientes = async (req, res) => {
@@ -16,10 +14,10 @@ exports.getEntrenadoresAndClientes = async (req, res) => {
             delete usuarios[i].contrasenia
             delete usuarios[i].correo
             delete usuarios[i].telefono
-            const cliente = await query(`SELECT * FROM cliente WHERE usuario_idUsuario = ${usuarios[i].idUsuario}`);
-            usuarios[i].esEntrenador=true
-            if (cliente[0]) {
-                usuarios[i].esEntrenador=false
+            const entrenador = await query(`SELECT * FROM entrenador WHERE usuario_idUsuario = ${usuarios[i].idUsuario}`);
+            usuarios[i].esEntrenador=false
+            if (entrenador[0]) {
+                usuarios[i].esEntrenador=true
             }
         }
         res.json({ error: null, data: usuarios })

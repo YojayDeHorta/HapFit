@@ -46,8 +46,8 @@
                                 <strong>Opciones</strong>
                             </v-list-item-title>
                         </v-list-item>
-                        <v-list-item v-if="usuario.rol=='cliente'">
-                            <v-list-item-title plain>
+                        <v-list-item v-if="usuario.rol=='cliente'" @click="dialog_solicitud=true">
+                            <v-list-item-title plain >
                                 <v-icon>
                                     mdi-license
                                 </v-icon>&nbsp;
@@ -81,6 +81,31 @@
             <!-- este es el pedazo de las publicaciones en la pagina de inicio -->
            <Post_inicio/>
         </v-card>
+        
+        <!-- modal de entrenador -->
+    <v-dialog v-model="dialog_solicitud" width="500">
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2"> Solicitud para ser entrenador</v-card-title>
+
+        
+        <v-list-item three-line>
+        <v-list-item-content>
+            <!-- <h3 class="ml-1"><strong >usuario: {{usuario.nombre}}</strong></h3> -->
+            <v-text-field v-model="solicitud.lugarExp" label="lugar de estudio o trabajo"></v-text-field>
+            <v-text-field v-model="solicitud.mesesExp" type="number" label="meses de experiencia o estudio"></v-text-field>
+            <v-file-input truncate-length="50" v-model="solicitud.linkTitulos" label="seleccione su certificado"></v-file-input>
+            <v-textarea solo height="70px" v-model="solicitud.descripcion"  label="porque quieres ser entrenador?" :no-resize="true"></v-textarea>
+        </v-list-item-content>
+        </v-list-item>      
+        
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn  color="primary"  text @click="enviarSolicitud();" > Enviar Solicitud </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-container>
 </template>
 <script>
@@ -98,6 +123,13 @@ export default {
                     linkPerfil:'',
                     rol:''
             },
+            solicitud:{
+                linkTitulos:null,
+                lugarExp:null,
+                mesesExp:null,
+                descripcion:''
+            },
+            dialog_solicitud:false
         }
     },
 
@@ -128,7 +160,6 @@ export default {
             if (filesTypes.includes(file.type)) {
                 const formData = new FormData();
                 formData.append("img", file);
-                console.log("llego aca1");
                 const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/img/updateLinkPerfil', {
                 method: 'POST',
                 headers: {'auth-token':localStorage.getItem('token')},
@@ -145,6 +176,38 @@ export default {
 
             }
              window.location.reload()
+        },
+        async enviarSolicitud(){
+            console.log(this.solicitud.linkTitulos);
+            const filesTypes = ['image/jpg','image/jpeg','image/png','application/pdf'];
+            if (filesTypes.includes(this.solicitud.linkTitulos.type)) {
+                const formData = new FormData();
+                formData.append("archivo", this.solicitud.linkTitulos);
+                formData.append("lugarExp", this.solicitud.lugarExp);
+                formData.append("mesesExp", this.solicitud.mesesExp);
+                formData.append("descripcion", this.solicitud.descripcion);
+                const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/solicitud/', {
+                    method: 'POST',
+                    headers: {
+                        'auth-token': localStorage.getItem('token')
+                    },
+                    body: formData
+                })
+                const { data, error } = await res.json()
+                this.dialog_solicitud = false
+                if (error) {
+                    console.log(error);
+                    return
+                }
+                if(error=="solicitud en proceso"){
+                    this.$root.vtoast.show({message: 'solicitud en proceso'})
+                    return
+                }
+                this.dialog_solicitud = false
+                this.$root.vtoast.show({message: 'solicitud enviada'})
+            }else{
+                this.$root.vtoast.show({message: 'formato no soportado'})
+            }
         }
     },
 }

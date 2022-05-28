@@ -15,18 +15,27 @@
     </v-app-bar>
   -->
     <v-main>
+      <vtoast ref="vtoast"/>
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import vtoast from './components/vtoast.vue'
 
   export default {
     name: 'App',
-
+    components: {
+    vtoast
+  },
     data: () => ({
       //
     }),
+    mounted() {
+    this.$root.vtoast = this.$refs.vtoast
+    
+
+    },
   };
 </script>

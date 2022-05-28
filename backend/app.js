@@ -18,25 +18,21 @@ require('dotenv').config();
 
 // import routes
 const authRoutes = require('./routes/route');
+const authSolicitud = require('./routes/solicitud');
 const authPost = require('./routes/post');
 const authImg = require('./routes/img');
 const muscle = require('./routes/musculo');
 const authExercise = require('./routes/ejercicio');
-
-/* Conexión a Base de datos
-const uri = process.env.DB_URL;
-mongoose.connect(uri,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-)
-.then(() => console.log('Base de datos conectada'))
-.catch(e => console.log('error db:', e))*/
+const authRoutine = require('./routes/rutina');
 
 // route middlewares
 app.use('/api/user', authRoutes);
+app.use('/api/solicitud', authSolicitud);
 app.use('/api/post', authPost);
 app.use('/api/img', authImg);
 app.use('/api/muscle', muscle);
 app.use('/api/exercise', authExercise);
+app.use('/api/routine', authRoutine);
 
 //modo history de vue
 const history = require('connect-history-api-fallback');

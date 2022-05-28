@@ -113,7 +113,9 @@ export default {
                 console.log(error);
                 return
             }
+            this.$root.vtoast.show({message: 'borrado exitosamente!'})
             this.getPost()
+            // console.log('a');
         },
         async cambiarCorazon(idPublicacion, index) {
             this.post[index].liked = !this.post[index].liked

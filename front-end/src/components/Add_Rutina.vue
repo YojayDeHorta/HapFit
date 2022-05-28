@@ -1,9 +1,9 @@
 <template>
-    <v-container>
+    <v-container style='#border:5px solid purple !important'>
         <v-row justify="center">
             <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn class='btn_add' v-bind="attrs" v-on="on" fab>
+                    <v-btn class='' v-bind="attrs" v-on="on" fab style='background-color:#E42256;position:absolute;right:0 '>
                         <v-icon style='color:white !important'>
                             mdi-plus
                         </v-icon>
@@ -37,7 +37,7 @@
                                         </section>
                                         <section style='width:70%;margin:0 !important'>
                                             <label>
-                                                <input type="radio" name="title" checked="checked" >
+                                                <input type="radio" name="title" checked="checked">
                                                 Repeticiones
                                             </label>
                                             <label>
@@ -45,7 +45,6 @@
                                                 Tiempo
                                             </label>
                                         </section>
-                                    
                                         <section style='#border:4px solid red !important;padding:0 !important'>
                                             <v-text-field placeholder="Repeticiones" outlined style='#border:5px solid black !important;height:55px !important'></v-text-field>
                                             <p style='padding-left:1.7rem'>
@@ -76,19 +75,19 @@
                                                 Repeticiones
                                             </label>
                                             <label>
-                                                <input type="radio" name="title" value="tiempo" checked="checked" >
+                                                <input type="radio" name="title" value="tiempo" checked="checked">
                                                 Tiempo
                                             </label>
                                         </section>
                                         <section style='#border:4px solid red !important;padding:0 !important'>
                                             <v-text-field placeholder="Tiempo" outlined style='height:55px !important;width:40%'></v-text-field>
-                                              <v-spacer></v-spacer>
+                                            <v-spacer></v-spacer>
                                             <v-select :items="tiempo_m" placeholder="Segundos" style='width:40%;height:55px !important' outlined></v-select>
                                         </section>
                                         <br>
                                         <section style='#border:4px solid red !important;padding:0 !important;'>
                                             <v-text-field placeholder="Descanso" outlined style='height:55px !important;width:40%'></v-text-field>
-                                             <v-spacer></v-spacer>
+                                            <v-spacer></v-spacer>
                                             <v-select :items="tiempo_m" placeholder="Segundos" style='width:40%;height:55px !important' outlined></v-select>
                                         </section>
                                         <br><br>
@@ -96,6 +95,11 @@
                                             <v-textarea name="input-7-4" placeholder="" height='80px' outlined></v-textarea>
                                         </section>
                                     </v-card>
+                                    <section class='text-center' >
+                                        <v-btn style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius: 50px;width:50%;' plain>
+                                            Guardar
+                                        </v-btn>
+                                    </section>
                                 </main>
                             </v-list-item-content>
                         </v-list-item>
@@ -106,8 +110,7 @@
     </v-container>
 </template>
 <style scoped>
-
-.text_field{
+.text_field {
     height: 65px !important;
 }
 

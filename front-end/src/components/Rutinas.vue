@@ -1,5 +1,5 @@
 <template>
-    <v-container class='container_post mb-5' style=''>
+    <v-container class='container_post mb-5' style='#border:5px solid black'>
         <v-row style='padding:15px !important; height: 605px !important;overflow: auto;'>
             <v-col cols='12'>
                 <h3 class='mt-5 mb-5'>Tus Rutinas</h3>
@@ -32,6 +32,7 @@
                 </main>
             </v-col>
         </v-row>
+        <plus_rutinas class='add_rutinas' />
     </v-container>
 </template>
 <style scoped>
@@ -39,9 +40,10 @@
     margin: 0 !important;
     padding: 0 !important;
     #border: 5px solid red !important;
-    height: 100vh;
+    height: 73vh;
     margin-bottom: 1rem !important;
     background-color: white !important;
+    overflow: auto;
 
 }
 
@@ -103,6 +105,21 @@ main {
     display: flex;
     justify-content: space-around;
 }
+
+
+.add_rutinas {
+    position: absolute;
+    top: 33.5rem;
+    margin-left: -1.2rem;
+}
 </style>
 <script>
+import plus_rutinas from '../components/Add_Rutina'
+export default {
+
+    components: {
+        plus_rutinas
+    }
+
+}
 </script>

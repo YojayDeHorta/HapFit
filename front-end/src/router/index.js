@@ -46,7 +46,11 @@ const routes = [{
     name: 'Admin',
     component: () => import( /* webpackChunkName: "about" */ '../views/Admin.vue')
     },
-    
+      {
+    path: '/chat_usuario',
+    name: 'chat_usuario',
+    component: () => import( /* webpackChunkName: "about" */ '../components/Chat_Entrenador.vue')
+    },
 ]   
 
 const router = new VueRouter({

@@ -1,11 +1,10 @@
 <template>
     <v-card-text style='height:100vh;overflow: auto;padding: 4rem 1rem 5em 1rem;'>
         <main class='mb-5 mt-5' v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" >
-            <section class='title_post'>
+            <section class='title_post'  @click="redirectPerfil(publicacion)" >
                 <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>
                 <p style='padding-left: 1rem;text-transform: capitalize;'>
                     {{publicacion.nombre}}  <br>
-                    <small>2 m</small>
                 </p>
             </section>
             <section class='text-left mt-5'>
@@ -21,16 +20,21 @@
                     <modal_comments :idPublicacion="publicacion.idPublicacion"></modal_comments>
                 </p>
             </section>
+             
         </main>
+        <modal_perfil :dialogPerfil="dialogPerfil" @close="dialogPerfil=false" :datos="datosActuales"/>
     </v-card-text>
 </template>
 <script>
 import modal_comments from './Modal_comments.vue'
 import Post_Creado from './Post_Creado.vue'
+import modal_perfil from '../components/Dialog_perfil'
 
 export default {
     data() {
         return {
+            datosActuales:{},
+            dialogPerfil:false,
             drawer: false,
             group: null,
             post:[],
@@ -55,7 +59,8 @@ export default {
     },
     components: {
         modal_comments,
-        Post_Creado
+        Post_Creado,
+        modal_perfil
     },
     methods: {
         async getPost(){
@@ -101,7 +106,12 @@ export default {
             localStorage.clear()
             // this.$router.push({ name: "inicio"})
             console.log("llego aca");
-        }
+        },
+        redirectPerfil(publicacion){
+            this.datosActuales=publicacion;
+            this.datosActuales.idUsuario=publicacion.Usuario_idUsuario;
+            this.dialogPerfil=true
+        },
     },
 }
 </script>

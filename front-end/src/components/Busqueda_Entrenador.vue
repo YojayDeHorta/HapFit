@@ -14,8 +14,8 @@
             </v-col>
             <v-col class='scroll_pantalla' cols='12'>
                 <main>
-                    <v-card to='/perfil_entrenador' v-for='usuario in filtroUsuario' :key='usuario.idUsuario' class='Tarjeta' style='padding:1rem' fluid>
-                        <p> <img class='mt-2' :src="usuario.linkPerfil" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
+                    <v-card  v-for='usuario in filtroUsuario' :key='usuario.idUsuario' class='Tarjeta' style='padding:1rem' fluid>
+                        <p> <img @click="redirectPerfil(usuario)" class='mt-2' :src="usuario.linkPerfil" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
                         <p style="#border:5px solid red !important;">
                             {{usuario.nombre}}<br>
                             <small v-if="usuario.esEntrenador">Entrenador</small>
@@ -30,12 +30,20 @@
                 </main>
             </v-col>
         </v-row>
+        <modal_perfil :dialogPerfil="dialogPerfil" @close="dialogPerfil=false" :datos="postActual"/>
     </v-container>
 </template>
 <script>
+import modal_perfil from '../components/Dialog_perfil'
+
 export default {
+    components:{
+        modal_perfil
+    },
     data() {
         return {
+            dialogPerfil:false,
+            postActual:{},
             usuarios: [],
             filtro: '',
             soloEntrenadores: false
@@ -79,6 +87,11 @@ export default {
 
 
         },
+        async redirectPerfil(usuario){
+            this.postActual=usuario
+            this.dialogPerfil=true
+            
+        }
     },
 }
 </script>

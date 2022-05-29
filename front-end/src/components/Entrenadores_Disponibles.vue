@@ -25,7 +25,7 @@
             <v-col cols='12'>
                 <h3 class='mt-5 mb-5'>Te pueden interesar</h3>
                 <main v-for='entrenador in entrenadores' :key="entrenador.idUsuario"   style='#border:5px solid black;width:100% !important;'>
-                    <v-card class='Tarjeta' fluid>
+                    <v-card class='Tarjeta' fluid @click="redirectPerfil(entrenador)">
                         <p> <img class='mt-2' :src="entrenador.linkPerfil" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
                         <p class='ml-2' style="#border:5px solid red !important;">
                             {{entrenador.nombre}} <br>
@@ -35,12 +35,20 @@
                 </main>
             </v-col>
         </v-row>
+       <modal_perfil :dialogPerfil="dialogPerfil" @close="dialogPerfil=false" :datos="datosActuales"/>
     </v-container>
 </template>
 <script>
+import modal_perfil from '../components/Dialog_perfil'
+
 export default {
+    components:{
+        modal_perfil
+    },
     data() {
         return {
+            datosActuales:{},
+            dialogPerfil:false,
             entrenadores:[],
             contratados:null,
             filtro:'',
@@ -68,6 +76,11 @@ export default {
             this.entrenadores = data
 
 
+        },
+        redirectPerfil(entrenador){
+            this.datosActuales=entrenador;
+            this.datosActuales.esEntrenador=true;
+            this.dialogPerfil=true
         },
     },
 }

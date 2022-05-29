@@ -13,11 +13,12 @@
             <main elevation='4'>
                 <section class='title_post'>
                     <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>&nbsp;&nbsp;
+
                     <section style='#border:5px solid red;width:100%;display:flex;justify-content:space-between'>
                         <p style='margin-right: 2rem'>
                             {{publicacion.nombre}}
                         </p>
-                           <modal_perfil />
+                          
                         
                         <!--
                         <modal_perfil>
@@ -55,14 +56,13 @@
 </template>
 <script>
 import modal_comments from '../components/Modal_comments'
-import modal_perfil from '../components/Otro_Perfil'
 
 
 
 export default {
     components: {
-        modal_comments,
-        modal_perfil
+        modal_comments
+        
     },
     data() {
         return {

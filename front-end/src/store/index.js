@@ -7,12 +7,17 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       token:null,
+      perfilDialog:false
   },
   getters: {
   },
   mutations: {
     setToken(state,payload){
       state.token=payload
+    },
+    setDialog(state){
+      state.token=!state.token
+      console.log("a"+state.token);
     }
   },
   actions: {
@@ -23,7 +28,8 @@ export default new Vuex.Store({
         commit('setToken',null)
       }
     },
-    cerrarSesion({ commit }) {
+
+    cerrarPestaña({ commit }) {
       commit('setToken', null)
       localStorage.removeItem('token')
       router.push({ name: "login"})

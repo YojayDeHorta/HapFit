@@ -28,6 +28,12 @@ exports.getPublicacion = async (req, res) => {
 			const liked = await query(
 				`SELECT * FROM reaccion WHERE usuario_idUsuario = ${req.usuario.id} AND publicacion_idPublicacion = ${data[i].idPublicacion}`
 			);
+			//si es entrenador
+			const entrenador = await query(`SELECT * FROM entrenador WHERE usuario_idUsuario = ${data[i].Usuario_idUsuario}`);
+            data[i].esEntrenador=false
+            if (entrenador[0]) {
+                data[i].esEntrenador=true
+            }
 			// const comentariosUsuario = await query(`SELECT * FROM comentario WHERE usuario_idUsuario = ${data[i].Usuario_idUsuario} AND publicacion_idPublicacion = ${data[i].idPublicacion}`);
 			data[i].liked = false;
 			if (liked[0]) data[i].liked = true;

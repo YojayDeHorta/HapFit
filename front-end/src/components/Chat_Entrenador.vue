@@ -1,7 +1,7 @@
 <template>
     <div fluid>
         <v-app-bar style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);' dense dark height='70px'>
-            <v-icon to='perfil'>
+            <v-icon to='/perfil'>
                 mdi-arrow-left-thin
             </v-icon>
             <v-toolbar-title style='margin-left:1rem !important'>

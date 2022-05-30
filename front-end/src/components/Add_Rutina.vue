@@ -99,7 +99,8 @@
                                     </v-tab-item>
                                     <!-- elegir ejercicios-->
                                     <v-tab-item>
-                            
+                                            <!-- aca ander -->
+
                                             <v-card class="mx-auto py-2 my-2" v-for="ejercicio in ejercicios"  :key="ejercicio.idEjercicio" max-width="344"        >
                                                 <v-list-item three-line>
                                                 <v-list-item-content>
@@ -110,10 +111,10 @@
 
                                                 <v-list-item-content class="px-4">
                                                 <v-list-item-subtitle class="mt-2">descripcion: {{ejercicio.descripcion}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">repeticiones: {{ejercicio.repeticiones}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle class="mt-2">rep: {{ejercicio.repeticiones}}</v-list-item-subtitle>
                                                 <v-list-item-subtitle class="mt-2">sets: {{ejercicio.sets}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">tiempo: {{ejercicio.tiempo}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">descanso: {{ejercicio.descanso}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle class="mt-2">seg: {{ejercicio.tiempo}}</v-list-item-subtitle>
+                                                <v-list-item-subtitle class="mt-2">desc: {{ejercicio.descanso}}</v-list-item-subtitle>
                                                 <v-list-item-subtitle class="mt-2" v-if="!ejercicio.publico"><v-icon>mdi-earth</v-icon> publico</v-list-item-subtitle>
                                                 <v-list-item-subtitle class="mt-2" v-else><v-icon>mdi-lock</v-icon>privado</v-list-item-subtitle>
                                                 <v-list-item-subtitle class="mt-2">musculo a entrenar:{{ejercicio.nombreMusculo}}</v-list-item-subtitle>

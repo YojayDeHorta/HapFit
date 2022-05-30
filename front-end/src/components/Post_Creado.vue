@@ -89,9 +89,6 @@ export default {
                 return
             }
             this.post = data
-
-
-
         },
         async publicarPost() {
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/post/', {

@@ -5,10 +5,10 @@ const dotenv = require('dotenv').config();
 const Joi = require('joi');
 
 const schemaRoutine = Joi.object({
-	descripcion: Joi.string().min(3).max(240).required(),
+	descripcion: Joi.string().min(3).max(240).required().allow(null),
 	idUsuario: Joi.allow(null).default(null),
 	nombre: Joi.string().min(3).max(45),
-	etiqueta: Joi.string().min(3).max(45),
+	etiqueta: Joi.string().min(3).max(45).allow(null),
 	idEjercicio: Joi.array().default(null),
 });
 

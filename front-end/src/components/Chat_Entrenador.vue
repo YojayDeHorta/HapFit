@@ -1,9 +1,11 @@
 <template>
     <div fluid>
         <v-app-bar style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);' dense dark height='70px'>
-            <v-icon to='/perfil'>
-                mdi-arrow-left-thin
-            </v-icon>
+            <v-btn  to='/perfil' plain style='margin: 0 !important;'>
+                <v-icon>
+                    mdi-arrow-left-thin
+                </v-icon>
+            </v-btn>
             <v-toolbar-title style='margin-left:1rem !important'>
                 <main style='display:flex'>
                     <section class='mt-2'>
@@ -45,10 +47,9 @@
     </div>
 </template>
 <style scoped>
-
-	.main_chat section{
-		margin-top: 0.5rem;
-	}
+.main_chat section {
+    margin-top: 0.5rem;
+}
 
 
 /*

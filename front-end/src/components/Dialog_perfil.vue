@@ -14,8 +14,8 @@
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                        <v-btn dark text v-if="datos.esEntrenador">
-                            contratar
+                        <v-btn dark text v-if="datos.esEntrenador" @click.stop="dialog = true" elevation='2' style='width:100px;height:50px !important;#padding:0rem;position:relative;top:1.3rem;background-color:white !important;border-radius:1rem;padding:0 !important'>
+                            <small style='padding:1rem;color:#E42256 !important'>contratar</small>
                         </v-btn>
                         <v-btn dark text @click="dialog = false" to='/chat_usuario' v-else>
                             <v-icon>
@@ -38,42 +38,6 @@
                         <v-tab-item>
                             <br>
                             <post_perfil :idUsuario="datos.idUsuario" />
-                            <!-- <main class='tabs_post' style='background-color:rgb(229, 229, 229,0.9);box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;'>
-                                        <section style='display:flex'>
-                                            <img src="@/assets/asuka.jpg" alt="" style='#border:5px solid red;border-radius:50%;width:80px;border:1px solid grey'>
-                                            <small style='margin-left:1rem'> Entrenador Generico <br> 2 m</small>
-                                        </section>
-                                        <section class='mt-5'>
-                                            <p>
-                                                Lorem ipsum dolor, sit amet consectetur adipisicing, elit
-                                            </p>
-                                        </section>
-                                        <br>
-                                        <section style='border:1px solid black;padding: 0.5rem;'>
-                                            <main style='#border:1px solid black !important;display:flex;text-align: center;margin:auto'>
-                                                <v-icon style='font-size:3rem'>
-                                                    mdi-weight-lifter
-                                                </v-icon>
-                                                &nbsp;&nbsp;
-                                                <h3 class='mt-2'>
-                                                    FULL BODY EASY
-                                                </h3>
-                                            </main>
-                                        </section>
-                                        <br><br>
-                                        <section class='d-flex' style='justify-content: space-between;width: 80%;margin: auto;'>
-                                            <p>
-                                                <v-icon>
-                                                    mdi-heart
-                                                </v-icon>
-                                            </p>
-                                            <p>
-                                                <v-icon>
-                                                    mdi-comment-multiple-outline
-                                                </v-icon>
-                                            </p>
-                                        </section>
-                                    </main> -->
                         </v-tab-item>
                         <v-tab-item>
                             <v-card flat>
@@ -85,6 +49,53 @@
                 <v-divider></v-divider>
             </v-card>
         </v-dialog>
+        <!--MODAL SUSCRIPCION-->
+        <v-dialog v-model="dialog" width="100vw">
+            <v-card style='#border:5px solid red !important;padding:1rem'>
+                <div>
+                    <h1 class='text-center mb-5'>Suscripción</h1>
+                    <main>
+                        <v-select :items="plan_entrenador" placeholder="Plan básico" solo outlined></v-select>
+                        <v-select :items="mes_plan" placeholder="Plan básico" solo outlined></v-select>
+                        <v-text-field placeholder="No Tarjeta" filled></v-text-field>
+                        <v-text-field placeholder="Codigo" filled></v-text-field>
+                    </main>
+                    <main>
+                        <section class='text-start mt-3 mb-3'>
+                            <h4>Plan básico <br>
+                                Asesoría personal y poca cosa más
+                            </h4>
+                        </section><br>
+                        <section class='text-end mt-3 mb-3'>
+                            <h4 style='color: #008180;'>$20.000 Mensual</h4>
+                        </section><br>
+                        <section class='text-center mb-5'>
+                            <v-btn style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius: 1rem;'>
+                                Guardar
+                            </v-btn>
+                        </section>
+                    </main>
+                </div>
+                <!--
+                <v-card-title class="text-h5">
+                    Use Google's location service?
+                </v-card-title>
+                <v-card-text>
+                    Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" text @click="dialog = false">
+                        Disagree
+                    </v-btn>
+                    <v-btn color="green darken-1" text @click="dialog = false">
+                        Agree
+                    </v-btn>
+                </v-card-actions>
+            -->
+            </v-card>
+        </v-dialog>
+        <!--MODAL SUSCRIPCION-->
     </v-container>
 </template>
 <script>
@@ -111,10 +122,13 @@ export default {
             sound: true,
             widgets: false,
             tabs: null,
+            dialog: false,
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
             title_tabs: [
                 { 'name': 'Post', id: 1 }, { 'name': 'Rutinas', id: 2 }
-            ]
+            ],
+            plan_entrenador: ['Plan Basico', 'Plan Premiun', 'Plan Extremo', 'Plan Vegano'],
+            mes_plan: ['1 Mes', '2 Meses', '3 Meses', '4 Meses'],
         }
     },
 }

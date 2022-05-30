@@ -3,8 +3,8 @@
     <v-card v-for='(publicacion,index) in post' :key="publicacion.idPublicacion"  class='card_post mb-5' elevation='3'>
         <main elevation='4'>
             <section class='title_post'>
-                <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>&nbsp;&nbsp;
-                <section style='#border:5px solid red;width:100%;display:flex;justify-content:space-between'>
+                <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>&nbsp;&nbsp;&nbsp; &nbsp; 
+                <section style='#border:5px solid red;width:100%;display:flex;justify-content:space-between;position:relative;left:1rem !important'>
                     <p style='margin-right: 2rem'>
                         {{publicacion.nombre}}
                     </p>
@@ -131,7 +131,16 @@ export default {
     },
 }
 </script>
-<style >
+<style scoped>
+
+.card_post{
+    padding:1rem;
+    width:90%;
+    margin:auto;
+    background-color:rgb(249, 249, 249);
+}
+
+
 .title_post {
     display: flex;
     /* #border: 5px solid purple !important; */

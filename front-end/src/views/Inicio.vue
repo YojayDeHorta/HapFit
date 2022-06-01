@@ -39,14 +39,21 @@ export default {
 
     data() {
         return {
+<<<<<<< HEAD
             usuario: {
                 email: "",
                 password: ""
+=======
+            usuario:{
+                email:"",
+                password:"",
+>>>>>>> e79c48b0dc622f05fa0c5883ae121731eb9a664a
             },
-            msgError: ''
+            msgError: null,
         }
     },
     methods: {
+<<<<<<< HEAD
         async login() {
             if (this.usuario.email === "" || this.usuario.password === "") {
                 this.msgError = 'El campo es requerido';
@@ -80,9 +87,58 @@ export default {
                 }
                 if (user.rol == "administrador") {
                     this.$router.push({ name: "Admin" })
+=======
+        async login(){
+            if (!this.usuario.email || !this.usuario.password) {
+                this.msgErrorShow( 'El campo es requerido' );
+            } 
+            else {
+                if (!this.emailValidation()) {
+                    this.msgErrorShow( 'Correo no valido' );
+                }
+                else {
+                    const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token':localStorage.getItem('token')
+                        },
+                    body: JSON.stringify(this.usuario)
+                    })
+                    const {data, error, user} = await res.json()
+                    if(error) {
+                        this.msgErrorShow( error );
+                        return 
+                    }
+                    localStorage.setItem('token',data.token)
+                    localStorage.setItem('idUsuario',user.id)
+                    localStorage.setItem('rol',user.rol)
+                    localStorage.setItem('nombre',user.nombre)
+                    localStorage.setItem('linkPerfil',user.linkPerfil)
+                    if (user.rol=="cliente"||user.rol=="entrenador") {
+                        this.$router.push({ name: "perfil"})
+                    }
+                    if (user.rol=="administrador") {
+                        this.$router.push({ name: "Admin"})
+                    }
+>>>>>>> e79c48b0dc622f05fa0c5883ae121731eb9a664a
                 }
 
+                
+
             }
+        },
+
+        emailValidation() {
+            const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return res.test(String(this.usuario.email).toLowerCase());
+        },
+
+        msgErrorShow( msg ) {
+            this.msgError = msg;
+            setTimeout(()=>{
+                this.msgError = null;
+            },4000);
         },
     },
 }
@@ -95,6 +151,7 @@ export default {
     margin: 0px;
 }
 
+<<<<<<< HEAD
 
 .marco_principal {
     padding: 0;
@@ -111,6 +168,28 @@ export default {
     top: 18%;
 }
 
+=======
+    .errorMsg {
+        text-align: center;
+        color: red;
+        font-size: 1.2em;
+        margin: 0px;
+    }
+    .marco_principal {
+        padding: 0;
+        margin: 0;
+        position: relative;
+        background-image: url('@/assets/Inicio.png') !important;
+        background-position: center;
+        background-size: cover;
+        height: 100%;
+    }
+
+    .marco_secundario {
+        position: relative;
+        top: 18%;
+    }
+>>>>>>> e79c48b0dc622f05fa0c5883ae121731eb9a664a
 
 .tarjeta {
     margin: auto;
@@ -118,6 +197,7 @@ export default {
     border-radius: 1.5rem !important;
 }
 
+<<<<<<< HEAD
 img {
     width: 100%;
     height: 100%;
@@ -150,3 +230,15 @@ form {
     #left: 1.5rem;
 }
 </style>
+=======
+    .btn_registro {
+        border: 2px solid rgb(228, 34, 86) !important;
+        color: #E42256 !important;
+        font-weight: bold !important;
+        width: 80% !important;
+        background-color: white !important;
+        font-size: 2rem;
+        position:relative;
+    }
+</style>
+>>>>>>> e79c48b0dc622f05fa0c5883ae121731eb9a664a

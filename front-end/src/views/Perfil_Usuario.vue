@@ -102,7 +102,6 @@ import post_disponible from '../components/Post_Creado'
 import entrenadores from '../components/Entrenadores_Disponibles'
 import rutinas from '../components/Rutinas'
 import busqueda from '../components/Busqueda_Entrenador'
-import navegacion_usuario from '../components/Navegation_Usuario.vue'
 import navbar from '../components/Navbar.vue'
 import clientes from '../components/Entrenador_Cliente.vue'
 
@@ -114,7 +113,6 @@ export default {
         entrenadores,
         rutinas,
         busqueda,
-        navegacion_usuario,
         navbar,
         clientes
     },

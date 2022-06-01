@@ -28,18 +28,18 @@
                                     </v-btn>
                                 </main>
                                 <br><br><br>
-                                <v-tabs>
+                                <v-tabs next-icon="mdi-arrow-right-bold-box-outline" style='background-color:#E42256 !important;#border:5px solid black !important' prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
                                     <v-tab>crear ejercicio</v-tab>
-                                    <v-tab >ejercicios guardados</v-tab>
-                                    <v-tab >banco publico</v-tab>
-                                    <!-- crear ejercicio -->
-                                    <v-tab-item> 
+                                    <v-tab>ejercicios guardados</v-tab>
+                                    <v-tab>banco publico</v-tab>
+                                    <v-tab-item class='contenido_tabs'>
                                         <main>
                                             <v-card class='tarjeta' id='card_ejercisio_1'>
                                                 <section class="mb-2" style="padding:0;heigh:25px !important">
-                                                    <v-text-field label="Nombre del ejercicio" v-model="ejercicio.nombre"  outlined style='#border:5px solid black !important;height:55px !important'></v-text-field>
+                                                    <v-text-field label="Nombre del ejercicio" v-model="ejercicio.nombre" outlined style='#border:5px solid black !important;height:55px !important'></v-text-field>
                                                 </section>
-                                                <section  style="padding:0;heigh:25px !important">
+                                                <br>
+                                                <section style="padding:0;#heigh:25px !important">
                                                     <v-row>
                                                         <v-col cols="6">
                                                             <v-select :items="items" item-text="nombre" label="musculo" v-model="ejercicio.idMusculo" item-value="idMusculo" outlined></v-select>
@@ -49,15 +49,13 @@
                                                         </v-col>
                                                     </v-row>
                                                 </section>
-                                                
                                                 <section style='width:70%;margin:0 !important'>
                                                     <v-checkbox v-model="checkbox.repeticiones" @click.stop="checkbox.tiempo=false"></v-checkbox>
                                                     Repeticiones
-                                                    
                                                     <v-checkbox v-model="checkbox.tiempo" @click.stop="checkbox.repeticiones=false"></v-checkbox>
                                                     tiempo
                                                 </section>
-                                                <section style='#border:4px solid red !important;padding:0 !important' >
+                                                <section style='#border:4px solid red !important;padding:0 !important'>
                                                     <v-row>
                                                         <v-col cols="6">
                                                             <v-text-field label="Sets" v-model="ejercicio.sets" type="number" outlined style='#border:5px solid black !important;height:55px !important'></v-text-field>
@@ -65,11 +63,10 @@
                                                         <v-col cols="6">
                                                             <v-text-field label="Repeticiones" v-if="checkbox.repeticiones" v-model="ejercicio.repeticiones" type="number" outlined style='#border:5px solid black !important;height:55px !important'></v-text-field>
                                                             <v-text-field label="Tiempo en segundos" v-if="checkbox.tiempo" outlined v-model="ejercicio.tiempo" type="number" style='#border:5px solid black !important;height:55px !important'></v-text-field>
-
                                                         </v-col>
                                                     </v-row>
                                                 </section>
-                                                <br>
+                                                <br><br>
                                                 <section style='padding:0 !important;height:55px !important'>
                                                     <v-text-field label="Descanso" outlined class='text_field' type="number" v-model="ejercicio.descanso" style='width:40% !important'></v-text-field>
                                                     <v-spacer></v-spacer>
@@ -84,50 +81,61 @@
                                                 </section>
                                                 <section>
                                                     <v-select :items="visibilidad" item-text="texto" label="visibilidad" v-model="ejercicio.publico" item-value="id" outlined></v-select>
-                                                    <v-btn @click="guardarEjercicio()" style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius: 50px;width:50%;' plain>
-                                                    Guardar ejercicio
+                                                </section>
+                                                <section class='text-center'>
+                                                    <v-btn @click="guardarEjercicio()" style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius:1rem;position: relative;left: 2rem;height: 3rem;' plain>
+                                                        <h3>
+                                                            Guardar ejercicio
+                                                        </h3>
                                                     </v-btn>
                                                 </section>
                                             </v-card>
-                                            
-                                            <!-- <section class='text-center' >
-                                                <v-btn  style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius: 50px;width:50%;' plain>
-                                                    Guardar Rutina
-                                                </v-btn>
-                                            </section> -->
                                         </main>
                                     </v-tab-item>
                                     <!-- elegir ejercicios-->
-                                    <v-tab-item>
-                                            <!-- aca ander -->
-
-                                            <v-card class="mx-auto py-2 my-2" v-for="ejercicio in ejercicios"  :key="ejercicio.idEjercicio" max-width="344"        >
-                                                <v-list-item three-line>
+                                    <v-tab-item class='contenido_tabs'>
+                                        <!-- aca ander -->
+                                        <v-card class="mx-auto" v-for="ejercicio in ejercicios" :key="ejercicio.idEjercicio" max-width="344" style='padding: 0 !important;margin-top: 1rem;margin-bottom: 1rem;'>
+                                            <v-list-item three-line style='padding: 0 !important;'>
+                                                <!--
                                                 <v-list-item-content>
                                                     <div class="text-overline" style="width: 100%;"><strong style="font-size: 1.3em;"> {{ejercicio.nombre}}</strong></div>
                                                 </v-list-item-content>
-                                                <v-list-item-avatar tile size="150"><v-img  :src="ejercicio.linkEjercicio"></v-img></v-list-item-avatar>
-                                                </v-list-item>
-
-                                                <v-list-item-content class="px-4">
-                                                <v-list-item-subtitle class="mt-2">descripcion: {{ejercicio.descripcion}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">rep: {{ejercicio.repeticiones}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">sets: {{ejercicio.sets}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">seg: {{ejercicio.tiempo}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">desc: {{ejercicio.descanso}}</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2" v-if="!ejercicio.publico"><v-icon>mdi-earth</v-icon> publico</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2" v-else><v-icon>mdi-lock</v-icon>privado</v-list-item-subtitle>
-                                                <v-list-item-subtitle class="mt-2">musculo a entrenar:{{ejercicio.nombreMusculo}}</v-list-item-subtitle>
-                                                </v-list-item-content>
-
-                                                <v-card-actions style="display: flex; justify-content: center;">
-                                                    <v-checkbox @click="guardarEjercicioEnRutina(ejercicio.idEjercicio)" :on-icon="'mdi-check'" :off-icon="'mdi-checkbox-blank-circle-outline'"></v-checkbox>
-                                                </v-card-actions>
-                                            </v-card>
+                                            -->
+                                                <v-list-item-avatar tile size='width:100%' style='padding: 0 !important;margin: 0 !important;display: flex;flex-direction: column;'>
+                                                    <v-img :src="ejercicio.linkEjercicio" style='width: 100%;border: 5px solid white;'></v-img>
+                                                    <div class="text-overline mt-3" style="width: 100%;"><strong style="font-size: 1.3em;"> {{ejercicio.nombre}}</strong></div>
+                                                </v-list-item-avatar>
+                                            </v-list-item>
+                                            <v-list-item-content class="px-4" style='margin: 0;padding: 0;'>
+                                                <main class='mt-1 mb-3' style='display: flex;justify-content: space-between;#border: 2px solid red;'>
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#E42256;font-size: 1.2rem;padding: 0;text-align: center;'>rep: {{ejercicio.repeticiones}}</v-list-item-subtitle>
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#FEC84D;font-size: 1.2rem;padding: 0;text-align: center;'>sets: {{ejercicio.sets}}</v-list-item-subtitle>
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#00B1B0;font-size: 1.2rem;padding: 0;text-align: center;'>seg: {{ejercicio.tiempo}}</v-list-item-subtitle>
+                                                    <!--
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;'>desc: {{ejercicio.descanso}}</v-list-item-subtitle>
+                                                -->
+                                                </main>
+                                                <v-list-item-subtitle class="mt-2 mb-2 text-center" style='font-size: 1rem;#border: 5px solid black;padding: 0.5rem;height: 5rem;'> <strong>Descripcion</strong>
+                                                    <br>
+                                                    {{ejercicio.descripcion}}
+                                                </v-list-item-subtitle>
+                                                <main style='display: flex;#border: 5px solid red;'>
+                                                    <v-list-item-subtitle class="mt-2" v-if="!ejercicio.publico" style='display: flex;align-items: center;'>
+                                                        <v-icon>mdi-earth</v-icon> &nbsp;<strong>Publico</strong>
+                                                    </v-list-item-subtitle>
+                                                    <v-list-item-subtitle class="mt-2" v-else style='display: flex;align-items: center;'>
+                                                        <v-icon>mdi-lock</v-icon> &nbsp;<strong>Privado</strong>
+                                                    </v-list-item-subtitle>
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform: capitalize;text-align: center;'> <strong> Musculo a entrenar</strong><br>{{ejercicio.nombreMusculo}}</v-list-item-subtitle>
+                                                </main>
+                                            </v-list-item-content>
+                                            <v-card-actions style="display: flex; justify-content: center;">
+                                                <v-checkbox @click="guardarEjercicioEnRutina(ejercicio.idEjercicio)" :on-icon="'mdi-check'" :off-icon="'mdi-checkbox-blank-circle-outline'"></v-checkbox>
+                                            </v-card-actions>
+                                        </v-card>
                                     </v-tab-item>
-
                                 </v-tabs>
-                                
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -147,24 +155,24 @@ export default {
             items: ['Ejercisio_1', 'Ejercisio_2', 'Ejercisio_3', 'Ejercisio_4', 'Ejercisio_5', 'Ejercisio_6'],
             tiempo_m: ['Minutos', 'Segundos'],
             descanso_m: ['Minutos', 'Segundos'],
-            visibilidad: [{id:0,texto:"publico"}, {id:1,texto:"privado"}],
-            checkbox:{
-                repeticiones:true,
-                tiempo:false,
+            visibilidad: [{ id: 0, texto: "publico" }, { id: 1, texto: "privado" }],
+            checkbox: {
+                repeticiones: true,
+                tiempo: false,
             },
-            ejercicio:{
-                nombre:'',
-                idMusculo:null,
-                gif:null,
-                repeticiones:0,
-                sets:1,
-                tiempo:0,
-                descanso:0,
-                descripcion:'',
-                publico:0,
+            ejercicio: {
+                nombre: '',
+                idMusculo: null,
+                gif: null,
+                repeticiones: 0,
+                sets: 1,
+                tiempo: 0,
+                descanso: 0,
+                descripcion: '',
+                publico: 0,
             },
-            ejercicios:[],
-            ejerciciosGuardados:[]
+            ejercicios: [],
+            ejerciciosGuardados: []
         }
 
     },
@@ -189,17 +197,17 @@ export default {
             }
             this.items = data
         },
-        guardarEjercicioEnRutina(idEjercicio){
+        guardarEjercicioEnRutina(idEjercicio) {
             for (let i = 0; i < this.ejerciciosGuardados.length; i++) {
                 if (this.ejerciciosGuardados[i] == idEjercicio) {
-                    this.ejerciciosGuardados.splice(i,1)
+                    this.ejerciciosGuardados.splice(i, 1)
                     return
                 }
             }
             this.ejerciciosGuardados.push(idEjercicio)
         },
-        async guardarEjercicio(){
-            this.ejercicios=[]
+        async guardarEjercicio() {
+            this.ejercicios = []
             const filesTypes = ['image/jpg', 'image/jpeg', 'image/gif'];
             if (filesTypes.includes(this.ejercicio.gif.type)) {
                 const formData = new FormData();
@@ -247,7 +255,7 @@ export default {
             }
             this.ejercicios = data
         },
-        async guardarRutina(){
+        async guardarRutina() {
 
         }
 
@@ -256,6 +264,15 @@ export default {
 }
 </script>
 <style scoped>
+.contenido_tabs {
+    #border: 5px solid blue !important;
+    height: 75vh;
+    overflow: auto;
+    padding: 1rem;
+}
+
+
+
 .text_field {
     height: 65px !important;
 }
@@ -315,6 +332,7 @@ export default {
     #width: 70% !important;
     margin: 0 !important;
 }
+
 .container_Rutinas {
     position: relative;
     #top: -1.2rem;
@@ -322,7 +340,7 @@ export default {
     height: 800px;
     overflow: auto;
     margin: 0 !important;
-    
+
 }
 
 h1 {
@@ -343,5 +361,4 @@ h1 {
     background-color: white !important;
     margin-bottom: 1rem;
 }
-
 </style>

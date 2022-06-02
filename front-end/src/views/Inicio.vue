@@ -43,46 +43,58 @@ export default {
                 email: "",
                 password: ""
             },
-            msgError: ''
+            msgError: null
         }
     },
     methods: {
         async login() {
-            if (this.usuario.email === "" || this.usuario.password === "") {
-                this.msgError = 'El campo es requerido';
-                setInterval(() => {
-                    this.msgError = '';
-                }, 4000);
-            } else {
-                const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/user/login', {
+            if (!this.usuario.email || !this.usuario.password) {
+                this.msgErrorShow( 'El campo es requerido' );
+            } 
+            else {
+                if (!this.emailValidation()) {
+                    this.msgErrorShow( 'Correo no valido' );
+                }
+                else {
+                    const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'auth-token': localStorage.getItem('token')
-                    },
+                        'auth-token':localStorage.getItem('token')
+                        },
                     body: JSON.stringify(this.usuario)
-                })
-                const { data, error, user } = await res.json()
-                if (error) {
-                    this.msgError = error;
-                    setInterval(() => {
-                        this.msgError = '';
-                    }, 4000);
-                    return
-                }
-                localStorage.setItem('token', data.token)
-                localStorage.setItem('idUsuario', user.id)
-                localStorage.setItem('rol', user.rol)
-                localStorage.setItem('nombre', user.nombre)
-                localStorage.setItem('linkPerfil', user.linkPerfil)
-                if (user.rol == "cliente" || user.rol == "entrenador") {
-                    this.$router.push({ name: "perfil" })
-                }
-                if (user.rol == "administrador") {
-                    this.$router.push({ name: "Admin" })
+                    })
+                    const {data, error, user} = await res.json()
+                    if(error) {
+                        this.msgErrorShow( error );
+                        return 
+                    }
+                    localStorage.setItem('token',data.token)
+                    localStorage.setItem('idUsuario',user.id)
+                    localStorage.setItem('rol',user.rol)
+                    localStorage.setItem('nombre',user.nombre)
+                    localStorage.setItem('linkPerfil',user.linkPerfil)
+                    if (user.rol=="cliente"||user.rol=="entrenador") {
+                        this.$router.push({ name: "perfil"})
+                    }
+                    if (user.rol=="administrador") {
+                        this.$router.push({ name: "Admin"})
+                    }
                 }
 
             }
+        },
+
+        emailValidation() {
+            const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return res.test(String(this.usuario.email).toLowerCase());
+        },
+
+        msgErrorShow( msg ) {
+            this.msgError = msg;
+            setTimeout(()=>{
+                this.msgError = null;
+            },4000);
         },
     },
 }

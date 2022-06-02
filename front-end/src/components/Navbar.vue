@@ -170,8 +170,8 @@ export default {
         },
         async enviarSolicitud() {
             console.log(this.solicitud.linkTitulos);
-            const filesTypes = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
-            if (filesTypes.includes(this.solicitud.linkTitulos.type)) {
+            const resul = this.validaciones();
+            if ( resul == '' ) {
                 const formData = new FormData();
                 formData.append("archivo", this.solicitud.linkTitulos);
                 formData.append("lugarExp", this.solicitud.lugarExp);
@@ -196,9 +196,25 @@ export default {
                 }
                 this.dialog_solicitud = false
                 this.$root.vtoast.show({ message: 'solicitud enviada' })
-            } else {
-                this.$root.vtoast.show({ message: 'formato no soportado' })
             }
+            else {
+                this.$root.vtoast.show({ message: resul });
+            }
+        },
+
+        validaciones () {
+            const filesTypes = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
+            let msg = '';
+            if ( filesTypes.includes(this.solicitud.linkTitulos.type) ) {
+                msg = 'formato no soportado';
+            }
+            else if ( this.solicitud.descripcion == '' ) {
+                msg = 'La descripción es obligatoria';
+            }
+            else if ( this.solicitud.descripcion.length > 200 ) {
+                msg = 'superó el numero de palabras máximas';
+            }
+            return msg;
         }
     },
 }
@@ -210,28 +226,20 @@ export default {
 }
 
 .item_sub_text {
-    #border: 5px solid purple;
     padding: 0.5rem;
     margin-bottom: 1rem !important;
 }
 
 .sub_txt {
-
-
-    #border: 5px solid purple;
     font-size: 1rem !important;
-    #margin-bottom: 2rem;
 }
 
 
 .salir_item {
-    #border: 5px solid purple;
     position: absolute;
-    #bottom: 0 !important;
     height: 34vh;
     display: flex;
     align-items: flex-end;
-
 }
 
 .card_informacion {
@@ -241,7 +249,6 @@ export default {
 .container_post {
     margin: 0 !important;
     padding: 0 !important;
-    #border: 5px solid red !important;
     height: 100vh;
     margin-bottom: 1rem !important;
     background-color: white !important;
@@ -256,7 +263,6 @@ export default {
 
 main {
     padding: 1rem 1rem 0rem 1rem;
-    #border: 5px solid red !important;
     background-color: rgb(243, 243, 243);
     margin-bottom: 1rem;
 }
@@ -267,13 +273,11 @@ main section {
 
 .title_post {
     display: flex;
-    #border: 5px solid purple !important;
 }
 
 .img_post {
     width: 45px;
     height: 45px;
-    #border: 5px solid purple !important;
     border-radius: 50%;
     object-fit: cover !important;
     border: 2px solid white;

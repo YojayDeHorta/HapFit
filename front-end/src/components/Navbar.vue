@@ -79,21 +79,21 @@
         </v-card>
         <!-- modal de entrenador -->
         <v-dialog v-model="dialog_solicitud" width="500">
-            <v-card>
-                <v-card-title class="text-h5 grey lighten-2"> Solicitud para ser entrenador</v-card-title>
+            <v-card style='#border:5px solid purple;padding:1rem'>
+                <v-card-title class="text-h6 mb-3 grey lighten-2 text-center" style='text-transform:capitalize'> Solicitud para ser entrenador</v-card-title>
                 <v-list-item three-line>
                     <v-list-item-content>
                         <!-- <h3 class="ml-1"><strong >usuario: {{usuario.nombre}}</strong></h3> -->
-                        <v-text-field v-model="solicitud.lugarExp" label="lugar de estudio o trabajo"></v-text-field>
-                        <v-text-field v-model="solicitud.mesesExp" type="number" label="meses de experiencia o estudio"></v-text-field>
-                        <v-file-input truncate-length="50" v-model="solicitud.linkTitulos" label="seleccione su certificado"></v-file-input>
-                        <v-textarea solo height="70px" v-model="solicitud.descripcion" label="porque quieres ser entrenador?" :no-resize="true"></v-textarea>
+                        <v-text-field v-model="solicitud.lugarExp" label="lugar de estudio o trabajo" outlined></v-text-field>
+                        <v-text-field v-model="solicitud.mesesExp" type="number" label="meses de experiencia o estudio" outlined></v-text-field>
+                        <v-file-input truncate-length="50" v-model="solicitud.linkTitulos" label="seleccione su certificado" outlined></v-file-input>
+                        <v-textarea solo height="70px" v-model="solicitud.descripcion" label="porque quieres ser entrenador?" :no-resize="true" outlined></v-textarea>
                     </v-list-item-content>
                 </v-list-item>
                 <v-divider></v-divider>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text @click="enviarSolicitud();"> Enviar Solicitud </v-btn>
+                <v-card-actions class='text-center' style='#border:5px solid black !important;display:flex;justify-content:center !important'>
+                   
+                    <v-btn color="primary" text @click="enviarSolicitud();" style='#border:5px solid purple;'> Enviar Solicitud </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

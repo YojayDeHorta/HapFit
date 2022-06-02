@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="snackbar.open" :timeout="3000" top right style="max-width: 100%;">
+    <v-snackbar v-model="snackbar.open" :timeout="3000" top right>
         <div class="d-flex justify-space-between">
             <div class="mt-2">{{ snackbar.text }}</div>
             <v-btn color="error" class="ml-5" @click="snackbar.open = false">X</v-btn>

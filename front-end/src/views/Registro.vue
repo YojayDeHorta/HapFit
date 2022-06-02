@@ -46,15 +46,19 @@
         padding: 0;
         margin: 0;
         position: relative;
+        #border: 5px solid red;
         background-image: url('@/assets/Inicio.png') !important;
         background-position: center;
         background-size: cover;
         height: 100%;
+
     }
 
     .marco_secundario {
         position: relative;
         top: 11%;
+        #background-color: rgb(250, 250, 250);
+
     }
 
     .inputStyle {
@@ -69,6 +73,7 @@
         background-color: white !important;
         font-size: 2rem;
         position:relative;
+        #left:1.5rem;
     }
     
     .errorMsg {
@@ -99,48 +104,41 @@
                 link:"1234123",
             },
             terminos: false,
-            msgError: null
+            msgError: ''
         }
     },
     methods: {
         async registro(){
-            if (!this.usuario.email || !this.usuario.password || !this.usuario.nombre) {
-                this.msgErrorShow( 'El campo es requerido' );
+            if (this.usuario.email === "" || this.usuario.password === "" || this.usuario.nombre === "") {
+                this.msgError = 'El campo es requerido';
+                setInterval(()=>{
+                    this.msgError = '';
+                },4000);
             }
             else if (!this.terminos) {
-                this.msgErrorShow( 'Debe aceptar los terminos' );
+                this.msgError = 'Debe aceptar los terminos';
+                setInterval(()=>{
+                    this.msgError = '';
+                },4000);
             }
             else {
-                if (!this.emailValidation()) {
-                    this.msgErrorShow( 'Correo no valido' );
+                const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',},
+                body: JSON.stringify(this.usuario)
+                })
+                const {data, error} = await res.json()
+                if(error) {
+                    this.msgError = error;
+                    setInterval(()=>{
+                        this.msgError = '';
+                    },4000);
+                    return
                 }
-                else {
-                    const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/register', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json',},
-                    body: JSON.stringify(this.usuario)
-                    })
-                    const {data, error} = await res.json()
-                    if(error) {
-                        this.msgErrorShow( error );
-                        return
-                    }
-                    this.$router.push({ name: "inicio"})
-                }
+                this.$router.push({ name: "inicio"})
             }
-        },
-
-        emailValidation() {
-            const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return res.test(String(this.usuario.email).toLowerCase());
-        },
-
-        msgErrorShow( msg ) {
-            this.msgError = msg;
-            setTimeout(()=>{
-                this.msgError = null;
-            },4000);
-        },
+            
+        }
     },
 
     }

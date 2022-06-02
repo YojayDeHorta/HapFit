@@ -206,30 +206,46 @@ export default {
 <style scoped>
 .text {
     font-weight: bold !important;
+
 }
 
 .item_sub_text {
+    #border: 5px solid purple;
     padding: 0.5rem;
     margin-bottom: 1rem !important;
 }
 
 .sub_txt {
+
+
+    #border: 5px solid purple;
     font-size: 1rem !important;
+    #margin-bottom: 2rem;
 }
 
+
 .salir_item {
+    #border: 5px solid purple;
     position: absolute;
+    #bottom: 0 !important;
     height: 34vh;
     display: flex;
     align-items: flex-end;
+
+}
+
+.card_informacion {
+    #border: 5px solid red !important;
 }
 
 .container_post {
     margin: 0 !important;
     padding: 0 !important;
+    #border: 5px solid red !important;
     height: 100vh;
     margin-bottom: 1rem !important;
     background-color: white !important;
+
 }
 
 .card_post {
@@ -240,17 +256,24 @@ export default {
 
 main {
     padding: 1rem 1rem 0rem 1rem;
+    #border: 5px solid red !important;
     background-color: rgb(243, 243, 243);
     margin-bottom: 1rem;
 }
 
+main section {
+    #border: 5px solid black !important;
+}
+
 .title_post {
     display: flex;
+    #border: 5px solid purple !important;
 }
 
 .img_post {
     width: 45px;
     height: 45px;
+    #border: 5px solid purple !important;
     border-radius: 50%;
     object-fit: cover !important;
     border: 2px solid white;

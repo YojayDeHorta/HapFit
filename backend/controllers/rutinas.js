@@ -35,3 +35,39 @@ exports.add = async (req, res) => {
 		return res.status(400).json({ error: 'Error interno del servidor' });
 	}
 };
+
+exports.get = async (req, res) => {
+	try {
+		console.log(req.usuario.id);
+		let data = [];
+		const rutina = await query(
+			`SELECT * FROM rutinas WHERE Usuario_idUsuario LIKE '%${req.usuario.id}%';`
+		);
+		data.push(rutina);
+		for (let index = 0; index < data.length; index++) {
+			let ejercicio_rutina = await query(
+				`SELECT * FROM ejercicio_has_rutinas WHERE Rutinas_idRutina LIKE '%${rutina[index].idRutina}%';`
+			);
+			// console.log('Ejercicio Rutina: ', ejercicio_rutina);
+			// console.log('Exercise: ', exercise);
+			for (let j = 0; j < ejercicio_rutina.length; j++) {
+				let ejercicio = await query(
+					`SELECT * FROM ejercicio WHERE idEjercicio LIKE '%${ejercicio_rutina[j].Ejercicio_idEjercicio}%';`
+				);
+				data[index].push(ejercicio[0]);
+			}
+		}
+		// rutina.map(async (rutina) => {
+		// 	ejercicio.map(async (ejercicio, index) => {
+		// 		data.push(ejercicio[index]);
+		// 	});
+		// 	console.log(data);
+		// });
+
+		// console.log(exer);
+		res.json({ error: null, data: data });
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ error: 'Error interno del servidor' });
+	}
+};

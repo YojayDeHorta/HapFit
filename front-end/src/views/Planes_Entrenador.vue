@@ -11,11 +11,11 @@
             </v-app-bar-nav-icon>
         </v-app-bar>
         <div class='Contenido_Card mt-5'>
-            <v-card class='card' v-for='i in 20' :key='i'>
+            <v-card class='card' v-for='plan in planes' :key='plan.idPlan'>
                 <main>
-                    <h2>Ayuda Basica</h2>
-                    <h4 class='mt-3'>Descripcion Basica</h4>
-                    <p style='text-align: end;'><strong>$ 50.000</strong></p>
+                      <h2>{{plan.nombre}}</h2>
+                      <h4 class='mt-3'> {{plan.descripcion}}</h4>
+                      <p style='text-align: end;'><strong>$ {{plan.precio}} mensual</strong></p>
                 </main>
             </v-card>
         </div>
@@ -34,10 +34,10 @@
                     </v-card-title>
                     <v-card-text>
                         <br><br>
-                        <v-text-field label="Nombre" outlined filled></v-text-field>
-                        <v-text-field label="Precio" outlined filled></v-text-field>
-                        <v-textarea filled name="input-7-4" label="Comentarios"></v-textarea>
-                        <v-btn class='btn_registro' block rounded x-large>
+                        <v-text-field label="Nombre" v-model="plan.nombre" outlined filled></v-text-field>
+                        <v-text-field label="Precio" v-model="plan.precio" outlined filled></v-text-field>
+                        <v-textarea filled name="input-7-4" label="Comentarios" v-model="plan.descripcion"></v-textarea>
+                        <v-btn class='btn_registro'  @click="setPlan()"  block rounded x-large>
                             Guardar
                         </v-btn>
                         <br>
@@ -55,6 +55,60 @@
 
     </v-container>
 </template>
+<script>
+export default {
+    data() {
+        return {
+            dialog: false,
+            planes:[],
+            plan:{
+                nombre:"",
+                precio:0,
+                descripcion:"",
+            }
+        }
+    },
+    created() {
+        this.getPlanes()
+    },
+    methods: {
+        async getPlanes() {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                }
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.planes = data
+
+
+        },
+        async setPlan() {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify( this.plan )
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.dialog=false
+            this.getPlanes()
+        },
+    },
+}
+</script>
 <style scoped>
 * {
     padding: 0;
@@ -110,12 +164,3 @@
     color: #E42256 !important;
 }
 </style>
-<script>
-export default {
-    data() {
-        return {
-            dialog: false,
-        }
-    },
-}
-</script>

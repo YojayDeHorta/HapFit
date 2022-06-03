@@ -1,7 +1,7 @@
 <template>
     <v-container fluid style='padding: 0 !important;'>
         <v-card class="overflow-hidden" fluid>
-            <v-app-bar style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);' dark elevate-on-scroll scroll-target="#scrolling-techniques-7" absolute>
+            <v-app-bar style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);' dark elevate-on-scroll  absolute>
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
                 <v-spacer></v-spacer>
             </v-app-bar>

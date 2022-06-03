@@ -13,7 +13,8 @@ const verifyToken = async(req, res, next) => {
         req.usuario = verified
         const entrenador = await query(`SELECT * FROM entrenador WHERE entrenador.Usuario_idUsuario LIKE '%${verified.id}%';`);
         if(!entrenador[0]||verified.rol!="entrenador")return res.status(400).json({ error: 'Error con el token' });
-            
+        req.usuario.idEntrenador=entrenador[0].idEntrenador
+   
         next()
     } catch (error) {
         res.status(400).json({error: 'token no es válido'})

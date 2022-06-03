@@ -51,11 +51,7 @@ const routes = [{
         name: 'chat_usuario',
         component: () => import( /* webpackChunkName: "about" */ '../components/Chat_Entrenador.vue')
     },
-    {
-        path: '/planes_entrenador',
-        name: 'planes_entrenador',
-        component: () => import( /* webpackChunkName: "about" */ '../views/Planes_Entrenador.vue')
-    },
+
 ]
 
 

@@ -23,6 +23,11 @@
              
         </main>
         <modal_perfil :dialogPerfil="dialogPerfil" @close="dialogPerfil=false" :datos="datosActuales"/>
+        <!-- loading -->
+        <div v-if="loading" class="d-flex  justify-center mb-10 ">
+            <v-progress-circular :size="70" :width="7" color="red"  indeterminate ></v-progress-circular>
+            <h3 class="mt-5 ml-5">cargando publicaciones...</h3> 
+        </div>
     </v-card-text>
 </template>
 <script>
@@ -38,6 +43,7 @@ export default {
             drawer: false,
             group: null,
             post:[],
+            loading:false,
             usuario:{
                     nombre:'',
                     linkPerfil:'',
@@ -64,7 +70,7 @@ export default {
     },
     methods: {
         async getPost(){
-
+            this.loading=true
             const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/', {
             method: 'GET',
             headers: {
@@ -79,7 +85,7 @@ export default {
             }
             this.post=data
             console.log(data);    
-
+            this.loading=false
             
         },
         async cambiarCorazon(idPublicacion,index){

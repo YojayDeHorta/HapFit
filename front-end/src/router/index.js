@@ -24,7 +24,7 @@ const routes = [{
         path: '/perfil',
         name: 'perfil',
         component: () => import( /* webpackChunkName: "about" */ '../views/Perfil_Usuario.vue'),
-        meta: {requireAuth: true}
+        meta: { requireAuth: true }
     },
     {
         path: '/planes_entrenador',
@@ -36,22 +36,24 @@ const routes = [{
         name: 'navegacion_entrenador',
         component: () => import( /* webpackChunkName: "about" */ '../components/Navbar.vue')
     },
-        {
+    {
         path: '/rutinas_entrenador',
         name: 'rutinas_entrenador',
         component: () => import( /* webpackChunkName: "about" */ '../views/Rutinas_Entrenador.vue')
     },
     {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Admin.vue')
+        path: '/admin',
+        name: 'Admin',
+        component: () => import( /* webpackChunkName: "about" */ '../views/Admin.vue')
     },
-      {
-    path: '/chat_usuario',
-    name: 'chat_usuario',
-    component: () => import( /* webpackChunkName: "about" */ '../components/Chat_Entrenador.vue')
+    {
+        path: '/chat_usuario',
+        name: 'chat_usuario',
+        component: () => import( /* webpackChunkName: "about" */ '../components/Chat_Entrenador.vue')
     },
-]   
+
+]
+
 
 const router = new VueRouter({
     mode: 'history',
@@ -62,14 +64,14 @@ router.beforeEach((to, from, next) => {
     const rutaProtegida = to.matched.some(record => record.meta.requireAuth);
     store.dispatch('leerToken')
     // console.log(store.state.token)
-      if(rutaProtegida && store.state.token === null){
-          // ruta protegida es true
-          // token es nulo true, por ende redirigimos al inicio
-          next('/')
-      }else{
-          // En caso contrario sigue...
-          next()
-      }
-  
-  })
+    if (rutaProtegida && store.state.token === null) {
+        // ruta protegida es true
+        // token es nulo true, por ende redirigimos al inicio
+        next('/')
+    } else {
+        // En caso contrario sigue...
+        next()
+    }
+
+})
 export default router

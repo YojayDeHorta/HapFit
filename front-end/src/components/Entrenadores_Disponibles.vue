@@ -5,21 +5,25 @@
                 <h3 class='mt-5 mb-5'>Contratados</h3>
                 <main style='#border:5px solid black;width:100% !important;'>
                     
-                    <v-card v-if="!contratados" class='Tarjeta' style='padding:1rem' fluid>
+                    <v-card v-if="!contratados[0]&&!loading" class='Tarjeta' style='padding:1rem' fluid>
                         <p style="#border:5px solid red !important;">
                             No tienes entrenadores<br>
                         </p>
                     </v-card>
-                    <v-card v-else class='Tarjeta' style='padding:1rem' fluid>
-                         <p> <img class='mt-2' src="@/assets/entrenadores.jpg" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
+                    <v-card v-else class='Tarjeta'  v-for='entrenador in contratados' style='padding:1rem' :key="entrenador.idUsuario" fluid @click="redirectPerfil(entrenador)">
+                         <p> <img class='mt-2' :src="entrenador.linkPerfil" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
                         <p style="#border:5px solid red !important;">
-                            camilo<br>
+                            {{entrenador.nombre}}<br>
                              <small>Entrenador</small> 
                         </p>
                         <p>
                              <v-icon class='check_icon' style='color:green !important;font-size:2rem !important'>mdi-license</v-icon> 
                         </p>
                     </v-card>
+                    <div v-if="loading" class="d-flex  justify-center mb-10 ">
+                        <v-progress-circular :size="70" :width="7" color="red"  indeterminate ></v-progress-circular>
+                        <h3 class="mt-5 ml-5">cargando entrenadores...</h3> 
+                    </div>
                 </main>
             </v-col>
             <v-col cols='12'>
@@ -50,13 +54,15 @@ export default {
             datosActuales:{},
             dialogPerfil:false,
             entrenadores:[],
-            contratados:null,
+            contratados:[],
             filtro:'',
-            soloEntrenadores:false
+            soloEntrenadores:false,
+            loading:false,
         }
     },
     created() {
         this.getEntrenadores()
+        this.getEntrenadoresContratados()
     },
     methods: {
          async getEntrenadores(nombre) {
@@ -75,6 +81,24 @@ export default {
             }
             this.entrenadores = data
 
+
+        },
+        async getEntrenadoresContratados() {
+            this.loading=true
+            const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/suscripcion/entrenadores', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.contratados = data
+            this.loading=false
 
         },
         redirectPerfil(entrenador){

@@ -19,12 +19,15 @@ exports.getPublicacion = async (req, res) => {
 			const usuario = await query(
 				`SELECT * FROM usuario WHERE usuario.idUsuario LIKE '%${data[i].Usuario_idUsuario}%';`
 			);
+			//likes totales
 			const likes = await query(
 				`SELECT COUNT(*) FROM reaccion WHERE publicacion_idPublicacion = ${data[i].idPublicacion}`
 			);
+			//comentarios totales
 			const comented = await query(
 				`SELECT COUNT(*) FROM comentario WHERE publicacion_idPublicacion = ${data[i].idPublicacion}`
 			);
+			//likes dados
 			const liked = await query(
 				`SELECT * FROM reaccion WHERE usuario_idUsuario = ${req.usuario.id} AND publicacion_idPublicacion = ${data[i].idPublicacion}`
 			);
@@ -32,8 +35,15 @@ exports.getPublicacion = async (req, res) => {
 			const entrenador = await query(`SELECT * FROM entrenador WHERE usuario_idUsuario = ${data[i].Usuario_idUsuario}`);
             data[i].esEntrenador=false
             if (entrenador[0]) {
+				data[i].idEntrenador=entrenador[0].idEntrenador
                 data[i].esEntrenador=true
-            }
+				//si esta contratado
+				let suscripcion = await query(`SELECT * FROM suscripcion WHERE Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
+				if (suscripcion[0]) data[i].entrenadorContratado=true
+            }else{
+				const cliente = await query(`SELECT * FROM cliente WHERE usuario_idUsuario = ${data[i].Usuario_idUsuario}`);
+				if (cliente[0]) data[i].idCliente=cliente[0].idCliente
+			}
 			// const comentariosUsuario = await query(`SELECT * FROM comentario WHERE usuario_idUsuario = ${data[i].Usuario_idUsuario} AND publicacion_idPublicacion = ${data[i].idPublicacion}`);
 			data[i].liked = false;
 			if (liked[0]) data[i].liked = true;

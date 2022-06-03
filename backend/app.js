@@ -44,8 +44,9 @@ app.use(express.static(__dirname + '/public'));
 //socket
 const http = require('http').createServer(app);
 
-const socket = require('./config/socket');
+const socket = require('./config/socket.js');
 socket(http);
+
 // http.listen(3501);
 
 //configurando el puerto para heroku

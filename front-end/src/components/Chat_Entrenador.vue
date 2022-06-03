@@ -46,6 +46,52 @@
         </form>
     </div>
 </template>
+<script>
+
+// import io from 'socket.io-client';
+export default {
+    data() {
+        return {
+            socket: io(),
+            step: 'nick',
+            nick: null,
+            message: null,
+            messages: []
+        }
+    },
+    methods: {
+        send() {
+            this.socket.emit('chat-message', {
+                nick: this.nick,
+                usuarioQueEnvia:1,
+                usuarioQueRecibe:2,
+                message: this.message,
+                date: new Date().getTime()
+            });
+
+            this.message = null;
+        },
+        signIn() {
+            if (!this.nick) {
+                return;
+            }
+
+            this.step = 'chat';
+        }
+    },
+    mounted() {
+        this.socket.on('chat-message', (msg) => {
+            this.messages.push(msg);
+
+            setTimeout(() => {
+                // scroll to bottom
+                const chatContainer = document.querySelector(".chat-container");
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 10);
+        });
+    }
+}
+</script>
 <style scoped>
 .main_chat section {
     margin-top: 0.5rem;
@@ -76,8 +122,3 @@
     border: 5px solid red !important;
 }
 </style>
-<script>
-export default {
-
-}
-</script>

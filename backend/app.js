@@ -41,8 +41,15 @@ const history = require('connect-history-api-fallback');
 app.use(history());
 app.use(express.static(__dirname + '/public'));
 
+//socket
+const http = require('http').createServer(app);
+
+const socket = require('./config/socket');
+socket(http);
+// http.listen(3501);
+
 //configurando el puerto para heroku
 const PORT = process.env.PORT || 3500;
-app.listen(PORT, () => {
+http.listen(PORT, () => {
 	console.log(`servidor andando en: ${PORT}`);
 });

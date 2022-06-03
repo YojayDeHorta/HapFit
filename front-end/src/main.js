@@ -6,6 +6,18 @@ import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 
+import VueSocketIO from 'vue-socket.io'
+import SocketIO from 'socket.io-client'
+
+/* Establish Connection */
+const socketConnection = SocketIO('http://localhost:3500');
+
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection:socketConnection 
+  })
+);
+
 new Vue({
   router,
   store,

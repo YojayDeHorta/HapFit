@@ -18,6 +18,12 @@
                       <p style='text-align: end;'><strong>$ {{plan.precio}} mensual</strong></p>
                 </main>
             </v-card>
+            <v-card class='card' v-if="!planes[0]">
+                <main>
+                      <h4 > no hay planes disponibles</h4>
+
+                </main>
+            </v-card>
         </div>
         <div class="text-center">
             <v-dialog v-model="dialog" width="500">
@@ -73,7 +79,7 @@ export default {
     },
     methods: {
         async getPlanes() {
-            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes', {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes/0', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,6 +91,7 @@ export default {
                 console.log(error);
                 return
             }
+            console.log(data);
             this.planes = data
 
 

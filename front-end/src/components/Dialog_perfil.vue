@@ -17,7 +17,7 @@
                         <v-btn dark text v-if="datos.esEntrenador&&!datos.entrenadorContratado" @click.stop="dialog = true" elevation='2' style='width:100px;height:50px !important;#padding:0rem;position:relative;top:1.3rem;background-color:white !important;border-radius:1rem;padding:0 !important'>
                             <small style='padding:1rem;color:#E42256 !important' @click="getPlanes()">contratar</small>
                         </v-btn>
-                        <v-btn dark text @click="dialog = false;goChat()"  v-else>
+                        <v-btn dark text @click="dialog = false;goChat()"  >
                             <v-icon>
                                 mdi-message-processing-outline
                             </v-icon>

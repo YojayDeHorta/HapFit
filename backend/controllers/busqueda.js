@@ -40,7 +40,7 @@ exports.getEntrenadoresAndClientes = async (req, res) => {
 
 exports.getEntrenadores = async (req, res) => {
 	try {
-        /*let usuarios=[]
+        let usuarios=[]
         usuarios = await query(`SELECT * FROM usuario;`);
         let entrenadores=[]
         for (let i = 0; i < usuarios.length; i++) {
@@ -48,15 +48,23 @@ exports.getEntrenadores = async (req, res) => {
             delete usuarios[i].contrasenia
             delete usuarios[i].correo
             delete usuarios[i].telefono
-            
+
             const entrenador = await query(`SELECT * FROM entrenador WHERE Usuario_idUsuario = ${usuarios[i].idUsuario}`);
             if (entrenador[0]) {
-                usuarios[i].idEntrenador=entrenador[0].idEntrenador
-                entrenadores.push(usuarios[i])
+                let suscrito = await query(`SELECT * FROM suscripcion WHERE Cliente_idCliente = ${req.usuario.idCliente} and Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
+                console.log(entrenador);
+                if (!suscrito[0]) {
+                    usuarios[i].idEntrenador=entrenador[0].idEntrenador
+                    entrenadores.push(usuarios[i])
+                }
             }
-        }*/
+            
+        }
+        console.log(entrenadores);
+        /*
         let suscripciones=[]
         suscripciones = await query(`SELECT * FROM suscripcion WHERE Cliente_idCliente != ${req.usuario.idCliente};`);
+
         for (let i = 0; i < suscripciones.length; i++) {
                 let solicitudEntrenador = await query(`SELECT * FROM entrenador  WHERE idEntrenador = ${suscripciones[i].Entrenador_idEntrenador};`);
                 let Usuario = await query(`SELECT * FROM usuario  WHERE idUsuario = ${solicitudEntrenador[0].Usuario_idUsuario};`);
@@ -64,9 +72,9 @@ exports.getEntrenadores = async (req, res) => {
                 suscripciones[i].linkPerfil=Usuario[0].linkPerfil
                 suscripciones[i].idUsuario=Usuario[0].idUsuario
                 suscripciones[i].idEntrenador=solicitudEntrenador[0].idEntrenador
-        }
+        }*/
         // console.log(usuarios);
-        res.json({ error: null, data: suscripciones })
+        res.json({ error: null, data: entrenadores })
 
 	} catch (error) {
 		console.log(error);

@@ -30,8 +30,8 @@ module.exports = (http) => {
         });
         
 
-        socket.on('disconnect', () => {
-            console.log('User disconnected.');
-        });
+        // socket.on('disconnect', () => {
+        //     console.log('User disconnected.');
+        // });
     });
 }

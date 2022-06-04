@@ -205,7 +205,7 @@ export default {
         validaciones () {
             const filesTypes = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
             let msg = '';
-            if ( filesTypes.includes(this.solicitud.linkTitulos.type) ) {
+            if ( !filesTypes.includes(this.solicitud.linkTitulos.type) ) {
                 msg = 'formato no soportado';
             }
             else if ( this.solicitud.descripcion == '' ) {

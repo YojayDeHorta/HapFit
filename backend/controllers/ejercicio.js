@@ -24,12 +24,13 @@ exports.add = async (req, res) => {
 		const { error } = schemaExercise.validate(req.body);
 		if (error)
 			return res.status(400).json({ error: 'error al crear el ejercicio' });
-			
-		let linkGif ='https://res.cloudinary.com/doinyijpk/image/upload/v1653178649/qpemn1t9lbpswu6jyemj.jpg';
+
+		let linkGif =
+			'https://res.cloudinary.com/doinyijpk/image/upload/v1653178649/qpemn1t9lbpswu6jyemj.jpg';
 		if (req.file.path) {
 			let result = await cloudinary.v2.uploader.upload(req.file.path);
 			fs.unlinkSync(req.file.path);
-			linkGif=result.secure_url
+			linkGif = result.secure_url;
 		}
 
 		const ejercicio = await query(
@@ -50,15 +51,65 @@ exports.add = async (req, res) => {
 
 exports.get = async (req, res) => {
 	try {
-		let ejercicios = await query(`SELECT * FROM ejercicio  WHERE usuario_idUsuario = ${req.usuario.id};`);
+		let ejercicios = await query(
+			`SELECT * FROM ejercicio  WHERE usuario_idUsuario = ${req.usuario.id};`
+		);
 		for (let i = 0; i < ejercicios.length; i++) {
-			let musculosID = await query(`SELECT * FROM ejercicio_has_musculo  WHERE Ejercicio_idEjercicio = ${ejercicios[i].idEjercicio};`);
-			let musculos=await query(`SELECT * FROM musculo  WHERE idMusculo = ${musculosID[0].Musculo_idMusculo};`);
+			let musculosID = await query(
+				`SELECT * FROM ejercicio_has_musculo  WHERE Ejercicio_idEjercicio = ${ejercicios[i].idEjercicio};`
+			);
+			let musculos = await query(
+				`SELECT * FROM musculo  WHERE idMusculo = ${musculosID[0].Musculo_idMusculo};`
+			);
 
-			ejercicios[i].idMusculo=musculos[0].idMusculo
-			ejercicios[i].nombreMusculo=musculos[0].nombre
+			ejercicios[i].idMusculo = musculos[0].idMusculo;
+			ejercicios[i].nombreMusculo = musculos[0].nombre;
 		}
 		res.json({ error: null, data: ejercicios });
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ error: 'Error interno del servidor' });
+	}
+};
+
+exports.getEjercicioRutina = async (req, res) => {
+	try {
+		const idRutina = req.params.idRutina;
+		//console.log(idRutina);
+		const data = [];
+
+		const rutina = await query(
+			`SELECT * FROM rutinas WHERE Usuario_idUsuario LIKE '%${req.usuario.id}%' AND idRutina LIKE '%${idRutina}%';`
+		);
+
+		if (!rutina[0])
+			return res.status(400).json({ error: 'Verifique la rutina del clinete' });
+
+		let ejercicio_rutina = await query(
+			`SELECT * FROM ejercicio_has_rutinas WHERE Rutinas_idRutina LIKE '%${idRutina}%';`
+		);
+		// console.log('Ejercicio Rutina: ', ejercicio_rutina);
+		// console.log('Exercise: ', exercise);
+		if (ejercicio_rutina[0]) {
+			for (let j = 0; j < ejercicio_rutina.length; j++) {
+				let ejercicio = await query(
+					`SELECT * FROM ejercicio WHERE idEjercicio LIKE '%${ejercicio_rutina[j].Ejercicio_idEjercicio}%';`
+				);
+				console.log('Exercise: ', ejercicio);
+
+				let ejercicioMusculo = await query(
+					`SELECT * FROM ejercicio_has_musculo WHERE Ejercicio_idEjercicio LIKE '%${ejercicio[0].idEjercicio}%';`
+				);
+				if (ejercicioMusculo[0]) {
+					let musculo = await query(
+						`SELECT * FROM musculo WHERE idMusculo LIKE '%${ejercicioMusculo[0].Musculo_idMusculo}%';`
+					);
+					ejercicio[0].nombreMusculo = musculo[0].nombre;
+				}
+				data.push(ejercicio[0]);
+			}
+		}
+		res.json({ error: null, data: data });
 	} catch (error) {
 		console.log(error);
 		return res.status(400).json({ error: 'Error interno del servidor' });

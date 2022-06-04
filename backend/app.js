@@ -25,6 +25,7 @@ const muscle = require('./routes/musculo');
 const authExercise = require('./routes/ejercicio');
 const authRoutine = require('./routes/rutina');
 const authSuscripcion = require('./routes/suscripcion');
+const authChat = require('./routes/chat');
 
 // route middlewares
 app.use('/api/user', authRoutes);
@@ -35,6 +36,7 @@ app.use('/api/muscle', muscle);
 app.use('/api/exercise', authExercise);
 app.use('/api/routine', authRoutine);
 app.use('/api/suscripcion', authSuscripcion);
+app.use('/api/chat', authChat);
 
 //modo history de vue
 const history = require('connect-history-api-fallback');

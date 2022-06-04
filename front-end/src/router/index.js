@@ -47,9 +47,11 @@ const routes = [{
         component: () => import( /* webpackChunkName: "about" */ '../views/Admin.vue')
     },
     {
-        path: '/chat_usuario',
+        path: '/chat_usuario/:usuarioQueRecibe',
         name: 'chat_usuario',
-        component: () => import( /* webpackChunkName: "about" */ '../components/Chat_Entrenador.vue')
+        component: () => import( /* webpackChunkName: "about" */ '../components/Chat_Entrenador.vue'),
+        props: true,
+
     },
 
 ]

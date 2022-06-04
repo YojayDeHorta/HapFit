@@ -57,6 +57,15 @@ exports.get = async (req, res) => {
 						let ejercicio = await query(
 							`SELECT * FROM ejercicio WHERE idEjercicio LIKE '%${ejercicio_rutina[j].Ejercicio_idEjercicio}%';`
 						);
+						let ejercicioMusculo = await query(
+							`SELECT * FROM ejercicio_has_musculo WHERE Ejercicio_idEjercicio LIKE '%${ejercicio[0].idEjercicio}%';`
+						);
+						if (ejercicioMusculo[0]) {
+							let musculo = await query(
+								`SELECT * FROM musculo WHERE idMusculo LIKE '%${ejercicioMusculo[0].Musculo_idMusculo}%';`
+							);
+							ejercicio[0].nombreMusculo=musculo[0].nombre
+						}
 						data[index].push(ejercicio[0]);
 					}
 				}

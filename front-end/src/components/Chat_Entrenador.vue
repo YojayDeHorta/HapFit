@@ -9,11 +9,11 @@
             <v-toolbar-title style='margin-left:1rem !important'>
                 <main style='display:flex'>
                     <section class='mt-2'>
-                        <img src="@/assets/asuka.jpg" alt="" style='width:60px;height:60px;border-radius:50%'>
+                        <img :src="linkPerfil" alt="" style='width:60px;height:60px;border-radius:50%'>
                     </section>
                     <section class='mt-2' style='margin-left:1rem;'>
                         <small>
-                            Nombre Generico
+                            {{nombreRecibe}}
                         </small>
                     </section>
                 </main>
@@ -21,24 +21,24 @@
         </v-app-bar>
         <v-container style='#border:5px solid purple;height:79vh;overflow: auto;'>
             <div style='position: relative;display:flex;flex-direction: column;height: 87vh;overflow: auto;'>
-                <main class='main_chat' style='position: relative;' v-for='i in 5' :key='6'>
-                    <section style='#border: 4px solid purple;display: flex;justify-content: flex-end;border-radius: 1rem !important;'>
+                <main class='main_chat' style='position: relative;' v-for='mensaje in mensajes' :key='mensaje.date'>
+                    <section style='#border: 4px solid purple;display: flex;justify-content: flex-end;border-radius: 1rem !important;'  v-if="mensaje.derecha">
                         <section style='#border: 4px solid blue;width: 70%;padding: 1rem;color:white;background-color:#FF8370 ;border-radius: 1rem !important;'>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, voluptate #1
+                            {{mensaje.mensaje}}
                         </section>
-                    </section> <br><br>
-                    <section style='#border: 4px solid purple;display: flex;justify-content: flex-start;border-radius: 1rem !important;'>
+                    </section> 
+                    <section style='#border: 4px solid purple;display: flex;justify-content: flex-start;border-radius: 1rem !important;' v-else>
                         <section style='#border: 4px solid blue;width: 70%;padding: 1rem;background: #505050;color: white;border-radius: 1rem !important;'>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, voluptate #1
+                            {{mensaje.mensaje}}
                         </section>
                     </section>
                 </main>
             </div>
         </v-container>
         <form action="" style='display: flex;align-items: center;#border: 5px solid black;gap:16px;justify-content:center;position: absolute;bottom: 0;width: 100%;padding: 1rem;'>
-            <v-text-field class='mt-5' placeholder="Envia tu mensaje" style='margin-top:2rem !important;' filled rounded dense></v-text-field>
+            <v-text-field class='mt-5' v-model="mensaje" placeholder="Envia tu mensaje" style='margin-top:2rem !important;' filled rounded dense></v-text-field>
             &nbsp;&nbsp;&nbsp;
-            <v-btn fab style='background: #E42256;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);'>
+            <v-btn @click="send()" fab style='background: #E42256;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);'>
                 <v-icon color='white'>
                     mdi-send
                 </v-icon>
@@ -46,50 +46,84 @@
         </form>
     </div>
 </template>
+<script src="http://127.0.0.1:3500/socket.io/socket.io.js"></script>
 <script>
-
+// var socket = io('http://localhost:3500',{ transports : ['websocket'] });
 // import io from 'socket.io-client';
 export default {
     data() {
         return {
-            socket: io(),
+            // socket: io(),
             step: 'nick',
-            nick: null,
-            message: null,
-            messages: []
+            nombre: null,
+            mensaje: null,
+            mensajes: [],
+            nombreRecibe:localStorage.getItem("chatNombre"),
+            linkPerfil:localStorage.getItem("chatLinkPerfil"),
+            usuarioQueRecibe:this.$route.params.usuarioQueRecibe
         }
     },
     methods: {
         send() {
-            this.socket.emit('chat-message', {
-                nick: this.nick,
-                usuarioQueEnvia:1,
-                usuarioQueRecibe:2,
-                message: this.message,
-                date: new Date().getTime()
-            });
-
-            this.message = null;
-        },
-        signIn() {
-            if (!this.nick) {
-                return;
+            let datos={
+                nombre: localStorage.getItem("nombre"),
+                usuarioQueEnvia:localStorage.getItem("idUsuario"),
+                usuarioQueRecibe:this.usuarioQueRecibe,
+                mensaje: this.mensaje,
+                date: new Date().toISOString()
             }
+            this.$socket.emit('send_message', datos);
+            datos.derecha=true
+            this.mensajes.push(datos)
+            this.mensaje = null;
+        },
+        async getMensajes(){
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify( {
+                     idOtroUsuario:this.usuarioQueRecibe,
+                     
+                })
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.mensajes=data
+        },
+        
+    },
+    // props: {
+    //     nombreRecibe: '',
+    //     linkPerfil:null,
+    // },
+    
+    mounted() {
+        // console.log(this.nombreRecibe,this.linkPerfil,this.$route.params);
+        this.$socket.emit('user_connected', {
+            nombre: localStorage.getItem("nombre"),
+            usuarioSesion:localStorage.getItem("idUsuario"),
+            date: new Date().toISOString()
+        });
+        this.getMensajes()
+        // this.$socket.on('new_message', (data) => {
+        //     this.mensajes.push(data);
+        //     console.log(data);
+        //     console.log("a");
+        // });
+    },
+    sockets: {
+        new_message: function (data) {
+            data.derecha=false
+            this.mensajes.push(data);
 
-            this.step = 'chat';
         }
     },
-    mounted() {
-        this.socket.on('chat-message', (msg) => {
-            this.messages.push(msg);
-
-            setTimeout(() => {
-                // scroll to bottom
-                const chatContainer = document.querySelector(".chat-container");
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 10);
-        });
-    }
 }
 </script>
 <style scoped>

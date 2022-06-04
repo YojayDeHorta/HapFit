@@ -57,8 +57,8 @@
                     <main>
                         <v-select :items="planes" v-model="plan" label="Plan" item-text="nombre" return-object  outlined></v-select>
                         <v-select :items="mes_plan" defa v-model="meses" item-text="name" item-value="mes" label="Meses de contratación"  outlined></v-select>
-                        <v-text-field label="No Tarjeta" filled></v-text-field>
-                        <v-text-field label="CVC" filled></v-text-field>
+                        <v-text-field type="number" label="No Tarjeta" filled></v-text-field>
+                        <v-text-field type="number" label="CVC" filled></v-text-field>
                     </main>
                     <main>
                         <section class='text-start mt-3 mb-3'>
@@ -209,18 +209,12 @@ main {
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 1rem;
-    /* #border: 5px solid red !important; */
     /* margin-bottom: 1rem; */
-}
-
-.tabs_post section {
-    #border: 5px solid red;
 }
 
 .img_post {
     width: 45px;
     height: 45px;
-    /* #border: 5px solid purple; */
     border-radius: 50%;
     object-fit: cover !important;
     border: 2px solid white;
@@ -228,6 +222,5 @@ main {
 
 .title_post {
     display: flex;
-    /* #border: 5px solid purple !important; */
 }
 </style>

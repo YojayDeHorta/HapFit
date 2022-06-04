@@ -37,11 +37,18 @@
                 <v-card>
                     <v-card-title class="text-h5 grey lighten-2">
                         Nuevo Plan
+
+                        <v-btn color="primary" text @click="dialog = false" style="position:absolute; right:0;" >
+                            <v-icon style="font-size:2.2rem; color:#E42256;">
+                                mdi-close-circle
+                            </v-icon>
+                        </v-btn>
+
                     </v-card-title>
                     <v-card-text>
                         <br><br>
                         <v-text-field label="Nombre" v-model="plan.nombre" outlined filled></v-text-field>
-                        <v-text-field label="Precio" v-model="plan.precio" outlined filled></v-text-field>
+                        <v-text-field type="number" min="0" label="Precio" v-model="plan.precio" outlined filled></v-text-field>
                         <v-textarea filled name="input-7-4" label="Comentarios" v-model="plan.descripcion"></v-textarea>
                         <v-btn class='btn_registro'  @click="setPlan()"  block rounded x-large>
                             Guardar
@@ -49,12 +56,7 @@
                         <br>
                     </v-card-text>
                     <v-divider></v-divider>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="primary" text @click="dialog = false">
-                            Close
-                        </v-btn>
-                    </v-card-actions>
+                    
                 </v-card>
             </v-dialog>
         </div>
@@ -93,25 +95,46 @@ export default {
             }
             console.log(data);
             this.planes = data
-
-
         },
+        
         async setPlan() {
-            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': localStorage.getItem('token')
-                },
-                body: JSON.stringify( this.plan )
-            })
-            const { data, error } = await res.json()
-            if (error) {
-                console.log(error);
-                return
+            const resul = this.validation();
+            if ( resul == '' ) {
+                const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify( this.plan )
+                })
+                const { data, error } = await res.json()
+                if (error) {
+                    console.log(error);
+                    return
+                }
+                this.plan.nombre = '';
+                this.plan.precio = 0;
+                this.plan.descripcion = '';
+                
+                this.dialog=false
+                this.getPlanes()
             }
-            this.dialog=false
-            this.getPlanes()
+            else {
+                this.$root.vtoast.show({ message: resul });
+            }
+            
+        },
+
+        validation() {
+            let msg = '';
+            if ( this.plan.nombre == '' ) {
+                msg = 'Escriba un nombre';
+            }
+            else if ( this.plan.precio < 0 ) {
+                msg = 'El precio no debe ser negativo';
+            }
+            return msg;
         },
     },
 }
@@ -135,13 +158,10 @@ export default {
 
 .app {
     background-color: rgb(228, 52, 99) !important;
-
 }
 
 
 .Contenido_Card {
-    #border: 5px solid purple;
-    #background: linear-gradient(180deg, #E42256 0%, rgba(228, 34, 86, 0) 100%) !important;
     height: 700px;
     width: 95%;
     margin: auto;
@@ -167,7 +187,6 @@ export default {
     background-color: white !important;
     font-size: 1.3rem;
     position: relative;
-    #left: 1.5rem;
     color: #E42256 !important;
 }
 </style>

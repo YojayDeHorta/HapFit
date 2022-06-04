@@ -116,8 +116,8 @@ export default {
             },
             solicitud: {
                 linkTitulos: null,
-                lugarExp: null,
-                mesesExp: null,
+                lugarExp: '',
+                mesesExp: 0,
                 descripcion: ''
             },
             dialog_solicitud: false
@@ -162,9 +162,12 @@ export default {
                     console.log(error);
                     return
                 }
+                this.solicitud.linkTitulos = null;
+                this.solicitud.lugarExp = '';
+                this.solicitud.mesesExp = 0;
+                this.solicitud.descripcion = '';
+
                 localStorage.setItem("linkPerfil", data)
-
-
             }
             window.location.reload()
         },
@@ -211,8 +214,11 @@ export default {
             else if ( this.solicitud.descripcion == '' ) {
                 msg = 'La descripción es obligatoria';
             }
-            else if ( this.solicitud.descripcion.length > 200 ) {
+            else if ( this.solicitud.descripcion.length > 240 ) {
                 msg = 'superó el numero de palabras máximas';
+            }
+            else if ( this.solicitud.mesesExp < 0 ) {
+                msg = 'El mes no debe ser negativo';
             }
             return msg;
         }
@@ -242,10 +248,6 @@ export default {
     align-items: flex-end;
 }
 
-.card_informacion {
-    #border: 5px solid red !important;
-}
-
 .container_post {
     margin: 0 !important;
     padding: 0 !important;
@@ -265,10 +267,6 @@ main {
     padding: 1rem 1rem 0rem 1rem;
     background-color: rgb(243, 243, 243);
     margin-bottom: 1rem;
-}
-
-main section {
-    #border: 5px solid black !important;
 }
 
 .title_post {

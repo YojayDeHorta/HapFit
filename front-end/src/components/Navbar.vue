@@ -1,7 +1,7 @@
 <template>
     <v-container fluid style='padding: 0 !important;'>
         <v-card class="overflow-hidden" fluid>
-            <v-app-bar style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);' dark elevate-on-scroll  absolute>
+            <v-app-bar style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);' dark elevate-on-scroll absolute>
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
                 <v-spacer></v-spacer>
             </v-app-bar>
@@ -59,6 +59,16 @@
                                 </v-btn>
                             </v-list-item-title>
                         </v-list-item><br>
+                        <v-list-item class='item_sub_text' v-if="usuario.rol=='entrenador'">
+                            <v-list-item-title class='text sub_txt'>
+                                <v-btn to='/planes_entrenador' plain>
+                                    <v-icon>
+                                        mdi-bookmark-box-multiple
+                                    </v-icon>&nbsp;
+                                    <strong>Cartera</strong>
+                                </v-btn>
+                            </v-list-item-title>
+                        </v-list-item><br>
                         <v-container class='salir_item mt-5' @click="cerrarSesion()" fluid>
                             <v-list-item class='item_sub_text'>
                                 <v-list-item-title class='text' style='font-size: 1.4rem;'>
@@ -92,7 +102,6 @@
                 </v-list-item>
                 <v-divider></v-divider>
                 <v-card-actions class='text-center' style='#border:5px solid black !important;display:flex;justify-content:center !important'>
-                   
                     <v-btn color="primary" text @click="enviarSolicitud();" style='#border:5px solid purple;'> Enviar Solicitud </v-btn>
                 </v-card-actions>
             </v-card>
@@ -174,7 +183,7 @@ export default {
         async enviarSolicitud() {
             console.log(this.solicitud.linkTitulos);
             const resul = this.validaciones();
-            if ( resul == '' ) {
+            if (resul == '') {
                 const formData = new FormData();
                 formData.append("archivo", this.solicitud.linkTitulos);
                 formData.append("lugarExp", this.solicitud.lugarExp);
@@ -199,25 +208,21 @@ export default {
                 }
                 this.dialog_solicitud = false
                 this.$root.vtoast.show({ message: 'solicitud enviada' })
-            }
-            else {
+            } else {
                 this.$root.vtoast.show({ message: resul });
             }
         },
 
-        validaciones () {
+        validaciones() {
             const filesTypes = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
             let msg = '';
-            if ( !filesTypes.includes(this.solicitud.linkTitulos.type) ) {
+            if (!filesTypes.includes(this.solicitud.linkTitulos.type)) {
                 msg = 'formato no soportado';
-            }
-            else if ( this.solicitud.descripcion == '' ) {
+            } else if (this.solicitud.descripcion == '') {
                 msg = 'La descripción es obligatoria';
-            }
-            else if ( this.solicitud.descripcion.length > 240 ) {
+            } else if (this.solicitud.descripcion.length > 240) {
                 msg = 'superó el numero de palabras máximas';
-            }
-            else if ( this.solicitud.mesesExp < 0 ) {
+            } else if (this.solicitud.mesesExp < 0) {
                 msg = 'El mes no debe ser negativo';
             }
             return msg;

@@ -5,27 +5,32 @@
                 <h3 class='mt-5 mb-5'>Tus Rutinas</h3>
                 <main v-for='rutina in rutinas' :key="rutina.idRutina"  style='#border:5px solid black;width:100% !important;'>
                     <v-card class='Tarjeta' style='padding:1rem' @click="goRutinasEntrenador(rutina.idRutina)" fluid>
-                        <p>
+                        <p class='text-start'>
                             <v-icon class='check_icon' style='color:green !important;font-size:2rem !important'>
                                 mdi-weight-lifter
                             </v-icon>
                         </p>
                         <p>
-                            <strong>{{rutina.nombre}}</strong>
+                            <strong style='text-transform:capitalize !important'>{{rutina.nombre}}</strong>
+                        </p>
+                        <p class='text-end'>
+                           <v-icon>
+                               mdi-delete
+                           </v-icon> 
                         </p>
                     </v-card>
                 </main>
                 <main style='#border:5px solid black;width:100% !important;' v-if="!rutinas[0]&&!loading">
                     <v-card class='Tarjeta' style='padding:1rem' fluid>
                         <p>
-                            <strong>no tienes rutinas</strong>
+                            <strong style='text-transform:capitalize'>no tienes rutinas</strong>
                         </p>
                     </v-card>
                 </main>
                 <main>
                      <div v-if="loading" class="d-flex  justify-center mb-10 ">
                         <v-progress-circular :size="70" :width="7" color="red"  indeterminate ></v-progress-circular>
-                        <h3 class="mt-5 ml-5">cargando rutinas...</h3> 
+                        <h3 class="mt-5 ml-5" style='text-transform:capitalize'>cargando rutinas...</h3> 
                     </div>
                 </main>
             </v-col>
@@ -39,7 +44,7 @@
                             </v-icon>
                         </p>
                         <p>
-                            <strong>{{rutina.nombre}}</strong>
+                            <strong style='text-transform:capitalize'>{{rutina.nombre}}</strong>
                         </p>
                     </v-card>
                 </main>
@@ -110,7 +115,7 @@ export default {
     #border: 5px solid red !important;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 
 }
 

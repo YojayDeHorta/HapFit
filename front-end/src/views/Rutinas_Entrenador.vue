@@ -10,30 +10,34 @@
                     </v-btn>
                 </v-app-bar-nav-icon>
             </v-app-bar>
+            <h1>{{nombreRutina}}</h1>
             <div class='container_Rutinas' style='padding: 0rem;'>
-                <v-card class='card_rutinas' elevation='1' style='border-radius: 0;padding: 0 !important;'>
-                    <h1>Tren Inferior</h1>
+                <v-card class='card_rutinas' v-for="ejercicio in ejercicios" :key="ejercicio.idEjercicio" elevation='1' style='border-radius: 0;padding: 0 !important;'>
+                    
                     <main>
                         <section>
-                            <img src="@/assets/sentadilla_frontal.jpg" alt="" width="100%">
+                            <img :src="ejercicio.linkEjercicio" alt="" width="100%">
                         </section>
                         <section>
-                            <h2 class='text-center mt-2 mb-5'>Sentadilla Frontal</h2>
+                            <h2 class='text-center mt-2 mb-5'> {{ejercicio.nombre}}</h2>
+                            <h2 class='text-center mt-2 mb-5'>musculo a entrenar {{ejercicio.nombreMusculo}}</h2>
                         </section>
                         <section>
                             <p class='mt-5 mb-2' style='display:flex;justify-content:space-around;'>
-                                <small class='small_txt' style='color:#E42256'>15 Resps</small>
-                                <small class='small_txt' style='color:#FEC84D'>10 Sets</small>
-                                <small class='small_txt' style='color:#00B1B0'>1 Min</small>
+                                <small class='small_txt' style='color:#E42256' v-if="ejercicio.repeticiones">{{ejercicio.repeticiones}} Reps</small>
+                                <small class='small_txt' style='color:#E42256' v-if="ejercicio.tiempo">{{ejercicio.tiempo}} Reps</small>
+                                <small class='small_txt' style='color:#FEC84D'>{{ejercicio.sets}} Sets</small>
+                                <small class='small_txt' style='color:#00B1B0'>descanso {{ejercicio.tiempo}} segs</small>
                             </p>
                         </section>
                         <section>
                             <p class='text-center p-0' style='margin:0 !important;padding:1rem'>
-                                Lorem, ipsum dolor sit amet consectetur adipisicing, elit. Magni asperiores dolores cum harum nostrum.
+                               {{ejercicio.descripcion}}
+                               
                             </p>
                         </section>
                     </main>
-                    <main>
+                    <!-- <main>
                         <section>
                             <img src="@/assets/zancadas.jpg" alt="" width="100%">
                         </section>
@@ -52,12 +56,50 @@
                                 Lorem, ipsum dolor sit amet consectetur adipisicing, elit. Magni asperiores dolores cum harum nostrum.
                             </p>
                         </section>
-                    </main>
+                    </main> -->
                 </v-card>
             </div>
         </div>
     </v-container>
 </template>
+<script>
+
+export default {
+    data() {
+        return {
+            dialog: false,
+            ejercicios:[],
+            nombreRutina:''
+        }
+    },
+    components:{
+       
+    },
+    created() {
+        console.log(this.$route.params.idRutina);
+        this.getEjerciciosInRutinas()
+    },
+    methods: {
+        async getEjerciciosInRutinas() {
+
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/exercise/getEjercicioRutina/'+this.$route.params.idRutina, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                }
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.ejercicios = data
+            this.nombreRutina=this.ejercicios[0].nombreRutina
+        },
+    },
+}
+</script>
 <style scoped>
 .btn_flecha {
     background-color: transparent !important;
@@ -129,20 +171,3 @@ form section {
 }
 
 </style>
-<script>
-
-   
-
-
-
-export default {
-    data() {
-        return {
-            dialog: false,
-        }
-    },
-    components:{
-       
-    }
-}
-</script>

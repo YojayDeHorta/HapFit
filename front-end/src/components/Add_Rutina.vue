@@ -19,10 +19,10 @@
                         <v-list-item>
                             <v-list-item-content>
                                 <main class='add_input' style='width: 100%; #border:5px solid red !important'>
-                                    <input type="text" placeholder="Nombre de la rutina" style='background-color: rgb(255, 255, 255);width: 80%;'>
-                                    <v-btn class="ml-1" light>
+                                    <input type="text" v-model="nombreRutina" placeholder="Nombre de la rutina" style='background-color: rgb(255, 255, 255);width: 80%;'>
+                                    <v-btn class="ml-1" light :disabled="nombreRutina&&ejerciciosGuardados[0]? false :true" @click="guardarRutina()">
                                         
-                                        <v-icon style='background-color: transparent !important;color:#E42256 !important' plain>
+                                        <v-icon style='background-color: transparent !important;color:#E42256 !important'   plain>
                                             mdi-content-save
                                         </v-icon>
                                     </v-btn>
@@ -170,7 +170,8 @@ export default {
                 publico: 0,
             },
             ejercicios: [],
-            ejerciciosGuardados: []
+            ejerciciosGuardados: [],
+            nombreRutina:'',
         }
 
     },
@@ -254,8 +255,28 @@ export default {
             this.ejercicios = data
         },
         async guardarRutina() {
-
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/routine/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify( {
+                     descripcion:null,
+                     nombre:this.nombreRutina,
+                     idEjercicio:this.ejerciciosGuardados
+                })
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.$root.vtoast.show({ message: data });
+            this.$emit('close')
+            this.dialog=false
         }
+
 
 
     },

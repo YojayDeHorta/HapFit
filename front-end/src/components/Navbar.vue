@@ -23,7 +23,7 @@
                             <v-list-item-title class='text' style='text-align: center;font-size:1.1rem; font-weight: bold !important; font-size: 1.4em; padding: 5px !important;'>{{usuario.nombre}}</v-list-item-title>
                         </v-list-item>
                         <hr><br>
-                        <v-list-item class='item_sub_text'>
+                        <!-- <v-list-item class='item_sub_text'>
                             <v-list-item-title class='text sub_txt'>
                                 <v-btn to='/rutinas_entrenador' plain>
                                     <v-icon>
@@ -32,7 +32,7 @@
                                     <strong>Rutinas</strong>
                                 </v-btn>
                             </v-list-item-title>
-                        </v-list-item>
+                        </v-list-item> -->
                         <v-list-item class='item_sub_text'>
                             <v-list-item-title class='text sub_txt'>
                                 <v-icon>

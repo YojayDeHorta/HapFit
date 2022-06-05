@@ -95,7 +95,7 @@ exports.getEjercicioRutina = async (req, res) => {
 				let ejercicio = await query(
 					`SELECT * FROM ejercicio WHERE idEjercicio LIKE '%${ejercicio_rutina[j].Ejercicio_idEjercicio}%';`
 				);
-				console.log('Exercise: ', ejercicio);
+				// console.log('Exercise: ', ejercicio);
 
 				let ejercicioMusculo = await query(
 					`SELECT * FROM ejercicio_has_musculo WHERE Ejercicio_idEjercicio LIKE '%${ejercicio[0].idEjercicio}%';`
@@ -105,6 +105,7 @@ exports.getEjercicioRutina = async (req, res) => {
 						`SELECT * FROM musculo WHERE idMusculo LIKE '%${ejercicioMusculo[0].Musculo_idMusculo}%';`
 					);
 					ejercicio[0].nombreMusculo = musculo[0].nombre;
+					ejercicio[0].nombreRutina=rutina[0].nombre
 				}
 				data.push(ejercicio[0]);
 			}

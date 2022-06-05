@@ -3,38 +3,78 @@
         <v-row style='padding:15px !important; height: 605px !important;overflow: auto;'>
             <v-col cols='12'>
                 <h3 class='mt-5 mb-5'>Tus Rutinas</h3>
-                <main style='#border:5px solid black;width:100% !important;'>
-                    <v-card class='Tarjeta' style='padding:1rem' fluid>
+                <main v-for='rutina in rutinas' :key="rutina.idRutina"  style='#border:5px solid black;width:100% !important;'>
+                    <v-card class='Tarjeta' style='padding:1rem' @click="goRutinasEntrenador(rutina.idRutina)" fluid>
                         <p>
                             <v-icon class='check_icon' style='color:green !important;font-size:2rem !important'>
                                 mdi-weight-lifter
                             </v-icon>
                         </p>
                         <p>
-                            <strong>Torso</strong>
+                            <strong>{{rutina.nombre}}</strong>
                         </p>
                     </v-card>
                 </main>
             </v-col>
-            <v-col cols='12'>
+            <v-col cols='12' v-if="rutinasEntrenador[0]">
                 <h3 class='mt-5 mb-5'>Rutinas del Entrenador</h3>
-                <main v-for='i in 5' :key="i" style='#border:5px solid black;width:100% !important;'>
-                    <v-card class='Tarjeta' style='padding:1rem' fluid>
+                <main v-for='rutina in rutinasEntrenador'  :key="rutina.idRutina" style='#border:5px solid black;width:100% !important;'>
+                    <v-card class='Tarjeta'  @click="goRutinasEntrenador(rutina.idRutina)" style='padding:1rem' fluid>
                         <p>
                             <v-icon class='check_icon' style='color:green !important;font-size:2rem !important'>
                                 mdi-weight-lifter
                             </v-icon>
                         </p>
                         <p>
-                            <strong>Torso</strong>
+                            <strong>{{rutina.nombre}}</strong>
                         </p>
                     </v-card>
                 </main>
             </v-col>
         </v-row>
-        <plus_rutinas class='add_rutinas' />
+        <plus_rutinas class='add_rutinas' @close="getRutinas()"/>
     </v-container>
 </template>
+<script>
+import plus_rutinas from '../components/Add_Rutina'
+export default {
+
+    components: {
+        plus_rutinas
+    },
+    data() {
+        return {
+            rutinas:[],
+            rutinasEntrenador:[]
+        }
+    },
+    created() {
+        this.getRutinas()
+    },
+    methods: {
+        async getRutinas() {
+
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/routine/get', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                }
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.rutinas = data
+        },
+        goRutinasEntrenador(idRutina){
+            this.$router.push({ name: 'rutinas_entrenador', params: { idRutina: idRutina} })
+        }
+    },
+
+}
+</script>
 <style scoped>
 .container_post {
     margin: 0 !important;
@@ -113,13 +153,3 @@ main {
     margin-left: -1.2rem;
 }
 </style>
-<script>
-import plus_rutinas from '../components/Add_Rutina'
-export default {
-
-    components: {
-        plus_rutinas
-    }
-
-}
-</script>

@@ -29,7 +29,7 @@ exports.add = async (req, res) => {
 			);
 		});
 
-		res.json({ error: null, data: 'ok' });
+		res.json({ error: null, data: 'rutina agregada exitosamente' });
 	} catch (error) {
 		console.log(error);
 		return res.status(400).json({ error: 'Error interno del servidor' });
@@ -38,7 +38,7 @@ exports.add = async (req, res) => {
 
 exports.get = async (req, res) => {
 	try {
-		console.log(req.usuario.id);
+		// console.log(req.usuario.id);
 		let data = [];
 		const rutina = await query(
 			`SELECT * FROM rutinas WHERE Usuario_idUsuario LIKE '%${req.usuario.id}%';`

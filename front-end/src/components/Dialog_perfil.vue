@@ -187,7 +187,7 @@ export default {
             return `${date.getDate()} de ${mesActual} del ${date.getFullYear()}`;
         },
         goChat(){
-           console.log(this.datos);
+        //    console.log(this.datos);
             this.$router.push({ name: 'chat_usuario', params: { usuarioQueRecibe: this.datos.idUsuario },props: { nombreRecibe: this.datos.nombre,linkPerfil: this.datos.linkPerfil } })
             // this.$router.push({ name: 'chat_usuario', params: { usuarioQueRecibe: this.datos.idUsuario },props: { nombreRecibe: this.datos.nombre,linkPerfil: this.datos.linkPerfil } })
             localStorage.setItem('chatNombre',this.datos.nombre)

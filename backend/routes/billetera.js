@@ -4,6 +4,7 @@ const validarTodo = require('../middlewares/validate-all');
 
 router.post('/add', validarTodo, billeteraController.add);
 router.post('/update', validarTodo, billeteraController.update);
+router.get('/solicitud', validarTodo, billeteraController.setSolicitud);
 router.get('/get', validarTodo, billeteraController.get);
 
 module.exports = router;

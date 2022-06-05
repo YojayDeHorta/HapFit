@@ -52,7 +52,7 @@ exports.getEntrenadores = async (req, res) => {
             const entrenador = await query(`SELECT * FROM entrenador WHERE Usuario_idUsuario = ${usuarios[i].idUsuario}`);
             if (entrenador[0]) {
                 let suscrito = await query(`SELECT * FROM suscripcion WHERE Cliente_idCliente = ${req.usuario.idCliente} and Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
-                console.log(entrenador);
+                // console.log(entrenador);
                 if (!suscrito[0]) {
                     usuarios[i].idEntrenador=entrenador[0].idEntrenador
                     entrenadores.push(usuarios[i])
@@ -60,7 +60,7 @@ exports.getEntrenadores = async (req, res) => {
             }
             
         }
-        console.log(entrenadores);
+        // console.log(entrenadores);
         /*
         let suscripciones=[]
         suscripciones = await query(`SELECT * FROM suscripcion WHERE Cliente_idCliente != ${req.usuario.idCliente};`);

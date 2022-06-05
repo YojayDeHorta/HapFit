@@ -61,7 +61,11 @@ exports.aceptarSolicitud= async (req, res) => {
         const savedEntrenador = await query(`INSERT INTO entrenador (linkTitulos,Usuario_idUsuario) VALUES ('${req.body.linkTitulos}',${Cliente[0].Usuario_idUsuario});`);
 
         await query(`DELETE FROM cliente WHERE idCliente= ${req.body.idCliente}`);
-
+        
+        const billetera = await query(
+                `INSERT INTO billetera (idEntrenador,saldo,correoPayPal) VALUES
+                 ('${savedEntrenador.insertId}',0,null);`
+        );
         res.json({ error: null, data: 'cliente cambiado a entrenador exitosamente' })
 
 	} catch (error) {

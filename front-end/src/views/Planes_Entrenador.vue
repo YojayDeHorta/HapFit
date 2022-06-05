@@ -15,7 +15,7 @@
                 <main style='text-transform:capitalize'>
                     <section style='display:flex;justify-content:space-between'>
                           <h2>{{plan.nombre}}</h2>
-                          <v-icon>
+                          <v-icon @click="deletePlan(plan.idPlan)">
                               mdi-delete
                           </v-icon>
                     </section>
@@ -63,7 +63,7 @@
                         <v-text-field label="Nombre" v-model="plan.nombre" outlined filled></v-text-field>
                         <v-text-field type="number" min="0" label="Precio" v-model="plan.precio" outlined filled></v-text-field>
                         <v-textarea filled name="input-7-4" label="Comentarios" v-model="plan.descripcion"></v-textarea>
-                        <v-btn class='btn_registro'  @click="setPlan()"  block rounded x-large>
+                        <v-btn class='btn_registro'  @click="setPlan()" :loading="loadingButton" block rounded x-large>
                             Guardar
                         </v-btn>
                         <br>
@@ -87,7 +87,8 @@ export default {
                 precio:0,
                 descripcion:"",
             },
-            loading:false
+            loading:false,
+            loadingButton:false
         }
     },
     created() {
@@ -113,6 +114,7 @@ export default {
         },
         
         async setPlan() {
+            this.loadingButton=true
             const resul = this.validation();
             if ( resul == '' ) {
                 const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes', {
@@ -131,7 +133,7 @@ export default {
                 this.plan.nombre = '';
                 this.plan.precio = 0;
                 this.plan.descripcion = '';
-                
+                this.loadingButton=false
                 this.dialog=false
                 this.getPlanes()
             }
@@ -140,7 +142,24 @@ export default {
             }
             
         },
-
+        async deletePlan(id) {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify({ idPlan: id })
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.$root.vtoast.show({ message: 'borrado exitosamente!' })
+            this.getPlanes()
+            // console.log('a');
+        },
         validation() {
             let msg = '';
             if ( this.plan.nombre == '' ) {

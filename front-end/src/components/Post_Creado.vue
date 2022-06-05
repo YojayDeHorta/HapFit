@@ -4,11 +4,18 @@
             <v-card-text class="d-flex justify-end">
                 <v-textarea solo flat height="70px" v-model="descripcion" label="escribe aca tu post..." :no-resize="true">
                 </v-textarea>
+                 
                 <v-btn icon class="mt-15" @click="publicarPost()">
                     <v-icon>mdi-send</v-icon>
                 </v-btn>
+                
             </v-card-text>
+            
         </v-card>
+        <v-select :items="rutinas" v-model="rutina" item-text="nombre" item-value="idRutina" label="seleccione la rutina" outlined></v-select>
+        <!-- <v-btn  @click="publicarPost()">
+            compartir rutina
+        </v-btn> -->
         <h3>tus post:</h3>
         <v-card class='card_post mb-5' elevation='3'>
             <div v-if="loading" class="d-flex  justify-center mb-10 ">
@@ -25,7 +32,7 @@
                         <p style='margin-right: 2rem'>
                             {{publicacion.nombre}}
                         </p>
-                          
+                         
                         
                         <!--
                         <modal_perfil>
@@ -45,6 +52,8 @@
                 </section>
                 <section class='text-left mt-5'>
                     <p>{{publicacion.descripcion}} </p>
+                    <!-- rutinas -->
+                     <h1 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)">{{publicacion.nombreRutina}}</h1>
                 </section>
                 <section class='icon_post mt-5'>
                     <p style='display: flex;' class="mt-2">
@@ -81,7 +90,9 @@ export default {
         return {
             post: [],
             descripcion: '',
-            loading:false
+            loading:false,
+            rutinas:[],
+            rutina:null
         }
     },
     created() {
@@ -105,6 +116,7 @@ export default {
                 return
             }
             this.post = data
+            this.getRutinas()
         },
         async publicarPost() {
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/post/', {
@@ -113,7 +125,7 @@ export default {
                     'Content-Type': 'application/json',
                     'auth-token': localStorage.getItem('token')
                 },
-                body: JSON.stringify({ descripcion: this.descripcion })
+                body: JSON.stringify({ descripcion: this.descripcion,idRutina:this.rutina })
             })
             const { data, error } = await res.json()
             if (error) {
@@ -160,6 +172,33 @@ export default {
 
             this.getPost()
 
+        },
+        async getRutinas() {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/routine/get', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                }
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                this.rutinas = []
+                console.log(error);
+                return
+            }
+            this.rutinas.push({
+                idRutina:null,
+                nombre:"sin rutina"
+            }) 
+            data.forEach(element => 
+                this.rutinas.push(element)
+            );
+            // this.rutinas = data
+            
+        },
+        goRutinasEntrenador(idRutina){
+            this.$router.push("/rutinas_entrenador/"+idRutina)
         }
     },
 }

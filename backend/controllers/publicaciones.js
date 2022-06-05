@@ -14,7 +14,7 @@ const schemaComentario = Joi.object({
 });
 exports.getPublicacion = async (req, res) => {
 	try {
-		const data = await query(`SELECT * FROM publicacion order by idPublicacion;`);
+		const data = await query(`SELECT * FROM publicacion order by idPublicacion desc;`);
 		
 		for (let i = 0; i < data.length; i++) {
 			const usuario = await query(
@@ -55,7 +55,12 @@ exports.getPublicacion = async (req, res) => {
 				data[i].likes = likes[0]['COUNT(*)'];
 				data[i].comented = comented[0]['COUNT(*)'];
 			}
-		}
+			//ver rutinas
+			const rutina = await query(`SELECT * FROM rutinas WHERE idRutina = ${data[i].Rutinas_idtable1}`);
+			if (rutina[0]) {
+				data[i].nombreRutina=rutina[0].nombre
+			}
+		}	
 		res.json({ error: null, data: data });
 	} catch (error) {
 		console.log(error);
@@ -66,13 +71,10 @@ exports.addPublicacion = async (req, res) => {
 	try {
 		const { error } = schemaPublicacion.validate(req.body);
 		if (error) return res.status(400).json({ error: 'error de publicacion' });
-		if (!req.body.idRutina) {
-			const data = await query(
-				`INSERT INTO publicacion (descripcion,Usuario_idUsuario) VALUES ('${req.body.descripcion}',${req.usuario.id});`
-			);
-		} else {
-			//en proceso
-		}
+		const data = await query(
+			`INSERT INTO publicacion (descripcion,Usuario_idUsuario,Rutinas_idtable1) VALUES ('${req.body.descripcion}',${req.usuario.id},${req.body.idRutina});`
+		);
+
 
 		res.json({ error: null, data: 'ok' });
 	} catch (error) {
@@ -104,6 +106,10 @@ exports.getPublicacionBySesion = async (req, res) => {
 				data[i].linkPerfil = usuario[0].linkPerfil;
 				data[i].likes = likes[0]['COUNT(*)'];
 			}
+			const rutina = await query(`SELECT * FROM rutinas WHERE idRutina = ${data[i].Rutinas_idtable1}`);
+			if (rutina[0]) {
+				data[i].nombreRutina=rutina[0].nombre
+			}
 		}
 		res.json({ error: null, data: data });
 	} catch (error) {
@@ -134,6 +140,10 @@ exports.getPublicacionByUser = async (req, res) => {
 				data[i].nombre = usuario[0].nombre;
 				data[i].linkPerfil = usuario[0].linkPerfil;
 				data[i].likes = likes[0]['COUNT(*)'];
+			}
+			const rutina = await query(`SELECT * FROM rutinas WHERE idRutina = ${data[i].Rutinas_idtable1}`);
+			if (rutina[0]) {
+				data[i].nombreRutina=rutina[0].nombre
 			}
 		}
 		res.json({ error: null, data: data });

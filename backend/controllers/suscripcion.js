@@ -5,10 +5,21 @@ const query = util.promisify(connection.query).bind(connection);
 
 exports.setSuscripcion= async (req, res) => {
 	try {
+        let billetera = await query(
+                `SELECT * FROM billetera  WHERE idEntrenador = ${req.body.idEntrenador};`
+        );
+        if (!billetera[0]) {
+                return res.status(400).json({ error: 'Error de suscripcion' });
+        }
+
         const setSuscripcion = await query(
             `INSERT INTO suscripcion  (precio,fechaInicio,fechaFinal,Entrenador_idEntrenador,Cliente_idCliente,Plan_idPlan) VALUES (
            ${req.body.precio},'${req.body.fechaInicio}','${req.body.fechaFinal}','${req.body.idEntrenador}','${req.usuario.idCliente}','${req.body.idPlan}');`
             )
+            let total=(req.body.precio*0.8)+billetera[0].saldo
+        const actulizacion = await query(
+                `UPDATE billetera SET saldo = '${total}' WHERE idBilletera='${billetera[0].idBilletera}';`
+        );
         res.json({ error: null, data: "Plan comprado exitosamente!" })
 
 	} catch (error) {

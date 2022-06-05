@@ -39,7 +39,7 @@
                 </main>
             </v-col>
         </v-row>
-       <modal_perfil :dialogPerfil="dialogPerfil" @close="dialogPerfil=false" :datos="datosActuales"/>
+       <modal_perfil :dialogPerfil="dialogPerfil" @close="dialogPerfil=false;getEntrenadoresContratados();getEntrenadores()" :datos="datosActuales"/>
     </v-container>
 </template>
 <script>
@@ -65,8 +65,8 @@ export default {
         this.getEntrenadoresContratados()
     },
     methods: {
-         async getEntrenadores(nombre) {
-
+         async getEntrenadores() {
+            this.entrenadores=[]
             const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/user/trainers', {
                 method: 'GET',
                 headers: {
@@ -85,6 +85,7 @@ export default {
         },
         async getEntrenadoresContratados() {
             this.loading=true
+            this.contratados=[]
             const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/suscripcion/entrenadores', {
                 method: 'GET',
                 headers: {

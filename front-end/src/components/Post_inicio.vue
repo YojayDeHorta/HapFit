@@ -84,7 +84,7 @@ export default {
                 return 
             }
             this.post=data
-            console.log(data);    
+            // console.log(data);    
             this.loading=false
             
         },
@@ -114,6 +114,7 @@ export default {
             console.log("llego aca");
         },
         redirectPerfil(publicacion){
+            if (publicacion.Usuario_idUsuario==localStorage.getItem('idUsuario')) return
             this.datosActuales=publicacion;
             this.datosActuales.idUsuario=publicacion.Usuario_idUsuario;
             this.dialogPerfil=true

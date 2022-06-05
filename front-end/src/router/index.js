@@ -37,7 +37,7 @@ const routes = [{
         component: () => import( /* webpackChunkName: "about" */ '../components/Navbar.vue')
     },
     {
-        path: '/rutinas_entrenador',
+        path: '/rutinas_entrenador/:idRutina',
         name: 'rutinas_entrenador',
         component: () => import( /* webpackChunkName: "about" */ '../views/Rutinas_Entrenador.vue')
     },

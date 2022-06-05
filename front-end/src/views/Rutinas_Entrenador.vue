@@ -10,8 +10,9 @@
                     </v-btn>
                 </v-app-bar-nav-icon>
             </v-app-bar>
-            <h1>{{nombreRutina}}</h1>
+            
             <div class='container_Rutinas' style='padding: 0rem;'>
+                <h1>{{nombreRutina}}</h1>
                 <v-card class='card_rutinas' v-for="ejercicio in ejercicios" :key="ejercicio.idEjercicio" elevation='1' style='border-radius: 0;padding: 0 !important;'>
                     
                     <main>
@@ -37,28 +38,18 @@
                             </p>
                         </section>
                     </main>
-                    <!-- <main>
-                        <section>
-                            <img src="@/assets/zancadas.jpg" alt="" width="100%">
-                        </section>
-                        <section>
-                            <h2 class='text-center mt-2 mb-5'>Zancadas</h2>
-                        </section>
-                        <section>
-                            <p class='mt-5 mb-2' style='display:flex;justify-content:space-around;'>
-                                <small class='small_txt' style='color:#E42256'>20 Resps</small>
-                                <small class='small_txt' style='color:#FEC84D'>10 Sets</small>
-                                <small class='small_txt' style='color:#00B1B0'>0 Min</small>
-                            </p>
-                        </section>
-                        <section>
-                            <p class='text-center p-0' style='margin:0 !important;padding:1rem'>
-                                Lorem, ipsum dolor sit amet consectetur adipisicing, elit. Magni asperiores dolores cum harum nostrum.
-                            </p>
-                        </section>
-                    </main> -->
                 </v-card>
+                <div v-if="!loading&&!ejercicios[0]">
+                    <v-card>
+                        no hay ejercicios disponibles
+                    </v-card>
+                </div>
+                <div v-if="loading" class="d-flex  justify-center mb-10 ">
+                        <v-progress-circular :size="70" :width="7" color="blue"  indeterminate ></v-progress-circular>
+                        <h3 class="mt-5 ml-5">cargando ejercicios...</h3> 
+                </div>
             </div>
+            
         </div>
     </v-container>
 </template>
@@ -69,7 +60,8 @@ export default {
         return {
             dialog: false,
             ejercicios:[],
-            nombreRutina:''
+            nombreRutina:'',
+            loading:false
         }
     },
     components:{
@@ -81,7 +73,7 @@ export default {
     },
     methods: {
         async getEjerciciosInRutinas() {
-
+            this.loading=true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/exercise/getEjercicioRutina/'+this.$route.params.idRutina, {
                 method: 'GET',
                 headers: {
@@ -90,12 +82,14 @@ export default {
                 }
             })
             const { data, error } = await res.json()
+            this.loading=false
             if (error) {
                 console.log(error);
                 return
             }
             this.ejercicios = data
             this.nombreRutina=this.ejercicios[0].nombreRutina
+            this.loading=false
         },
     },
 }

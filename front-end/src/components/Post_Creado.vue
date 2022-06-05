@@ -9,6 +9,13 @@
                 </v-btn>
             </v-card-text>
         </v-card>
+        <h3>tus post:</h3>
+        <v-card class='card_post mb-5' elevation='3'>
+            <div v-if="loading" class="d-flex  justify-center mb-10 ">
+                <v-progress-circular :size="70" :width="7" color="red"  indeterminate ></v-progress-circular>
+                <h3 class="mt-5 ml-5">cargando publicaciones...</h3> 
+            </div>
+        </v-card>
         <v-card v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" class='card_post mb-5' elevation='3'>
             <main elevation='4'>
                 <section class='title_post'>
@@ -52,6 +59,12 @@
                 </section>
             </main>
         </v-card>
+        
+        <v-card class='card_post mb-5' elevation='3'>
+            <div v-if="!loading&&!post[0]" class="d-flex  justify-center mb-10 ">
+                <h4 class="mt-5 ml-5">no has creado ninguna publicacion</h4> 
+            </div>
+        </v-card>
     </v-container>
 </template>
 <script>
@@ -68,6 +81,7 @@ export default {
         return {
             post: [],
             descripcion: '',
+            loading:false
         }
     },
     created() {
@@ -75,7 +89,8 @@ export default {
     },
     methods: {
         async getPost() {
-
+            this.post=[]
+            this.loading=true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/post/user', {
                 method: 'GET',
                 headers: {
@@ -83,6 +98,7 @@ export default {
                     'auth-token': localStorage.getItem('token')
                 }
             })
+            this.loading=false
             const { data, error } = await res.json()
             if (error) {
                 console.log(error);

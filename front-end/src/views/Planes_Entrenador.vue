@@ -18,12 +18,19 @@
                       <p style='text-align: end;'><strong>$ {{plan.precio}} mensual</strong></p>
                 </main>
             </v-card>
-            <v-card class='card' v-if="!planes[0]">
+            <v-card class='card' v-if="!planes[0]&&!loading">
                 <main>
                       <h4 > no hay planes disponibles</h4>
 
                 </main>
             </v-card>
+            <v-card>
+                <div v-if="loading" class="d-flex  justify-center mb-10 ">
+                    <v-progress-circular :size="50" :width="7" color="red"  class="mb-5 mt-5" indeterminate ></v-progress-circular>
+                    <h3 class="mt-5 ml-5">cargando planes...</h3> 
+                </div>
+            </v-card>
+                    
         </div>
         <div class="text-center">
             <v-dialog v-model="dialog" width="500">
@@ -73,7 +80,8 @@ export default {
                 nombre:"",
                 precio:0,
                 descripcion:"",
-            }
+            },
+            loading:false
         }
     },
     created() {
@@ -81,6 +89,7 @@ export default {
     },
     methods: {
         async getPlanes() {
+            this.loading=true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes/0', {
                 method: 'GET',
                 headers: {
@@ -89,11 +98,11 @@ export default {
                 }
             })
             const { data, error } = await res.json()
+            this.loading=false
             if (error) {
                 console.log(error);
                 return
             }
-            console.log(data);
             this.planes = data
         },
         

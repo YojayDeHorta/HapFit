@@ -51,11 +51,10 @@
                                             <!-- si es entrenador -->
                                             <clientes />
                                         </v-tab-item>
-                                        <v-tab-item style='' v-if="usuario.rol=='cliente'">
+                                        <v-tab-item style='' >
                                             <rutinas />
                                         </v-tab-item>
-                                        <v-tab-item style='' v-else>
-                                            <!-- si es entrenador -->
+                                        <!-- <v-tab-item style='' v-else>
                                             <main class='rutinas mt-5'>
                                                 <v-card class='rutinas_entrenador'>
                                                     <p>
@@ -82,7 +81,7 @@
                                                     </p>
                                                 </v-card>
                                             </main>
-                                        </v-tab-item>
+                                        </v-tab-item> -->
                                     </v-tabs-items>
                                 </v-card>
                             </v-col>

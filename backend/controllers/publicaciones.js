@@ -14,10 +14,11 @@ const schemaComentario = Joi.object({
 });
 exports.getPublicacion = async (req, res) => {
 	try {
-		const data = await query(`SELECT * FROM publicacion;`);
+		const data = await query(`SELECT * FROM publicacion order by idPublicacion;`);
+		
 		for (let i = 0; i < data.length; i++) {
 			const usuario = await query(
-				`SELECT * FROM usuario WHERE usuario.idUsuario LIKE '%${data[i].Usuario_idUsuario}%';`
+				`SELECT * FROM usuario WHERE usuario.idUsuario LIKE '%${data[i].Usuario_idUsuario}%' ;`
 			);
 			//likes totales
 			const likes = await query(

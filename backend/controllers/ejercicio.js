@@ -79,7 +79,8 @@ exports.getEjercicioRutina = async (req, res) => {
 		const data = [];
 
 		const rutina = await query(
-			`SELECT * FROM rutinas WHERE Usuario_idUsuario LIKE '%${req.usuario.id}%' AND idRutina LIKE '%${idRutina}%';`
+			`SELECT * FROM rutinas WHERE  idRutina LIKE '%${idRutina}%';`
+			// `SELECT * FROM rutinas WHERE Usuario_idUsuario LIKE '%${req.usuario.id}%' AND idRutina LIKE '%${idRutina}%';`
 		);
 
 		if (!rutina[0])

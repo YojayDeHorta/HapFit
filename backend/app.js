@@ -26,6 +26,7 @@ const authExercise = require('./routes/ejercicio');
 const authRoutine = require('./routes/rutina');
 const authSuscripcion = require('./routes/suscripcion');
 const authChat = require('./routes/chat');
+const authBilletera = require('./routes/billetera');
 
 // route middlewares
 app.use('/api/user', authRoutes);
@@ -37,6 +38,7 @@ app.use('/api/exercise', authExercise);
 app.use('/api/routine', authRoutine);
 app.use('/api/suscripcion', authSuscripcion);
 app.use('/api/chat', authChat);
+app.use('/api/billetera', authBilletera);
 
 //modo history de vue
 const history = require('connect-history-api-fallback');

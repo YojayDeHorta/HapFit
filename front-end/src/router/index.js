@@ -53,6 +53,14 @@ const routes = [{
         props: true,
 
     },
+        {
+        path: '/wallet',
+        name: 'wallet',
+        component: () => import( /* webpackChunkName: "about" */ '../views/Wallet.vue'),
+        props: true,
+
+    },
+
 
 ]
 

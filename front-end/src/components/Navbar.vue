@@ -61,9 +61,9 @@
                         </v-list-item><br>
                         <v-list-item class='item_sub_text' v-if="usuario.rol=='entrenador'">
                             <v-list-item-title class='text sub_txt'>
-                                <v-btn to='/planes_entrenador' plain>
+                                <v-btn to='/wallet' plain>
                                     <v-icon>
-                                        mdi-bookmark-box-multiple
+                                        mdi-wallet
                                     </v-icon>&nbsp;
                                     <strong>Cartera</strong>
                                 </v-btn>

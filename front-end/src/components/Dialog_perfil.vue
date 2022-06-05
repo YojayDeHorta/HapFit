@@ -17,7 +17,7 @@
                         <v-btn dark text v-if="datos.esEntrenador&&!datos.entrenadorContratado" @click.stop="dialog = true" elevation='2' style='width:100px;height:50px !important;#padding:0rem;position:relative;top:1.3rem;background-color:white !important;border-radius:1rem;padding:0 !important'>
                             <small style='padding:1rem;color:#E42256 !important' @click="getPlanes()">contratar</small>
                         </v-btn>
-                        <v-btn dark text @click="dialog = false;goChat()"  >
+                        <v-btn dark text @click="dialog = false;goChat()">
                             <v-icon>
                                 mdi-message-processing-outline
                             </v-icon>
@@ -40,8 +40,34 @@
                             <post_perfil :idUsuario="datos.idUsuario" />
                         </v-tab-item>
                         <v-tab-item>
-                            <v-card flat>
+                            <v-card style='padding:1.5rem' flat>
+                                <br>
+                                <h3>
+                                    Entrenador Certificado
+                                    <v-icon>
+                                        mdi-license
+                                    </v-icon>&nbsp;
+                                </h3>
+                                <main style="padding:0;margin-top:1rem">
+                                    <section style='display:flex'>
+                                        <label for="">Nombre</label>
+                                        &nbsp;&nbsp;
+                                        <p>Juanito Perez</p>
+                                    </section>
+                                    <section style='display:flex'>
+                                        <label for="">Trabajo En</label>
+                                        &nbsp;&nbsp;
+                                        <p>Gym Cold</p>
+                                    </section>
+                                    <section style='display:flex'>
+                                        <label for="">Años de Experiencia</label>
+                                        &nbsp;&nbsp;
+                                        <p>3 Años</p>
+                                    </section>
+                                </main>
+                                <!--
                                 <rutinas />
+                            -->
                             </v-card>
                         </v-tab-item>
                     </v-tabs-items>
@@ -55,8 +81,8 @@
                 <div>
                     <h1 class='text-center mb-5'>Contratación</h1>
                     <main>
-                        <v-select :items="planes" v-model="plan" label="Plan" item-text="nombre" return-object  outlined></v-select>
-                        <v-select :items="mes_plan" defa v-model="meses" item-text="name" item-value="mes" label="Meses de contratación"  outlined></v-select>
+                        <v-select :items="planes" v-model="plan" label="Plan" item-text="nombre" return-object outlined></v-select>
+                        <v-select :items="mes_plan" defa v-model="meses" item-text="name" item-value="mes" label="Meses de contratación" outlined></v-select>
                         <v-text-field type="number" label="No Tarjeta" filled></v-text-field>
                         <v-text-field type="number" label="CVC" filled></v-text-field>
                     </main>
@@ -69,9 +95,8 @@
                         <section class='text-end mt-3 mb-3' v-if="plan.precio">
                             <h4 style='color: #008180;'>Pagas ${{plan.precio*meses}} </h4>
                             <h4> Servicio durante {{meses}} mes<a style='color: #000000;' v-if="meses!=1">es</a>, termina el {{addMeses(new Date(),meses)}}</h4>
-
                         </section><br>
-                        <section class='text-center mb-5' >
+                        <section class='text-center mb-5'>
                             <v-btn @click="guardarSuscripcion()" style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius: 1rem;' :disabled="plan.precio? false :true" :loading="contratar" x-large>
                                 Contratar
                             </v-btn>
@@ -81,7 +106,6 @@
             </v-card>
         </v-dialog>
         <!--MODAL SUSCRIPCION-->
-        
     </v-container>
 </template>
 <script>
@@ -97,26 +121,26 @@ export default {
             widgets: false,
             tabs: null,
             dialog: false,
-            loading:false,
-            contratar:false,
+            loading: false,
+            contratar: false,
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
             title_tabs: [
-                { 'name': 'Post', id: 1 }, { 'name': 'Rutinas', id: 2 }
+                { 'name': 'Post', id: 1 }, { 'name': 'Información', id: 2 }
             ],
             plan_entrenador: ['Plan Basico', 'Plan Premiun', 'Plan Extremo', 'Plan Vegano'],
             mes_plan: [
-                { 'name': '1 Mes', mes: 1 }, { 'name': '2 Meses', mes: 2 },{ 'name': '3 Meses', mes: 3 },{ 'name': '1 año', mes: 12 },
-                ],
-            planes:[],
-            plan:{
-                idPlan:0,
-                nombre:"",
-                precio:0,
-                descripcion:"",
+                { 'name': '1 Mes', mes: 1 }, { 'name': '2 Meses', mes: 2 }, { 'name': '3 Meses', mes: 3 }, { 'name': '1 año', mes: 12 },
+            ],
+            planes: [],
+            plan: {
+                idPlan: 0,
+                nombre: "",
+                precio: 0,
+                descripcion: "",
             },
-            meses:1,
+            meses: 1,
             hoy: new Date().toISOString().substr(0, 10),
-            fechaInicio:new Date().toISOString().substr(0, 10),
+            fechaInicio: new Date().toISOString().substr(0, 10),
             fechaFinal: '',
         }
     },
@@ -129,12 +153,12 @@ export default {
         dialogPerfil: null
     },
     created() {
-        
+
     },
-    
+
     methods: {
         async getPlanes() {
-            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes/'+this.datos.idUsuario, {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes/' + this.datos.idUsuario, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -147,23 +171,23 @@ export default {
                 return
             }
             this.planes = data
-            
+
 
         },
         async guardarSuscripcion() {
-            this.contratar=true
+            this.contratar = true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'auth-token': localStorage.getItem('token')
                 },
-                body: JSON.stringify( {
-                     fechaInicio:this.fechaInicio,
-                     fechaFinal:this.fechaFinal,
-                     idEntrenador:this.datos.idEntrenador,
-                     precio:this.plan.precio*this.meses,
-                     idPlan:this.plan.idPlan
+                body: JSON.stringify({
+                    fechaInicio: this.fechaInicio,
+                    fechaFinal: this.fechaFinal,
+                    idEntrenador: this.datos.idEntrenador,
+                    precio: this.plan.precio * this.meses,
+                    idPlan: this.plan.idPlan
                 })
             })
             const { data, error } = await res.json()
@@ -171,10 +195,10 @@ export default {
                 console.log(error);
                 return
             }
-            this.dialog=false
+            this.dialog = false
             this.$root.vtoast.show({ message: data })
             this.$emit('close')
-            this.contratar=false
+            this.contratar = false
         },
         addMeses(date, months) {
             var d = date.getDate();
@@ -182,16 +206,16 @@ export default {
             if (date.getDate() != d) {
                 date.setDate(0);
             }
-            this.fechaFinal=date.toISOString().substr(0, 10)
-            let mesActual = new Intl.DateTimeFormat('es-ES', { month: 'long'}).format(date)
+            this.fechaFinal = date.toISOString().substr(0, 10)
+            let mesActual = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date)
             return `${date.getDate()} de ${mesActual} del ${date.getFullYear()}`;
         },
-        goChat(){
-        //    console.log(this.datos);
-            this.$router.push({ name: 'chat_usuario', params: { usuarioQueRecibe: this.datos.idUsuario },props: { nombreRecibe: this.datos.nombre,linkPerfil: this.datos.linkPerfil } })
+        goChat() {
+            //    console.log(this.datos);
+            this.$router.push({ name: 'chat_usuario', params: { usuarioQueRecibe: this.datos.idUsuario }, props: { nombreRecibe: this.datos.nombre, linkPerfil: this.datos.linkPerfil } })
             // this.$router.push({ name: 'chat_usuario', params: { usuarioQueRecibe: this.datos.idUsuario },props: { nombreRecibe: this.datos.nombre,linkPerfil: this.datos.linkPerfil } })
-            localStorage.setItem('chatNombre',this.datos.nombre)
-            localStorage.setItem('chatLinkPerfil',this.datos.linkPerfil)
+            localStorage.setItem('chatNombre', this.datos.nombre)
+            localStorage.setItem('chatLinkPerfil', this.datos.linkPerfil)
         },
     },
 }

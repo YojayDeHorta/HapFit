@@ -25,7 +25,9 @@ exports.getClientesContratados= async (req, res) => {
             let solicitudCliente = await query(`SELECT * FROM cliente  WHERE idCliente = ${suscripciones[i].Cliente_idCliente};`);
             let Usuario = await query(`SELECT * FROM usuario  WHERE idUsuario = ${solicitudCliente[0].Usuario_idUsuario};`);
             suscripciones[i].nombre=Usuario[0].nombre
-            suscripciones[i].linkPerfil=Usuario[0].linkPerfil
+            suscripciones[i].linkPerfil=Usuario[0].linkPerfil     
+            suscripciones[i].idUsuario=Usuario[0].idUsuario
+            suscripciones[i].idCliente=solicitudCliente[0].idCliente      
         }
         res.json({ error: null, data: suscripciones })
 

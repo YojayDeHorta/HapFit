@@ -105,6 +105,7 @@ export default {
             this.datosActuales=entrenador;
             this.datosActuales.esEntrenador=true;
             this.dialogPerfil=true
+            console.log(this.datosActuales);
         },
     },
 }

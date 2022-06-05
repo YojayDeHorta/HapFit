@@ -12,8 +12,14 @@
         </v-app-bar>
         <div class='Contenido_Card mt-5'>
             <v-card class='card' v-for='plan in planes' :key='plan.idPlan'>
-                <main>
-                      <h2>{{plan.nombre}}</h2>
+                <main style='text-transform:capitalize'>
+                    <section style='display:flex;justify-content:space-between'>
+                          <h2>{{plan.nombre}}</h2>
+                          <v-icon>
+                              mdi-delete
+                          </v-icon>
+                    </section>
+                    
                       <h4 class='mt-3'> {{plan.descripcion}}</h4>
                       <p style='text-align: end;'><strong>$ {{plan.precio}} mensual</strong></p>
                 </main>
@@ -27,7 +33,7 @@
             <v-card>
                 <div v-if="loading" class="d-flex  justify-center mb-10 ">
                     <v-progress-circular :size="50" :width="7" color="red"  class="mb-5 mt-5" indeterminate ></v-progress-circular>
-                    <h3 class="mt-5 ml-5">cargando planes...</h3> 
+                    <h3 class="mt-5 ml-5">Cargando planes...</h3> 
                 </div>
             </v-card>
                     

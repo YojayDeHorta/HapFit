@@ -10,7 +10,7 @@ import VueSocketIO from 'vue-socket.io'
 import SocketIO from 'socket.io-client'
 
 /* Establish Connection */
-const socketConnection = SocketIO('http://localhost:3500',{ transports : ['websocket'] });
+const socketConnection = SocketIO(process.env.VUE_APP_BASE_URL ,{ transports : ['websocket'] });
 
 Vue.use(new VueSocketIO({
     // debug: true,

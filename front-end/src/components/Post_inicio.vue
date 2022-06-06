@@ -96,7 +96,14 @@ export default {
             
         },
         async cambiarCorazon(idPublicacion,index){
-            this.post[index].liked=!this.post[index].liked 
+            if (!this.post[index].liked) {
+                this.post[index].liked=false
+                this.post[index].likes--
+            }else{
+                this.post[index].liked=true
+                this.post[index].likes++
+            }
+            // this.post[index].li=!this.post[index].liked 
             const res = await fetch(process.env.VUE_APP_BASE_URL+'/api/post/setlikes', {
             method: 'POST',
             headers: {

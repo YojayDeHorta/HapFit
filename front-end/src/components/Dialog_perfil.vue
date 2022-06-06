@@ -15,7 +15,7 @@
                     <v-spacer></v-spacer>
                     <v-toolbar-items class='icon_message_contratar'>
                         <v-btn text v-if="datos.esEntrenador&&!datos.entrenadorContratado" @click.stop="dialog = true" elevation='2' style='background-color: white;#padding: 1rem !important;border-radius: 1rem;'>
-                            <small style='padding:1rem;color:#E42256 !important' @click="getPlanes()">contratar</small>
+                            <small style='padding:1rem;color:#E42256 !important' @click="getPlanes();">contratar</small>
                         </v-btn>
                         <v-btn dark text @click="dialog = false;goChat()">
                             <v-icon>
@@ -85,10 +85,24 @@
                 <div>
                     <h1 class='text-center mb-5'>Contratación</h1>
                     <main>
-                        <v-select :items="planes" v-model="plan" label="Plan" item-text="nombre" return-object outlined></v-select>
+                        <v-select @click="chargeStripe()" :items="planes" v-model="plan" label="Plan" item-text="nombre" return-object outlined></v-select>
                         <v-select :items="mes_plan" defa v-model="meses" item-text="name" item-value="mes" label="Meses de contratación" outlined></v-select>
-                        <v-text-field type="number" label="No Tarjeta" filled></v-text-field>
-                        <v-text-field type="number" label="CVC" filled></v-text-field>
+                        <div class='mt-5' fluid>
+                            <label for="card-number" >Tarjeta de credito</label>
+                            <div id="card-number" class="tarjeta"></div>                                                
+                        </div>
+                        <v-row class='mt-4' style='#border:5px solid red'>
+                            <v-col cols="6">
+                                <label for="card-expiry">Tiempo de expiracion</label>
+                                <div id="card-expiry" class="tarjeta"></div>
+                            </v-col>
+                            <br>
+                            <v-col cols="6">
+                                <label for="card-cvc">cvc</label>
+                                <div id="card-cvc" class="tarjeta"></div>
+                            </v-col>
+                        </v-row>
+                        
                     </main>
                     <main>
                         <section class='text-start mt-3 mb-3'>
@@ -115,6 +129,7 @@
 <script>
 import rutinas from '../components/Rutinas'
 import post_perfil from './Post_perfil.vue'
+import { loadStripe } from "@stripe/stripe-js";
 
 
 export default {
@@ -146,6 +161,13 @@ export default {
             hoy: new Date().toISOString().substr(0, 10),
             fechaInicio: new Date().toISOString().substr(0, 10),
             fechaFinal: '',
+            billingDetails:{
+                email: null,
+                name: localStorage.getItem('nombre'),
+                phone: null
+            },
+            elements:null,
+            stripe:null,
         }
     },
     components: {
@@ -156,7 +178,9 @@ export default {
         datos: null,
         dialogPerfil: null
     },
-    created() {},
+    mounted() {
+        
+    },
 
     methods: {
         async getPlanes() {
@@ -178,32 +202,7 @@ export default {
 
 
         },
-        async guardarSuscripcion() {
-            this.contratar = true
-            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': localStorage.getItem('token')
-                },
-                body: JSON.stringify({
-                    fechaInicio: this.fechaInicio,
-                    fechaFinal: this.fechaFinal,
-                    idEntrenador: this.datos.idEntrenador,
-                    precio: this.plan.precio * this.meses,
-                    idPlan: this.plan.idPlan
-                })
-            })
-            const { data, error } = await res.json()
-            if (error) {
-                console.log(error);
-                return
-            }
-            this.dialog = false
-            this.$root.vtoast.show({ message: data })
-            this.$emit('close')
-            this.contratar = false
-        },
+       
         async buscarEntrenador() {
             this.contratar = true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/busqueda/', {
@@ -247,6 +246,94 @@ export default {
             localStorage.setItem('chatNombre', this.datos.nombre)
             localStorage.setItem('chatLinkPerfil', this.datos.linkPerfil)
         },
+        async chargeStripe(){
+            this.stripe = await loadStripe(process.env.VUE_APP_STRIPE);
+            console.log(process.env.VUE_APP_STRIPE);
+            const stylecard = {
+                base: {
+                    'fontSize': '18px',
+                    'color': '#000000',
+                    
+                }
+            };
+            this.elements = this.stripe.elements();
+            const cardNumber = this.elements.create("cardNumber",{'style':stylecard,showIcon: true,});
+            const cardExpiry = this.elements.create("cardExpiry",{'style':stylecard});
+            const cardCvc = this.elements.create("cardCvc",{'style':stylecard});
+            cardNumber.mount("#card-number");
+            cardExpiry.mount("#card-expiry");
+            cardCvc.mount("#card-cvc");
+
+        },
+        //  async guardarSuscripcion() {
+        //     this.contratar = true
+        //     const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'auth-token': localStorage.getItem('token')
+        //         },
+        //         body: JSON.stringify({
+        //             fechaInicio: this.fechaInicio,
+        //             fechaFinal: this.fechaFinal,
+        //             idEntrenador: this.datos.idEntrenador,
+        //             precio: this.plan.precio * this.meses,
+        //             idPlan: this.plan.idPlan
+        //         })
+        //     })
+        //     const { data, error } = await res.json()
+        //     if (error) {
+        //         console.log(error);
+        //         return
+        //     }
+        //     this.dialog = false
+        //     this.$root.vtoast.show({ message: data })
+        //     this.$emit('close')
+        //     this.contratar = false
+        // },
+        async guardarSuscripcion(){
+            const cardElement = this.elements.getElement("cardNumber");
+             console.log(localStorage.getItem('nombre'));
+
+
+            const {error,paymentMethod} = await this.stripe.createPaymentMethod({
+                type: "card",
+                card: cardElement,
+                billing_details: this.billingDetails
+            });
+            if (!error) {
+                const res = await fetch(process.env.VUE_APP_BASE_URL+"/api/suscripcion", {
+                    method: 'POST',headers: {"Content-Type": "application/json" },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        id:paymentMethod.id,
+                        billing_details:this.billingDetails,
+                        fechaInicio: this.fechaInicio,
+                        fechaFinal: this.fechaFinal,
+                        idEntrenador: this.datos.idEntrenador,
+                        precio: (this.plan.precio * this.meses)*100,
+                        idPlan: this.plan.idPlan,
+                        nombreEntrenador:this.datos.nombre
+                    })  
+                },);
+                const { data, error } = await res.json();
+                if (error) {
+                    this.$root.vtoast.show({message: error})
+                }
+                console.log(paymentMethod);
+                console.log(data,error);
+                this.dialog = false
+                this.$root.vtoast.show({ message: data })
+                this.$emit('close')
+                this.contratar = false
+            }else{
+            this.$root.vtoast.show({message: "hay un error con sus datos"})
+            this.loading=false
+            }
+      },
     },
 }
 </script>
@@ -266,7 +353,12 @@ export default {
     width: 100px;
     height: 25px !important;
 }
-
+.tarjeta{
+    padding: 0.5rem;
+    /* #margin: 1rem;
+    #border: 5px solid red; */
+    border-bottom: 1px solid black;
+}
 .icon_message_contratar .v-btn small {
     padding: 0 !important;
     margin: 0 !important;

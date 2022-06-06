@@ -74,7 +74,7 @@
                         <v-container class='salir_item mt-5' @click="cerrarSesion()" fluid plain>
                             <v-list-item class='item_sub_text' style='padding:0 !important'>
                                 <v-list-item-title class='text' style='font-size: 1.4rem;padding:0 !important'>
-                                    <v-btn to='/' style='background-color: transparent;' elevation='0'>
+                                    <v-btn  style='background-color: transparent;' elevation='0'>
                                         <v-icon plain>
                                             mdi-arrow-left-thick
                                         </v-icon>&nbsp;
@@ -153,8 +153,7 @@ export default {
     methods: {
         cerrarSesion() {
             localStorage.clear()
-            // this.$router.push({ name: "inicio"})
-            console.log("llego aca");
+            this.$router.push("/")
         },
         async cargarArchivo(event) {
             let file = event.target.files[0];

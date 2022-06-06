@@ -8,7 +8,7 @@
                         <v-text-field v-model="filtro" outlined label="Buscar Usuario" style='height: 60px;' append-icon="mdi-magnify"></v-text-field>
                     </section>
                     <section style='margin: 0;padding: 0;display: flex;'>
-                        <v-checkbox v-model="soloEntrenadores" label="Entrenadorores" :on-icon="'mdi-license'" :off-icon="'mdi-checkbox-blank-circle-outline'"></v-checkbox>
+                        <v-checkbox v-model="soloEntrenadores" label="Entrenadores" :on-icon="'mdi-license'" :off-icon="'mdi-checkbox-blank-circle-outline'"></v-checkbox>
                     </section>
                 </main>
             </v-col>

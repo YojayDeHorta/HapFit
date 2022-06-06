@@ -15,12 +15,36 @@
                 </v-list-item>
                 <br>
                 <v-list dense nav>
-                    <v-list-item v-for="item in items" :key="item.title" link style='color:white !important;margin-bottom:1.2rem !important'>
+                    <v-list-item  link style='color:white !important;margin-bottom:1.2rem !important'>
                         <v-list-item-icon>
-                            <v-icon style='color:white'>{{ item.icon }}</v-icon>
+                            <v-icon style='color:white'>mdi-account-circle-outline</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            <v-list-item-title>Perfil</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item  link style='color:white !important;margin-bottom:1.2rem !important'>
+                        <v-list-item-icon>
+                            <v-icon style='color:white'>mdi-book-information-variant</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Solicitudes</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item  link style='color:white !important;margin-bottom:1.2rem !important'>
+                        <v-list-item-icon>
+                            <v-icon style='color:white'>mdi-microsoft-xbox-controller-menu</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Opciones</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item @click="cerrarSesion()" link style='color:white !important;margin-bottom:1.2rem !important'>
+                        <v-list-item-icon>
+                            <v-icon style='color:white'>mdi-exit-to-app</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Salir</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -42,6 +66,13 @@ export default {
             ],
             right: null,
         }
+    },
+    methods: {
+        cerrarSesion() {
+            localStorage.clear()
+            this.$router.push("/login_admin")
+            // this.$router.push({ name: "inicio"})
+        },
     },
 }
 </script>

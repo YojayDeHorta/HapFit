@@ -2,6 +2,8 @@ const connection = require('../database/db');
 const Joi = require('joi');
 const util = require('util');
 const query = util.promisify(connection.query).bind(connection);
+const Stripe=require("stripe")
+const stripe=new Stripe(process.env.STRIPE)
 
 exports.setSuscripcion= async (req, res) => {
 	try {
@@ -11,16 +13,27 @@ exports.setSuscripcion= async (req, res) => {
         if (!billetera[0]) {
                 return res.status(400).json({ error: 'Error de suscripcion' });
         }
+        console.log(req.body.id,req.body.billing_details.name);
+        const payment=await stripe.paymentIntents.create({
+            amount:req.body.precio,
+            currency: "USD",
+            description:`suscripcion del entrenador: ${req.body.nombreEntrenador} al cliente: ${req.body.billing_details.name}` ,
+            payment_method: req.body.id,
+            confirm:true
+        })
+        if (payment.status=='succeeded') {
+                const setSuscripcion = await query(
+                `INSERT INTO suscripcion  (precio,fechaInicio,fechaFinal,Entrenador_idEntrenador,Cliente_idCliente,Plan_idPlan) VALUES (
+                ${req.body.precio},'${req.body.fechaInicio}','${req.body.fechaFinal}','${req.body.idEntrenador}','${req.usuario.idCliente}','${req.body.idPlan}');`
+                )
+                let total=(req.body.precio*0.8)+billetera[0].saldo
+                const actulizacion = await query(
+                        `UPDATE billetera SET saldo = '${total}' WHERE idBilletera='${billetera[0].idBilletera}';`
+                );
+                
+                res.json({ error: null, data: "Plan comprado exitosamente!" })
+        }
 
-        const setSuscripcion = await query(
-            `INSERT INTO suscripcion  (precio,fechaInicio,fechaFinal,Entrenador_idEntrenador,Cliente_idCliente,Plan_idPlan) VALUES (
-           ${req.body.precio},'${req.body.fechaInicio}','${req.body.fechaFinal}','${req.body.idEntrenador}','${req.usuario.idCliente}','${req.body.idPlan}');`
-            )
-            let total=(req.body.precio*0.8)+billetera[0].saldo
-        const actulizacion = await query(
-                `UPDATE billetera SET saldo = '${total}' WHERE idBilletera='${billetera[0].idBilletera}';`
-        );
-        res.json({ error: null, data: "Plan comprado exitosamente!" })
 
 	} catch (error) {
 		console.log(error);

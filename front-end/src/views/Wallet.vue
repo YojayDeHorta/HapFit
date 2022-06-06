@@ -22,7 +22,7 @@
                     <v-card style='padding:2rem'>
                         <section style='#display:flex;#align-items:center;#justify-content:space-between;text-align:center'>
                             <h1>Total Dinero Disponible</h1> <br>
-                            <h4>${{billetera.saldo}} COP</h4>
+                            <h4>${{billetera.saldo}} USD</h4>
                             <h4 v-if="billetera.solicitud">solicitud de retiro en proceso</h4>
                         </section>
                     </v-card>

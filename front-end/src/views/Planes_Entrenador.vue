@@ -21,7 +21,7 @@
                     </section>
                     
                       <h4 class='mt-3'> {{plan.descripcion}}</h4>
-                      <p style='text-align: end;'><strong>$ {{plan.precio}} mensual</strong></p>
+                      <p style='text-align: end;'><strong>${{plan.precio}} mensual</strong></p>
                 </main>
             </v-card>
             <v-card class='card' v-if="!planes[0]&&!loading">

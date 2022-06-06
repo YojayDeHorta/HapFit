@@ -33,7 +33,7 @@
         <!-- loading -->
         <div v-if="loading" class="d-flex  justify-center mb-10 ">
             <v-progress-circular :size="70" :width="7" color="red"  indeterminate ></v-progress-circular>
-            <h3 class="mt-5 ml-5">cargando publicaciones...</h3> 
+            <h3 class="mt-5 ml-5">Cargando Publicaciones...</h3> 
         </div>
     </v-card-text>
 </template>

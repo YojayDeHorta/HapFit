@@ -4,36 +4,31 @@
             <v-card-text class="d-flex justify-end">
                 <v-textarea solo flat height="70px" v-model="descripcion" label="escribe aca tu post..." :no-resize="true">
                 </v-textarea>
-                 
                 <v-btn icon class="mt-15" @click="publicarPost()">
                     <v-icon>mdi-send</v-icon>
                 </v-btn>
-                
             </v-card-text>
-            
         </v-card>
-        <v-select :items="rutinas" v-model="rutina" item-text="nombre" item-value="idRutina" label="seleccione la rutina" outlined></v-select>
+        <v-select class='select_rutina' style='text-transform: capitalize !important;' :items="rutinas" v-model="rutina" item-text="nombre" item-value="idRutina" label="seleccione la rutina" outlined></v-select>
         <!-- <v-btn  @click="publicarPost()">
             compartir rutina
         </v-btn> -->
-        <h3>tus post:</h3>
+        <h3 style='text-transform: capitalize;'>tus post</h3>
+        <br>
         <v-card class='card_post mb-5' elevation='3'>
             <div v-if="loading" class="d-flex  justify-center mb-10 ">
-                <v-progress-circular :size="70" :width="7" color="red"  indeterminate ></v-progress-circular>
-                <h3 class="mt-5 ml-5">cargando publicaciones...</h3> 
+                <v-progress-circular :size="70" :width="7" color="red" indeterminate></v-progress-circular>
+                <h3 class="mt-5 ml-5">Cargando Publicaciones...</h3>
             </div>
         </v-card>
         <v-card v-for='(publicacion,index) in post' :key="publicacion.idPublicacion" class='card_post mb-5' elevation='3'>
             <main elevation='4'>
                 <section class='title_post'>
                     <img class='img_post' :src="publicacion.linkPerfil" alt="" style=''>&nbsp;&nbsp;
-
                     <section style='#border:5px solid red;width:100%;display:flex;justify-content:space-between'>
                         <p style='margin-right: 2rem'>
                             {{publicacion.nombre}}
                         </p>
-                         
-                        
                         <!--
                         <modal_perfil>
                             <small style='color:white !important'>
@@ -53,9 +48,14 @@
                 <section class='text-left mt-5'>
                     <p>{{publicacion.descripcion}} </p>
                     <!-- rutinas -->
-                     <h1 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)">{{publicacion.nombreRutina}}</h1>
-                     
-                     <!-- <h1 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)">{{publicacion.nombreRutina}}</h1> -->
+                    <v-card style='padding: 1rem;display: flex;justify-content: flex-start;'>
+                        <v-icon>
+                            mdi-weight-lifter
+                        </v-icon>
+                        &nbsp;&nbsp;&nbsp;
+                        <h4 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)" style='text-transform: capitalize;'>{{publicacion.nombreRutina}}</h4>
+                    </v-card>
+                    <!-- <h1 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)">{{publicacion.nombreRutina}}</h1> -->
                 </section>
                 <section class='icon_post mt-5'>
                     <p style='display: flex;' class="mt-2">
@@ -70,10 +70,9 @@
                 </section>
             </main>
         </v-card>
-        
         <v-card class='card_post mb-5' elevation='3'>
             <div v-if="!loading&&!post[0]" class="d-flex  justify-center mb-10 ">
-                <h4 class="mt-5 ml-5">no has creado ninguna publicacion</h4> 
+                <h4 class="mt-5 ml-5" style='text-transform: capitalize;'>no has creado ninguna publicacion</h4>
             </div>
         </v-card>
     </v-container>
@@ -86,15 +85,15 @@ import modal_comments from '../components/Modal_comments'
 export default {
     components: {
         modal_comments
-        
+
     },
     data() {
         return {
             post: [],
             descripcion: '',
-            loading:false,
-            rutinas:[],
-            rutina:null
+            loading: false,
+            rutinas: [],
+            rutina: null
         }
     },
     created() {
@@ -102,8 +101,8 @@ export default {
     },
     methods: {
         async getPost() {
-            this.post=[]
-            this.loading=true
+            this.post = []
+            this.loading = true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/post/user', {
                 method: 'GET',
                 headers: {
@@ -111,7 +110,7 @@ export default {
                     'auth-token': localStorage.getItem('token')
                 }
             })
-            this.loading=false
+            this.loading = false
             const { data, error } = await res.json()
             if (error) {
                 console.log(error);
@@ -127,7 +126,7 @@ export default {
                     'Content-Type': 'application/json',
                     'auth-token': localStorage.getItem('token')
                 },
-                body: JSON.stringify({ descripcion: this.descripcion,idRutina:this.rutina })
+                body: JSON.stringify({ descripcion: this.descripcion, idRutina: this.rutina })
             })
             const { data, error } = await res.json()
             if (error) {
@@ -190,22 +189,34 @@ export default {
                 return
             }
             this.rutinas.push({
-                idRutina:null,
-                nombre:"sin rutina"
-            }) 
-            data.forEach(element => 
+                idRutina: null,
+                nombre: "sin rutina"
+            })
+            data.forEach(element =>
                 this.rutinas.push(element)
             );
             // this.rutinas = data
-            
+
         },
-        goRutinasEntrenador(idRutina){
-            this.$router.push("/rutinas_entrenador/"+idRutina)
+        goRutinasEntrenador(idRutina) {
+            this.$router.push("/rutinas_entrenador/" + idRutina)
         }
     },
 }
 </script>
 <style scoped>
+
+
+    .select_rutina{
+        text-transform: capitalize !important;
+    }
+
+
+    .v-select{
+        text-transform: capitalize !important;
+    }
+
+
 .container_post {
     margin: 0 !important;
     padding: 0 !important;

@@ -51,3 +51,15 @@ exports.get = async (req, res) => {
 		return res.status(400).json({ error: 'Error interno del servidor' });
 	}
 };
+exports.deleteRutinas= async (req, res) => {
+	try {
+        await query(
+            `DELETE FROM rutinas WHERE idRutina = ${req.body.idRutina} AND Usuario_idUsuario = ${req.usuario.id}`
+        );
+        res.json({ error: null, data: "plan borrado exitosamente" })
+
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ error: 'Error interno del servidor' });
+	}
+};

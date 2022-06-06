@@ -108,16 +108,17 @@
                                             </v-list-item>
                                             <v-list-item-content class="px-4" style='margin: 0;padding: 0;'>
                                                 <main class='mt-1 mb-3' style='display: flex;justify-content: space-between;#border: 2px solid red;'>
-                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#E42256;font-size: 1.2rem;padding: 0;text-align: center;'>rep: {{ejercicio.repeticiones}}</v-list-item-subtitle>
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#E42256;font-size: 1.2rem;padding: 0;text-align: center;' v-if="ejercicio.repeticiones">rep: {{ejercicio.repeticiones}}</v-list-item-subtitle>
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#E42256;font-size: 1.2rem;padding: 0;text-align: center;' v-if="ejercicio.tiempo">{{ejercicio.tiempo}} seg</v-list-item-subtitle>
                                                     <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#FEC84D;font-size: 1.2rem;padding: 0;text-align: center;'>sets: {{ejercicio.sets}}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#00B1B0;font-size: 1.2rem;padding: 0;text-align: center;'>seg: {{ejercicio.tiempo}}</v-list-item-subtitle>
+                                                    <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;color:#00B1B0;font-size: 1.2rem;padding: 0;text-align: center;' v-if="ejercicio.descanso">{{ejercicio.descanso}} seg</v-list-item-subtitle>
                                                     <!--
                                                     <v-list-item-subtitle class="mt-2" style='text-transform:capitalize;'>desc: {{ejercicio.descanso}}</v-list-item-subtitle>
                                                 -->
                                                 </main>
-                                                <v-list-item-subtitle class="mt-2 text-center" style='font-size: 1rem;#border: 5px solid black;padding: 0.5rem;#height: 5rem;'>
+                                                <v-list-item-subtitle class="mb-2 text-center" style='font-size: 1rem;#border: 5px solid black;padding: 0.5rem;#height: 5rem;'>
                                                     <!-- <strong>Descripcion</strong> -->
-                                                    <br>
+
                                                     {{ejercicio.descripcion}}
                                                 </v-list-item-subtitle>
                                                 <main style='display: flex;align-items: baseline;#border: 5px solid red;'>

@@ -4,19 +4,22 @@
             <v-col cols='12'>
                 <h3 class='mt-5 mb-5'>Tus Rutinas</h3>
                 <main v-for='rutina in rutinas' :key="rutina.idRutina"  style='#border:5px solid black;width:100% !important;'>
-                    <v-card class='Tarjeta' style='padding:1rem' @click="goRutinasEntrenador(rutina.idRutina)" fluid>
+                    <v-card class='Tarjeta' style='padding:1rem'  fluid>
                         <p class='text-start'>
                             <v-icon class='check_icon' style='color:green !important;font-size:2rem !important'>
                                 mdi-weight-lifter
                             </v-icon>
                         </p>
-                        <p>
+                        <p @click="goRutinasEntrenador(rutina.idRutina)">
                             <strong style='text-transform:capitalize !important'>{{rutina.nombre}}</strong>
                         </p>
                         <p class='text-end'>
-                           <v-icon>
-                               mdi-delete
-                           </v-icon> 
+                            <v-btn @click="borrarRutina(rutina.idRutina)">
+                                <v-icon>
+                                mdi-delete
+                            </v-icon> 
+                            </v-btn>
+                           
                         </p>
                     </v-card>
                 </main>
@@ -72,6 +75,7 @@ export default {
     },
     methods: {
         async getRutinas() {
+            this.rutinas=[]
             this.loading=true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/routine/get', {
                 method: 'GET',
@@ -93,7 +97,26 @@ export default {
         goRutinasEntrenador(idRutina){
             this.$router.push("/rutinas_entrenador/"+idRutina)
             // this.$router.push({ name: 'rutinas_entrenador', params: { idRutina: idRutina} })
+        },
+        async borrarRutina(id) {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/routine/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify({ idRutina: id })
+            })
+            this.getRutinas()
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.$root.vtoast.show({ message: 'borrado exitosamente!' })
+
         }
+        
     },
 
 }

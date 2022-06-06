@@ -10,9 +10,7 @@
                     </p>
                     
                 
-                    <v-btn class='btn_close' @click="borrarPost(publicacion.idPublicacion)" plain>
-                        <v-icon>mdi-close-circle</v-icon>
-                    </v-btn>
+                    
                 </section>
             </section>
             <section class='text-left mt-5'>

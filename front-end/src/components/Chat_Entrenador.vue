@@ -37,8 +37,12 @@
                         </section>
                     </section>
                     <section style='#border: 4px solid purple;display: flex;justify-content: flex-start;border-radius: 1rem !important;' v-else>
-                        <section v-if="mensaje.idRutina" @click="goRutinasEntrenador(mensaje.idRutina)" style='text-align: start !important;border:5px solid red !important'>
-                            <v-card>
+                        <section v-if="mensaje.idRutina" @click="goRutinasEntrenador(mensaje.idRutina)" style='text-align: start !important;'>
+                            <v-card style='padding: 1rem;background-color: #FEC84D20'>
+                                <v-icon>
+                                    mdi-weight-lifter
+                                </v-icon>
+                                 &nbsp;&nbsp;&nbsp;
                                 {{mensaje.nombreRutina}}
                             </v-card>
                         </section>
@@ -113,13 +117,18 @@ export default {
                 usuarioQueEnvia: localStorage.getItem("idUsuario"),
                 usuarioQueRecibe: this.usuarioQueRecibe,
                 mensaje: this.mensaje,
-                idRutina: this.rutina.idRutina,
                 date: new Date().toISOString()
             }
+            if (this.rutina) {
+                datos.nombreRutina = this.rutina.nombre
+                datos.idRutina = this.rutina.idRutina
+            }
+            else datos["idRutina"]=null
+            console.log(datos);
             this.$socket.emit('send_message', datos);
             datos.derecha = true
-            datos.nombreRutina = this.rutina.nombre
-            datos.idRutina = this.rutina.idRutina
+            this.rutina=null
+            
             this.mensajes.push(datos)
             this.mensaje = null;
             this.dialog = false
@@ -186,6 +195,7 @@ export default {
     sockets: {
         new_message: function(data) {
             data.derecha = false
+            console.log(data);
             this.mensajes.push(data);
 
         }

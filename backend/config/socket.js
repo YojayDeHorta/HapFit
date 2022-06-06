@@ -21,7 +21,7 @@ module.exports = (http) => {
         socket.on("send_message",async function (data) {
             // send event to receiver
             var socketId = users[data.usuarioQueRecibe];
-
+            console.log(data);       
             io.to(socketId).emit("new_message", data);
             await query(
                 `INSERT INTO chat  (usuarioQueEnvia,usuarioQueRecibe,mensaje,idRutina,fecha) VALUES (

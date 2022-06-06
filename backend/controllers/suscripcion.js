@@ -22,13 +22,14 @@ exports.setSuscripcion= async (req, res) => {
             confirm:true
         })
         if (payment.status=='succeeded') {
+                
                 const setSuscripcion = await query(
                 `INSERT INTO suscripcion  (precio,fechaInicio,fechaFinal,Entrenador_idEntrenador,Cliente_idCliente,Plan_idPlan) VALUES (
-                ${req.body.precio},'${req.body.fechaInicio}','${req.body.fechaFinal}','${req.body.idEntrenador}','${req.usuario.idCliente}','${req.body.idPlan}');`
+                ${req.body.precio/100},'${req.body.fechaInicio}','${req.body.fechaFinal}','${req.body.idEntrenador}','${req.usuario.idCliente}','${req.body.idPlan}');`
                 )
                 let total=(req.body.precio*0.8)+billetera[0].saldo
                 const actulizacion = await query(
-                        `UPDATE billetera SET saldo = '${total}' WHERE idBilletera='${billetera[0].idBilletera}';`
+                        `UPDATE billetera SET saldo = '${total/100}' WHERE idBilletera='${billetera[0].idBilletera}';`
                 );
                 
                 res.json({ error: null, data: "Plan comprado exitosamente!" })

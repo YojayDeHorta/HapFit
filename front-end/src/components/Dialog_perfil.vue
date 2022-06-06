@@ -85,7 +85,7 @@
                 <div>
                     <h1 class='text-center mb-5'>Contratación</h1>
                     <main>
-                        <v-select @click="chargeStripe()" :items="planes" v-model="plan" label="Plan" item-text="nombre" return-object outlined></v-select>
+                        <v-select :items="planes" v-model="plan" label="Plan" item-text="nombre" return-object outlined></v-select>
                         <v-select :items="mes_plan" defa v-model="meses" item-text="name" item-value="mes" label="Meses de contratación" outlined></v-select>
                         <div class='mt-5' fluid>
                             <label for="card-number" >Tarjeta de credito</label>
@@ -168,6 +168,7 @@ export default {
             },
             elements:null,
             stripe:null,
+            loadingSuscripcion:false,
         }
     },
     components: {
@@ -199,7 +200,7 @@ export default {
                 return
             }
             this.planes = data
-
+            this.chargeStripe()
 
         },
        
@@ -292,6 +293,7 @@ export default {
         //     this.contratar = false
         // },
         async guardarSuscripcion(){
+             this.contratar = true
             const cardElement = this.elements.getElement("cardNumber");
              console.log(localStorage.getItem('nombre'));
 

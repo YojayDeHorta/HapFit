@@ -53,12 +53,14 @@ exports.setSolicitud= async (req, res) => {
 exports.aceptarSolicitud= async (req, res) => {
 	try {
         
+        let Solicitud =await query(`SELECT * FROM solicitud WHERE idSolicitud = ${req.body.idSolicitud} AND Cliente_idCliente = ${req.body.idCliente};`);
         await query(`DELETE FROM solicitud WHERE idSolicitud = ${req.body.idSolicitud} AND Cliente_idCliente = ${req.body.idCliente};`);
         let Cliente = await query(`SELECT * FROM cliente  WHERE idCliente = ${req.body.idCliente};`);
         if (!Cliente[0]) return res.status(400).json({ error: 'Error interno del servidor' });
 
 
-        const savedEntrenador = await query(`INSERT INTO entrenador (linkTitulos,Usuario_idUsuario) VALUES ('${req.body.linkTitulos}',${Cliente[0].Usuario_idUsuario});`);
+        const savedEntrenador = await query(`INSERT INTO entrenador (linkTitulos,Usuario_idUsuario,lugarExp,mesesExp) 
+        VALUES ('${req.body.linkTitulos}',${Cliente[0].Usuario_idUsuario},'${Solicitud[0].lugarExp}',${Solicitud[0].mesesExp});`);
 
         await query(`DELETE FROM cliente WHERE idCliente= ${req.body.idCliente}`);
         

@@ -60,6 +60,8 @@ exports.getEntrenadoresContratados = async (req, res) => {
                         suscripciones[i].idUsuario=Usuario[0].idUsuario
                         suscripciones[i].idEntrenador=solicitudEntrenador[0].idEntrenador
                         suscripciones[i].entrenadorContratado=true
+                        suscripciones[i].lugarExp=solicitudEntrenador[0].lugarExp
+                        suscripciones[i].mesesExp=solicitudEntrenador[0].mesesExp
                 }
 
                 res.json({ error: null, data: suscripciones })

@@ -14,7 +14,7 @@
             </v-col>
             <v-col class='scroll_pantalla' cols='12'>
                 <main>
-                    <v-card  v-for='usuario in filtroUsuario' :key='usuario.idUsuario' class='Tarjeta' style='padding:1rem' fluid>
+                    <v-card  v-for='usuario in filtroUsuario' :key='usuario.idUsuario' class='Tarjeta' style='padding:1rem' fluid >
                         <p> <img @click="redirectPerfil(usuario)" class='mt-2' :src="usuario.linkPerfil" alt="" style='border-radius: 50%;width:90px;height:90px;'></p>
                         <p style="#border:5px solid red !important;">
                             {{usuario.nombre}}<br>
@@ -76,6 +76,7 @@ export default {
     },
     methods: {
         async getUsuarios() {
+            
             this.loading=true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/user/', {
                 method: 'GET',
@@ -91,10 +92,11 @@ export default {
             }
             this.usuarios = data
             this.loading=false
-
+            console.log(this.usuarios);
 
         },
         async redirectPerfil(usuario){
+            if (usuario.idUsuario==localStorage.getItem('idUsuario')) return
             this.postActual=usuario
             this.dialogPerfil=true
             

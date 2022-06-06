@@ -82,7 +82,7 @@
                                                     <v-select :items="visibilidad" item-text="texto" label="visibilidad" v-model="ejercicio.publico" item-value="id" style='text-transform: capitalize;' outlined></v-select>
                                                 </section>
                                                 <section class='text-center'>
-                                                    <v-btn @click="guardarEjercicio()" style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius:1rem;position: relative;left: 2rem;height: 3rem;' plain>
+                                                    <v-btn @click="guardarEjercicio()" :loading="loadingGuardar" style='background: #FFFFFF;border: 3px solid #E42256;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);border-radius:1rem;position: relative;left: 2rem;height: 3rem;' plain>
                                                         <h3>
                                                             Guardar ejercicio
                                                         </h3>
@@ -92,9 +92,9 @@
                                         </main>
                                     </v-tab-item>
                                     <!-- elegir ejercicios-->
-                                    <v-tab-item class='contenido_tabs'>
+                                    <v-tab-item class='contenido_tabs' v-if="ejercicios[0] ">
                                         <!-- aca ander -->
-                                        <v-card class="mx-auto" v-for="ejercicio in ejercicios" :key="ejercicio.idEjercicio" max-width="344" style='padding: 0 !important;margin-top: 1rem;margin-bottom: 1rem;'>
+                                        <v-card class="mx-auto" v-for="ejercicio in ejercicios" :key="ejercicio.idEjercicio"  max-width="344" style='padding: 0 !important;margin-top: 1rem;margin-bottom: 1rem;'>
                                             <v-list-item three-line style='padding: 0 !important;'>
                                                 <!--
                                                 <v-list-item-content>
@@ -132,6 +132,15 @@
                                                 </main>
                                             </v-list-item-content>
                                         </v-card>
+                                    </v-tab-item>
+                                    <v-tab-item class='contenido_tabs' v-if="!ejercicios[0]&&!loading ">
+                                        no tienes ejercicios
+                                    </v-tab-item>
+                                    <v-tab-item class='contenido_tabs' v-if="loading">
+                                        <div class="d-flex  justify-center mb-10 ">
+                                            <v-progress-circular :size="70" :width="7" color="red"  indeterminate ></v-progress-circular>
+                                            <h3 class="mt-5 ml-5">cargando ejercicios...</h3> 
+                                        </div>
                                     </v-tab-item>
                                 </v-tabs>
                             </v-list-item-content>
@@ -172,6 +181,8 @@ export default {
             ejercicios: [],
             ejerciciosGuardados: [],
             nombreRutina:'',
+            loadingGuardar:false,
+            loading:false
         }
 
     },
@@ -204,8 +215,10 @@ export default {
                 }
             }
             this.ejerciciosGuardados.push(idEjercicio)
+            console.log(this.ejerciciosGuardados);
         },
         async guardarEjercicio() {
+            this.loadingGuardar=true
             this.ejercicios = []
             const filesTypes = ['image/jpg', 'image/jpeg', 'image/gif'];
             if (filesTypes.includes(this.ejercicio.gif.type)) {
@@ -233,13 +246,26 @@ export default {
                     return
                 }
                 this.getEjercicios()
+                this.ejercicio= {
+                    nombre: '',
+                    idMusculo: null,
+                    gif: null,
+                    repeticiones: 0,
+                    sets: 1,
+                    tiempo: 0,
+                    descanso: 0,
+                    descripcion: '',
+                    publico: 0,
+                },
                 this.$root.vtoast.show({ message: 'ejercicio guardado' })
             } else {
+                
                 this.$root.vtoast.show({ message: 'formato no soportado' })
             }
+            this.loadingGuardar=false
         },
         async getEjercicios() {
-
+            this.loading=true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/exercise/', {
                 method: 'GET',
                 headers: {
@@ -248,6 +274,7 @@ export default {
                 }
             })
             const { data, error } = await res.json()
+            this.loading=false
             if (error) {
                 console.log(error);
                 return

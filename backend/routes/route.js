@@ -18,5 +18,6 @@ router.post('/register', authController.register);
 //busqueda de usuarios
 router.get('/',validarTodo, busqueda.getEntrenadoresAndClientes);
 router.get('/trainers',validarTodo, busqueda.getEntrenadores);
+router.get('/trainer',validarTodo, busqueda.getEntrenador);
 
 module.exports = router;

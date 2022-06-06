@@ -18,10 +18,19 @@ exports.getEntrenadoresAndClientes = async (req, res) => {
             usuarios[i].esEntrenador=false
             
             if (entrenador[0]) {
+                if (req.usuario.idCliente) {
+                    let suscrito = await query(`SELECT * FROM suscripcion WHERE Cliente_idCliente = ${req.usuario.idCliente} and Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
+                     
+                    if (suscrito[0]) {
+                        usuarios[i].entrenadorContratado=true
+                    }
+                }
+                usuarios[i].lugarExp=entrenador[0].lugarExp
+                usuarios[i].mesesExp=entrenador[0].mesesExp
                 usuarios[i].esEntrenador=true
                 usuarios[i].idEntrenador=entrenador[0].idEntrenador
-                let suscripcion = await query(`SELECT * FROM suscripcion WHERE Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
-				if (suscripcion[0]) usuarios[i].entrenadorContratado=true
+                // let suscripcion = await query(`SELECT * FROM suscripcion WHERE Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
+				// if (suscripcion[0]) usuarios[i].entrenadorContratado=true
             }else{
                 const cliente = await query(`SELECT * FROM cliente WHERE usuario_idUsuario = ${usuarios[i].idUsuario}`);
                 if (cliente[0]) usuarios[i].idCliente=cliente[0].idCliente
@@ -54,6 +63,8 @@ exports.getEntrenadores = async (req, res) => {
                 let suscrito = await query(`SELECT * FROM suscripcion WHERE Cliente_idCliente = ${req.usuario.idCliente} and Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
                 // console.log(entrenador);
                 if (!suscrito[0]) {
+                    usuarios[i].lugarExp=entrenador[0].lugarExp
+                    usuarios[i].mesesExp=entrenador[0].mesesExp
                     usuarios[i].idEntrenador=entrenador[0].idEntrenador
                     entrenadores.push(usuarios[i])
                 }
@@ -75,6 +86,35 @@ exports.getEntrenadores = async (req, res) => {
         }*/
         // console.log(usuarios);
         res.json({ error: null, data: entrenadores })
+
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ error: 'Error interno del servidor' });
+	}
+};
+exports.getEntrenador = async (req, res) => {
+	try {
+        let usuario=[]
+        usuario = await query(`SELECT * FROM usuario idUsuario = ${req.body.idUsuario}`);
+        let entrenadores=[]
+            
+        delete usuario[0].contrasenia
+        delete usuario[0].correo
+        delete usuario[0].telefono
+
+        const entrenador = await query(`SELECT * FROM entrenador WHERE Usuario_idUsuario = ${req.body.idUsuario}`);
+        
+        if (entrenador[0]) {
+            let suscrito = await query(`SELECT * FROM suscripcion WHERE Cliente_idCliente = ${req.usuario.idCliente} and Entrenador_idEntrenador = ${entrenador[0].idEntrenador};`);
+            if (!suscrito[0]) {
+                usuario[0].entrenadorContratado=true
+            }
+            usuario[0].lugarExp=entrenador[0].lugarExp
+            usuario[0].mesesExp=entrenador[0].mesesExp
+            res.json({ error: null, data: usuario })
+        }
+            
+
 
 	} catch (error) {
 		console.log(error);

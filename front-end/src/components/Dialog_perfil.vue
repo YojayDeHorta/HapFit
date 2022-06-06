@@ -28,8 +28,11 @@
                     <v-toolbar elevation='1'>
                         <template>
                             <v-tabs v-model="tabs">
-                                <v-tab v-for="n in title_tabs" :key="n.id" style='width:100% !important'>
-                                    {{ n.name }}
+                                <v-tab  style='width:100% !important'>
+                                    Posts
+                                </v-tab>
+                                <v-tab style='width:100% !important' v-if="datos.esEntrenador">
+                                    Información
                                 </v-tab>
                             </v-tabs>
                         </template>
@@ -39,7 +42,7 @@
                             <br>
                             <post_perfil :idUsuario="datos.idUsuario" />
                         </v-tab-item>
-                        <v-tab-item>
+                        <v-tab-item v-if="datos.esEntrenador">
                             <v-card style='padding:1.5rem' flat>
                                 <br>
                                 <h3>
@@ -50,19 +53,20 @@
                                 </h3>
                                 <main style="padding:0;margin-top:1rem">
                                     <section style='display:flex'>
-                                        <label for="">Nombre</label>
+                                        <label for="">Nombre:</label>
                                         &nbsp;&nbsp;
-                                        <p>Juanito Perez</p>
+                                        <p>{{datos.nombre}}</p>
                                     </section>
-                                    <section style='display:flex'>
-                                        <label for="">Trabajo En</label>
+                                    <section style='display:flex' v-if="datos.lugarExp">
+                                        <label for="">Trabajo en</label>
                                         &nbsp;&nbsp;
-                                        <p>Gym Cold</p>
+                                        <p>{{datos.lugarExp}}</p>
                                     </section>
-                                    <section style='display:flex'>
-                                        <label for="">Años de Experiencia</label>
-                                        &nbsp;&nbsp;
-                                        <p>3 Años</p>
+                                    <section style='display:flex' v-else>
+                                        <label for="">No tiene experiencia ni certificados</label>
+                                    </section>
+                                    <section style='display:flex' v-if="datos.mesesExp">
+                                        <label for="">{{datos.mesesExp}}  Meses de experiencia</label>
                                     </section>
                                 </main>
                                 <!--
@@ -153,11 +157,12 @@ export default {
         dialogPerfil: null
     },
     created() {
-
     },
 
     methods: {
         async getPlanes() {
+                    
+
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes/' + this.datos.idUsuario, {
                 method: 'GET',
                 headers: {
@@ -177,6 +182,32 @@ export default {
         async guardarSuscripcion() {
             this.contratar = true
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify({
+                    fechaInicio: this.fechaInicio,
+                    fechaFinal: this.fechaFinal,
+                    idEntrenador: this.datos.idEntrenador,
+                    precio: this.plan.precio * this.meses,
+                    idPlan: this.plan.idPlan
+                })
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                console.log(error);
+                return
+            }
+            this.dialog = false
+            this.$root.vtoast.show({ message: data })
+            this.$emit('close')
+            this.contratar = false
+        },
+        async buscarEntrenador() {
+            this.contratar = true
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/busqueda/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

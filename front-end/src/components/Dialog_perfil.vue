@@ -2,19 +2,19 @@
     <v-container>
         <v-dialog v-model="dialogPerfil" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card>
-                <v-toolbar dark height='100px' style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);'>
+                <v-toolbar dark height='140px' style='background: linear-gradient(180deg, #E42256 0%, #FF8370 100%);'>
                     <v-btn icon dark @click="$emit('close')">
                         <v-icon>mdi-arrow-left-thin</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>
-                        <main style='#border:5px solid red !important;display:flex;width:120%'>
-                            <img :src="datos.linkPerfil" alt="" style='#border:5px solid red;border-radius:50%;width:80px;height:80px'>
-                            <small> {{datos.nombre}}</small>
+                    </v-btn> &nbsp; &nbsp;&nbsp;
+                    <v-toolbar-title style='position:relative;right:2rem'>
+                        <main style='#border:5px solid red !important;display:flex;width:30vw;flex-direction: column;padding: 0 !important;justify-content: center;align-items: center;'>
+                            <img :src="datos.linkPerfil" alt="" style='border-radius:50%;width:90px;height: 90px;object-fit: cover;'>
+                            <small class='text-wrap mt-1' style='#border: 4px solid yellow !important;text-align:center;#width: 50vw'> {{datos.nombre}}</small>
                         </main>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-btn dark text v-if="datos.esEntrenador&&!datos.entrenadorContratado" @click.stop="dialog = true" elevation='2' style='width:100px;height:50px !important;#padding:0rem;position:relative;top:1.3rem;background-color:white !important;border-radius:1rem;padding:0 !important'>
+                    <v-toolbar-items class='icon_message_contratar'>
+                        <v-btn text v-if="datos.esEntrenador&&!datos.entrenadorContratado" @click.stop="dialog = true" elevation='2' style='background-color: white;#padding: 1rem !important;border-radius: 1rem;'>
                             <small style='padding:1rem;color:#E42256 !important' @click="getPlanes()">contratar</small>
                         </v-btn>
                         <v-btn dark text @click="dialog = false;goChat()">
@@ -27,8 +27,8 @@
                 <v-list three-line subheader>
                     <v-toolbar elevation='1'>
                         <template>
-                            <v-tabs v-model="tabs">
-                                <v-tab  style='width:100% !important'>
+                            <v-tabs v-model="tabs" style='display: flex;justify-content: center;'>
+                                <v-tab style='width:100% !important'>
                                     Posts
                                 </v-tab>
                                 <v-tab style='width:100% !important' v-if="datos.esEntrenador">
@@ -66,7 +66,7 @@
                                         <label for="">No tiene experiencia ni certificados</label>
                                     </section>
                                     <section style='display:flex' v-if="datos.mesesExp">
-                                        <label for="">{{datos.mesesExp}}  Meses de experiencia</label>
+                                        <label for="">{{datos.mesesExp}} Meses de experiencia</label>
                                     </section>
                                 </main>
                                 <!--
@@ -156,12 +156,11 @@ export default {
         datos: null,
         dialogPerfil: null
     },
-    created() {
-    },
+    created() {},
 
     methods: {
         async getPlanes() {
-                    
+
 
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/suscripcion/planes/' + this.datos.idUsuario, {
                 method: 'GET',
@@ -252,6 +251,26 @@ export default {
 }
 </script>
 <style scoped>
+.icon_message_contratar {
+    position: relative;
+    left: 1rem;
+    top: 3rem;
+    display: flex;
+    flex-direction: row;
+    #border: 5px solid yellow !important;
+}
+
+.icon_message_contratar .v-btn {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100px;
+    height: 25px !important;
+}
+
+.icon_message_contratar .v-btn small {
+    padding: 0 !important;
+    margin: 0 !important;
+}
 .toolbar_perfil {
     height: 100px !important;
 }

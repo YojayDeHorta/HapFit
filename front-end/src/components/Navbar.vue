@@ -20,7 +20,7 @@
                             </label>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title class='text' style='text-align: center;font-size:1.1rem; font-weight: bold !important; font-size: 1.4em; padding: 5px !important;'>{{usuario.nombre}}</v-list-item-title>
+                            <v-list-item-title class='text' style='text-align: center;font-size:1.1rem; font-weight: bold !important; font-size: 1.4em; padding: 5px !important;text-transform:capitalize'>{{usuario.nombre}}</v-list-item-title>
                         </v-list-item>
                         <hr><br>
                         <!-- <v-list-item class='item_sub_text'>
@@ -33,6 +33,7 @@
                                 </v-btn>
                             </v-list-item-title>
                         </v-list-item> -->
+                        <!--
                         <v-list-item class='item_sub_text'>
                             <v-list-item-title class='text sub_txt'>
                                 <v-icon>
@@ -41,12 +42,13 @@
                                 <strong>Opciones</strong>
                             </v-list-item-title>
                         </v-list-item>
+                    -->
                         <v-list-item v-if="usuario.rol=='cliente'" @click="dialog_solicitud=true">
                             <v-list-item-title plain>
                                 <v-icon>
                                     mdi-license
                                 </v-icon>&nbsp;
-                                <strong>Ser Entrenador</strong>
+                                <strong style='font-size:1rem'>Ser Entrenador</strong>
                             </v-list-item-title>
                         </v-list-item>
                         <v-list-item class='item_sub_text' v-if="usuario.rol=='entrenador'">
@@ -69,10 +71,10 @@
                                 </v-btn>
                             </v-list-item-title>
                         </v-list-item><br>
-                        <v-container class='salir_item mt-5' @click="cerrarSesion()" fluid>
-                            <v-list-item class='item_sub_text'>
-                                <v-list-item-title class='text' style='font-size: 1.4rem;'>
-                                    <v-btn to='/' style='background-color: transparent;' plain>
+                        <v-container class='salir_item mt-5' @click="cerrarSesion()" fluid plain>
+                            <v-list-item class='item_sub_text' style='padding:0 !important'>
+                                <v-list-item-title class='text' style='font-size: 1.4rem;padding:0 !important'>
+                                    <v-btn to='/' style='background-color: transparent;' elevation='0'>
                                         <v-icon plain>
                                             mdi-arrow-left-thick
                                         </v-icon>&nbsp;
@@ -94,10 +96,10 @@
                 <v-list-item three-line>
                     <v-list-item-content>
                         <!-- <h3 class="ml-1"><strong >usuario: {{usuario.nombre}}</strong></h3> -->
-                        <v-text-field v-model="solicitud.lugarExp" label="lugar de estudio o trabajo" outlined></v-text-field>
-                        <v-text-field v-model="solicitud.mesesExp" type="number" label="meses de experiencia o estudio" outlined></v-text-field>
-                        <v-file-input truncate-length="50" v-model="solicitud.linkTitulos" label="seleccione su certificado" outlined></v-file-input>
-                        <v-textarea solo height="70px" v-model="solicitud.descripcion" label="porque quieres ser entrenador?" :no-resize="true" outlined></v-textarea>
+                        <v-text-field v-model="solicitud.lugarExp" label="Lugar de estudio o trabajo" outlined></v-text-field>
+                        <v-text-field v-model="solicitud.mesesExp" type="number" label="Meses de experiencia o estudio" outlined></v-text-field>
+                        <v-file-input truncate-length="50" v-model="solicitud.linkTitulos" label="Seleccione su certificado" outlined></v-file-input>
+                        <v-textarea solo height="70px" v-model="solicitud.descripcion" label="Porque quieres ser entrenador?" :no-resize="true" outlined></v-textarea>
                     </v-list-item-content>
                 </v-list-item>
                 <v-divider></v-divider>
@@ -248,9 +250,10 @@ export default {
 
 .salir_item {
     position: absolute;
-    height: 34vh;
+    height: 50vh;
     display: flex;
     align-items: flex-end;
+    padding:0 !important;
 }
 
 .container_post {

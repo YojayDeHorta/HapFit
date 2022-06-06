@@ -75,6 +75,12 @@ export default {
         Post_Creado,
         modal_perfil
     },
+    mounted() {
+        this.$root.$on('component1', () => {
+            // your code goes here
+            this.getPost()
+        })
+    },
     methods: {
         async getPost(){
             this.loading=true
@@ -95,6 +101,7 @@ export default {
             this.loading=false
             
         },
+        
         async cambiarCorazon(idPublicacion,index){
             if (!this.post[index].liked) {
                 this.post[index].liked=false

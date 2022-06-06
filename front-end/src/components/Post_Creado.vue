@@ -135,6 +135,7 @@ export default {
             }
             this.descripcion = ''
             this.getPost()
+            this.$root.$emit('component1') 
         },
         async borrarPost(id) {
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/post/', {
@@ -152,6 +153,7 @@ export default {
             }
             this.$root.vtoast.show({ message: 'borrado exitosamente!' })
             this.getPost()
+            this.$root.$emit('component1')
             // console.log('a');
         },
         async cambiarCorazon(idPublicacion, index) {

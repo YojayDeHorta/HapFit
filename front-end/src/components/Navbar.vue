@@ -249,7 +249,7 @@ export default {
 
 .salir_item {
     position: absolute;
-    height: 40vh;
+    height: 35vh;
     display: flex;
     align-items: flex-end;
     padding:0 !important;

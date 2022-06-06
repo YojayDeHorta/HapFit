@@ -60,7 +60,13 @@ const routes = [{
         props: true,
 
     },
+        {
+        path: '/login_admin',
+        name: 'login_admin',
+        component: () => import( /* webpackChunkName: "about" */ '../views/Login_Admin.vue'),
+        props: true,
 
+    },
 
 ]
 

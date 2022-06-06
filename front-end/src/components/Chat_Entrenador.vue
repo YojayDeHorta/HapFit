@@ -59,7 +59,7 @@
         </form>
         <!---->
         <v-dialog v-model="dialog" max-width="290">
-            <v-card style='padding:2rem'>
+            <v-card style='padding:1.5rem'>
                 <h4 style="text-transform:capitalize;text-align:center;#border:4px solid red">Escoge la rutina que vas enviar</h4>
                 <br>
                 <!-- <v-select :items="items" placeholder='Selecione la rutina' outlined></v-select> -->

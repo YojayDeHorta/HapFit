@@ -54,6 +54,8 @@
                     <p>{{publicacion.descripcion}} </p>
                     <!-- rutinas -->
                      <h1 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)">{{publicacion.nombreRutina}}</h1>
+                     
+                     <!-- <h1 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)">{{publicacion.nombreRutina}}</h1> -->
                 </section>
                 <section class='icon_post mt-5'>
                     <p style='display: flex;' class="mt-2">

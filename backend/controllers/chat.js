@@ -11,8 +11,12 @@ exports.getChat= async (req, res) => {
             if (emisor[i].usuarioQueEnvia==req.usuario.id) {
                 emisor[i].derecha=true
             }
+            let rutina = await query(`SELECT * FROM rutinas WHERE idRutina = ${emisor[i].idRutina} `);
+            if (rutina[0]) {
+                emisor[i].nombreRutina=rutina[0].nombre
+                
+            }
         }
-        
         res.json({ error: null, data: emisor })
 
 	} catch (error) {

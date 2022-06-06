@@ -24,9 +24,10 @@ module.exports = (http) => {
 
             io.to(socketId).emit("new_message", data);
             await query(
-                `INSERT INTO chat  (usuarioQueEnvia,usuarioQueRecibe,mensaje,fecha) VALUES (
-               ${data.usuarioQueEnvia},'${data.usuarioQueRecibe}','${data.mensaje}','${data.date}');`
+                `INSERT INTO chat  (usuarioQueEnvia,usuarioQueRecibe,mensaje,idRutina,fecha) VALUES (
+               ${data.usuarioQueEnvia},'${data.usuarioQueRecibe}','${data.mensaje}',${data.idRutina},'${data.date}');`
             )
+            
         });
         
 

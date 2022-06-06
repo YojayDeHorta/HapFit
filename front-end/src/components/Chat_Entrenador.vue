@@ -23,12 +23,19 @@
             <div style='position: relative;display:flex;flex-direction: column;height: 87vh;overflow: auto;'>
                 <main class='main_chat' style='position: relative;' v-for='mensaje in mensajes' :key='mensaje.date'>
                     <section style='#border: 4px solid purple;display: flex;justify-content: flex-end;border-radius: 1rem !important;' v-if="mensaje.derecha">
-                        <section style='#border: 4px solid blue;width: 70%;padding: 1rem;color:white;background-color:#FF8370 ;border-radius: 1rem !important;'>
+                        <section v-if="mensaje.idRutina" @click="goRutinasEntrenador(mensaje.idRutina)">
+                            {{mensaje.nombreRutina}}
+                        </section>
+                        <section v-else style='#border: 4px solid blue;width: 70%;padding: 1rem;color:white;background-color:#FF8370 ;border-radius: 1rem !important;'>
                             {{mensaje.mensaje}}
                         </section>
+                        
                     </section>
                     <section style='#border: 4px solid purple;display: flex;justify-content: flex-start;border-radius: 1rem !important;' v-else>
-                        <section style='#border: 4px solid blue;width: 70%;padding: 1rem;background: #505050;color: white;border-radius: 1rem !important;'>
+                        <section v-if="mensaje.idRutina" @click="goRutinasEntrenador(mensaje.idRutina)">
+                            {{mensaje.nombreRutina}}
+                        </section>
+                        <section v-else style='#border: 4px solid blue;width: 70%;padding: 1rem;background: #505050;color: white;border-radius: 1rem !important;'>
                             {{mensaje.mensaje}}
                         </section>
                     </section>
@@ -36,7 +43,7 @@
             </div>
         </v-container>
         <form action="" style='display: flex;align-items: center;#border: 5px solid black;gap:16px;justify-content:center;position: absolute;bottom: 0;width: 100%;padding: 1rem;'>
-            <v-btn elevation="2" fab x-smal @click.stop="dialog = true">
+            <v-btn elevation="2" fab x-smal @click.stop="dialog = true;getRutinas()">
                 <v-icon>
                     mdi-plus
                 </v-icon>
@@ -55,32 +62,16 @@
             <v-card style='padding:2rem'>
                 <h4 style="text-transform:capitalize;text-align:center;#border:4px solid red">Escoge la rutina que vas enviar</h4>
                 <br>
-                <v-select :items="items" placeholder='Selecione la rutina' outlined></v-select>
+                <!-- <v-select :items="items" placeholder='Selecione la rutina' outlined></v-select> -->
+                <v-select :items="rutinas" v-model="rutina" item-text="nombre" return-object label="seleccione la rutina" outlined></v-select>
                 <main style='display: flex;justify-content: space-around;'>
                     <v-btn   color="error">
                         Cancelar
                     </v-btn>
-                    <v-btn color='primary'>
+                    <v-btn color='primary' @click="send()">
                         Enviar
                     </v-btn>
                 </main>
-                <!--
-                <v-card-title class="text-h5">
-                    Use Google's location service?
-                </v-card-title>
-                <v-card-text>
-                    Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialog = false">
-                        Disagree
-                    </v-btn>
-                    <v-btn color="green darken-1" text @click="dialog = false">
-                        Agree
-                    </v-btn>
-                </v-card-actions>
-            -->
             </v-card>
         </v-dialog>
         <!---->
@@ -103,7 +94,9 @@ export default {
             nombreRecibe: localStorage.getItem("chatNombre"),
             linkPerfil: localStorage.getItem("chatLinkPerfil"),
             usuarioQueRecibe: this.$route.params.usuarioQueRecibe,
-              items: ['Foo', 'Bar', 'Fizz', 'Buzz']
+            items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+            rutinas:[],
+            rutina:null
         }
     },
     methods: {
@@ -113,12 +106,16 @@ export default {
                 usuarioQueEnvia: localStorage.getItem("idUsuario"),
                 usuarioQueRecibe: this.usuarioQueRecibe,
                 mensaje: this.mensaje,
+                idRutina:this.rutina.idRutina,
                 date: new Date().toISOString()
             }
             this.$socket.emit('send_message', datos);
             datos.derecha = true
+            datos.nombreRutina= this.rutina.nombre
+            datos.idRutina= this.rutina.idRutina
             this.mensajes.push(datos)
             this.mensaje = null;
+            this.dialog=false
         },
         async getMensajes() {
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/chat/', {
@@ -139,7 +136,26 @@ export default {
             }
             this.mensajes = data
         },
+        async getRutinas() {
+            const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/routine/get', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                }
+            })
+            const { data, error } = await res.json()
+            if (error) {
+                this.rutinas = []
+                console.log(error);
+                return
+            }
+            this.rutinas = data
 
+        },
+        goRutinasEntrenador(idRutina) {
+            this.$router.push("/rutinas_entrenador/" + idRutina)
+        }
     },
     // props: {
     //     nombreRecibe: '',

@@ -24,16 +24,23 @@
                 <main class='main_chat' style='position: relative;' v-for='mensaje in mensajes' :key='mensaje.date'>
                     <section style='#border: 4px solid purple;display: flex;justify-content: flex-end;border-radius: 1rem !important;' v-if="mensaje.derecha">
                         <section v-if="mensaje.idRutina" @click="goRutinasEntrenador(mensaje.idRutina)">
-                            {{mensaje.nombreRutina}}
+                            <v-card style='padding: 1rem;background-color: #FEC84D20'>
+                                <v-icon>
+                                    mdi-weight-lifter
+                                </v-icon>
+                                 &nbsp;&nbsp;&nbsp;
+                                {{mensaje.nombreRutina}}
+                            </v-card>
                         </section>
                         <section v-else style='#border: 4px solid blue;width: 70%;padding: 1rem;color:white;background-color:#FF8370 ;border-radius: 1rem !important;'>
                             {{mensaje.mensaje}}
                         </section>
-                        
                     </section>
                     <section style='#border: 4px solid purple;display: flex;justify-content: flex-start;border-radius: 1rem !important;' v-else>
-                        <section v-if="mensaje.idRutina" @click="goRutinasEntrenador(mensaje.idRutina)">
-                            {{mensaje.nombreRutina}}
+                        <section v-if="mensaje.idRutina" @click="goRutinasEntrenador(mensaje.idRutina)" style='text-align: start !important;border:5px solid red !important'>
+                            <v-card>
+                                {{mensaje.nombreRutina}}
+                            </v-card>
                         </section>
                         <section v-else style='#border: 4px solid blue;width: 70%;padding: 1rem;background: #505050;color: white;border-radius: 1rem !important;'>
                             {{mensaje.mensaje}}
@@ -65,7 +72,7 @@
                 <!-- <v-select :items="items" placeholder='Selecione la rutina' outlined></v-select> -->
                 <v-select :items="rutinas" v-model="rutina" item-text="nombre" return-object label="seleccione la rutina" outlined></v-select>
                 <main style='display: flex;justify-content: space-around;'>
-                    <v-btn   color="error">
+                    <v-btn color="error">
                         Cancelar
                     </v-btn>
                     <v-btn color='primary' @click="send()">
@@ -95,8 +102,8 @@ export default {
             linkPerfil: localStorage.getItem("chatLinkPerfil"),
             usuarioQueRecibe: this.$route.params.usuarioQueRecibe,
             items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-            rutinas:[],
-            rutina:null
+            rutinas: [],
+            rutina: null
         }
     },
     methods: {
@@ -106,16 +113,16 @@ export default {
                 usuarioQueEnvia: localStorage.getItem("idUsuario"),
                 usuarioQueRecibe: this.usuarioQueRecibe,
                 mensaje: this.mensaje,
-                idRutina:this.rutina.idRutina,
+                idRutina: this.rutina.idRutina,
                 date: new Date().toISOString()
             }
             this.$socket.emit('send_message', datos);
             datos.derecha = true
-            datos.nombreRutina= this.rutina.nombre
-            datos.idRutina= this.rutina.idRutina
+            datos.nombreRutina = this.rutina.nombre
+            datos.idRutina = this.rutina.idRutina
             this.mensajes.push(datos)
             this.mensaje = null;
-            this.dialog=false
+            this.dialog = false
         },
         async getMensajes() {
             const res = await fetch(process.env.VUE_APP_BASE_URL + '/api/chat/', {

@@ -17,6 +17,13 @@
             </section>
             <section class='text-left mt-5'>
                 <p>{{publicacion.descripcion}} </p>
+                 <v-card @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)" v-if="publicacion.Rutinas_idtable1" style='padding: 1rem;display: flex;justify-content: flex-start;background-color: #FEC84D20;' elevation='1'>
+                        <v-icon>
+                            mdi-weight-lifter
+                        </v-icon>
+                        &nbsp;&nbsp;&nbsp;
+                        <h4   style='text-transform: capitalize;'>{{publicacion.nombreRutina}}</h4>
+                    </v-card>
             </section>
             <section class='icon_post mt-5'>
                 <p style='display: flex;' class="mt-2">
@@ -128,6 +135,9 @@ export default {
             this.getPost()
 
         },
+        goRutinasEntrenador(idRutina) {
+            this.$router.push("/rutinas_entrenador/" + idRutina)
+        }
     },
 }
 </script>

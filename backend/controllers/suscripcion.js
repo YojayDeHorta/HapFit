@@ -109,7 +109,7 @@ exports.setPlanes= async (req, res) => {
 exports.deletePlanes= async (req, res) => {
 	try {
         await query(
-            `DELETE FROM plan WHERE idPlan = ${req.body.idPlan} AND idEntrenador = ${req.usuario.idEntrenador};`
+            `DELETE FROM plan WHERE idPlan = ${req.body.idPlan} AND idEntrenador = ${req.usuario.idEntrenador}`
         );
         res.json({ error: null, data: "plan borrado exitosamente" })
 

@@ -48,12 +48,12 @@
                 <section class='text-left mt-5'>
                     <p>{{publicacion.descripcion}} </p>
                     <!-- rutinas -->
-                    <v-card style='padding: 1rem;display: flex;justify-content: flex-start;background-color: #FEC84D20;' elevation='1'>
+                    <v-card @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)" v-if="publicacion.Rutinas_idtable1" style='padding: 1rem;display: flex;justify-content: flex-start;background-color: #FEC84D20;' elevation='1'>
                         <v-icon>
                             mdi-weight-lifter
                         </v-icon>
                         &nbsp;&nbsp;&nbsp;
-                        <h4 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)" style='text-transform: capitalize;'>{{publicacion.nombreRutina}}</h4>
+                        <h4   style='text-transform: capitalize;'>{{publicacion.nombreRutina}}</h4>
                     </v-card>
                     <!-- <h1 v-if="publicacion.Rutinas_idtable1" @click="goRutinasEntrenador(publicacion.Rutinas_idtable1)">{{publicacion.nombreRutina}}</h1> -->
                 </section>

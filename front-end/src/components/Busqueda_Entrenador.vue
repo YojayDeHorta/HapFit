@@ -100,6 +100,9 @@ export default {
             this.postActual=usuario
             this.dialogPerfil=true
             
+        },
+        goRutinasEntrenador(idRutina) {
+            this.$router.push("/rutinas_entrenador/" + idRutina)
         }
     },
 }

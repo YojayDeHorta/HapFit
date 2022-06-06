@@ -48,7 +48,7 @@
                 <section class='text-left mt-5'>
                     <p>{{publicacion.descripcion}} </p>
                     <!-- rutinas -->
-                    <v-card style='padding: 1rem;display: flex;justify-content: flex-start;'>
+                    <v-card style='padding: 1rem;display: flex;justify-content: flex-start;background-color: #FEC84D20;' elevation='1'>
                         <v-icon>
                             mdi-weight-lifter
                         </v-icon>

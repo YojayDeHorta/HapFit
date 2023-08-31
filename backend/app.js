@@ -16,6 +16,7 @@ app.use(cors(corsOptions));
 //variables de entorno
 require('dotenv').config();
 
+
 // import routes
 const authRoutes = require('./routes/route');
 const authSolicitud = require('./routes/solicitud');
